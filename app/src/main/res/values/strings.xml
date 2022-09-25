@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Natlex test task</string>
+    <string name="activity_isnt_navigation_router_error_msg">MainActivity должна иметь тип NavigationRouter</string>
 </resources>
