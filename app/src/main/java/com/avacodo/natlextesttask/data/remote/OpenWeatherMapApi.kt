@@ -9,12 +9,12 @@ private const val BASE_PATH = "data/2.5/weather"
 
 interface OpenWeatherMapApi {
     @GET(BASE_PATH)
-    suspend fun getWeatherByLocationNameAsync(
+    fun getWeatherByLocationNameAsync(
         @Query("q") locationName: String,
     ): Deferred<OpenWeatherMapDto>
 
     @GET(BASE_PATH)
-    suspend fun getWeatherByLocationCoordsAsync(
+    fun getWeatherByLocationCoordsAsync(
         @Query("lat") locationLatitude: Double,
         @Query("lon") locationLongitude: Double,
     ): Deferred<OpenWeatherMapDto>
