@@ -1,7 +1,6 @@
-package com.avacodo.natlextesttask.data.remote.dto
+package com.avacodo.natlextesttask.data.remote
 
 import com.avacodo.natlextesttask.BuildConfig
-import com.avacodo.natlextesttask.data.remote.RetrofitInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
