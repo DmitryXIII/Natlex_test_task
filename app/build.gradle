@@ -38,6 +38,7 @@ android {
 }
 
 dependencies {
+    implementation "io.insert-koin:koin-android:3.2.0"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
 

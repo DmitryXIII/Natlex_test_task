@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.avacodo.natlextesttask.data.remote.OpenWeatherMapApi
 import com.avacodo.natlextesttask.data.remote.RetrofitClient
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -22,5 +25,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        CoroutineScope(Dispatchers.IO).launch {
+            retrofit.getWeatherByLocationNameAsync("Москва").await()
+        }
     }
 }
