@@ -1,4 +1,4 @@
-package com.avacodo.natlextesttask.presentation
+package com.avacodo.natlextesttask.presentation.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

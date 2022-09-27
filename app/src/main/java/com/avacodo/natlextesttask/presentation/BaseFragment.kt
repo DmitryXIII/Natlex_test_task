@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.avacodo.natlextesttask.R
+import com.avacodo.natlextesttask.presentation.activity.NavigationRouter
 
 abstract class BaseFragment<VB : ViewBinding>(
     private val inflateBinding: (
