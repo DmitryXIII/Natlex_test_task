@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="zero">0dp</dimen>
+    <dimen name="default_layout_padding">8dp</dimen>
+    <dimen name="margin_4dp">4dp</dimen>
+</resources>

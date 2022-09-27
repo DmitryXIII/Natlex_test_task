@@ -6,15 +6,14 @@ import okhttp3.logging.HttpLoggingInterceptor
 
 class RetrofitClient {
     fun createClient(): OkHttpClient {
-        return if (BuildConfig.DEBUG) {
-            OkHttpClient.Builder()
-                .addInterceptor(RetrofitInterceptor())
-                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                .build()
-        } else {
-            OkHttpClient.Builder()
-                .addInterceptor(RetrofitInterceptor())
-                .build()
+        val client = OkHttpClient.Builder()
+            .addInterceptor(RetrofitInterceptor())
+
+        if (BuildConfig.DEBUG) {
+            client.addInterceptor(HttpLoggingInterceptor()
+                .setLevel(HttpLoggingInterceptor.Level.BODY))
         }
+
+        return client.build()
     }
 }

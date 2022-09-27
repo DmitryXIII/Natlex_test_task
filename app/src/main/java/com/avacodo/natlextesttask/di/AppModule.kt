@@ -24,8 +24,6 @@ val appModule = module {
     }
 
     factory { MapperToDomain() }
-
-
 }
 
 val retrofitModule = module {

@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Natlex test task</string>
     <string name="activity_isnt_navigation_router_error_msg">MainActivity должна иметь тип NavigationRouter</string>
+    <string name="empty_value">---</string>
+    <string name="celsius_switch_label">C</string>
+    <string name="fahrenheit_switch_label">F</string>
+    <string name="menu_title_search_by_name">Weather search by location name</string>
+    <string name="menu_title_search_by_coords">Weather search by location coords</string>
 </resources>
