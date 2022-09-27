@@ -2,16 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<item
-    android:title="@string/menu_title_search_by_name"
-    android:icon="@drawable/ic_search"
-    android:id="@+id/action_search_weather_by_name"
-    app:showAsAction="ifRoom|collapseActionView"
-    app:actionViewClass="androidx.appcompat.widget.SearchView" />
+    <item
+        android:id="@+id/action_search_weather_by_name"
+        android:icon="@drawable/ic_search"
+        android:title="@string/menu_title_search_by_name"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
 
     <item
-        android:title="@string/menu_title_search_by_coords"
-        android:icon="@drawable/ic_my_location"
         android:id="@+id/action_search_weather_by_coords"
-        app:showAsAction="ifRoom"/>
+        android:icon="@drawable/ic_my_location"
+        android:title="@string/menu_title_search_by_coords"
+        app:showAsAction="ifRoom" />
 </menu>

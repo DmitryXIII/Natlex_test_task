@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="@dimen/zero">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/default_layout_padding"
+        android:paddingTop="@dimen/default_layout_padding">
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/searching_item_barrier"
+            android:layout_width="@dimen/zero"
+            android:layout_height="@dimen/zero"
+            app:barrierDirection="left"
+            app:constraint_referenced_ids="max_temp_text_view, min_temp_text_view, temp_graph_image_view" />
+
+        <ImageView
+            android:id="@+id/temp_graph_image_view"
+            android:layout_width="@dimen/temp_graph_icon_size"
+            android:layout_height="@dimen/temp_graph_icon_size"
+            android:contentDescription="@string/temp_graph_icon"
+            android:src="@drawable/ic_graph"
+            app:layout_constraintBottom_toTopOf="@id/min_temp_text_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/max_temp_text_view" />
+
+        <TextView
+            android:id="@+id/searching_item_temp_value_text_view"
+            android:layout_width="@dimen/zero"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+            app:layout_constraintBottom_toTopOf="@id/searching_item_date_text_view"
+            app:layout_constraintEnd_toStartOf="@id/searching_item_barrier"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/temp_graph_image_view"
+            tools:text="@string/searching_item_temp_value_example" />
+
+        <TextView
+            android:id="@+id/searching_item_date_text_view"
+            android:layout_width="@dimen/zero"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            app:layout_constraintBottom_toBottomOf="@id/temp_graph_image_view"
+            app:layout_constraintEnd_toStartOf="@id/searching_item_barrier"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/searching_item_temp_value_text_view"
+            tools:text="@string/searching_item_date_example" />
+
+        <TextView
+            android:id="@+id/max_temp_text_view"
+            android:layout_width="@dimen/zero"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/temp_graph_image_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/max_temp_example" />
+
+        <TextView
+            android:id="@+id/min_temp_text_view"
+            android:layout_width="@dimen/zero"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/searching_item_divider_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/temp_graph_image_view"
+            tools:text="@string/min_temp_example" />
+
+        <View
+            android:id="@+id/searching_item_divider_view"
+            android:layout_width="@dimen/zero"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/default_layout_padding"
+            android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/min_temp_text_view" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
