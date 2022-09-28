@@ -13,7 +13,7 @@
         android:padding="@dimen/default_layout_padding"
         app:layout_constraintBottom_toTopOf="@id/weather_history_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintHeight_percent="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
