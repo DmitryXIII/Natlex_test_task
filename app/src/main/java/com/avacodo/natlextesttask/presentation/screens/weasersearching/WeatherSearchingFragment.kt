@@ -65,6 +65,11 @@ class WeatherSearchingFragment :
     private fun initLoadingAction(): () -> Unit = {}
 
     private fun initErrorAction(): (String) -> Unit = { error ->
+        binding.locationNameTextView.text = getString(R.string.empty_value)
+        binding.temperatureTextView.text = getString(R.string.empty_value)
+
+        setBackgroundColor(binding.mainWeatherLayout)
+
         Snackbar.make(binding.root, error, Snackbar.LENGTH_SHORT).show()
     }
 
@@ -90,6 +95,12 @@ class WeatherSearchingFragment :
     private fun setBackgroundColor(view: View, temperature: Double) {
         BackgroundDrawerFactory()
             .provideBackgroundDrawer(temperature)
+            .setLayoutBackground(view)
+    }
+
+    private fun setBackgroundColor(view: View) {
+        BackgroundDrawerFactory()
+            .provideBackgroundDrawer()
             .setLayoutBackground(view)
     }
 }

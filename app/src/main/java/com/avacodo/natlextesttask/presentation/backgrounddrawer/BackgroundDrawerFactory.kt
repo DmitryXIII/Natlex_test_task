@@ -14,4 +14,8 @@ class BackgroundDrawerFactory {
             }
         }
     }
+
+    fun provideBackgroundDrawer(): BaseBackgroundDrawer {
+        return DefaultBackground()
+    }
 }
