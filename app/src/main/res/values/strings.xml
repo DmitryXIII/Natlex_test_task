@@ -12,4 +12,6 @@
     <string name="min_temp_example">mix: 20° C</string>
     <string name="temp_graph_icon">Temp_graph_icon</string>
     <string name="search_view_hint">Введите название города</string>
+    <string name="weather_value_in_celsius">%1s° C</string>
+    <string name="weather_value_in_fahrenheit">%1s° F</string>
 </resources>
