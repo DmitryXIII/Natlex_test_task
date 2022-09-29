@@ -1,4 +1,4 @@
-package com.avacodo.natlextesttask.presentation.screens
+package com.avacodo.natlextesttask.presentation.screens.weasersearching
 
 import android.os.Bundle
 import android.view.Menu
@@ -10,6 +10,7 @@ import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.databinding.FragmentWeatherSearchingBinding
 import com.avacodo.natlextesttask.domain.entity.WeatherModelDomain
 import com.avacodo.natlextesttask.presentation.BaseFragment
+import com.avacodo.natlextesttask.presentation.backgrounddrawer.BackgroundDrawerFactory
 import com.avacodo.natlextesttask.presentation.weatherunits.WeatherUnitsProvider
 import com.avacodo.natlextesttask.presentation.weatherunits.WeatherUnitsProviderFactory
 import com.google.android.material.snackbar.Snackbar
@@ -68,14 +69,25 @@ class WeatherSearchingFragment :
     private fun initSuccessAction(): (WeatherModelDomain) -> Unit =
         { weatherData ->
             binding.locationNameTextView.text = weatherData.locationName
+
+            setBackgroundColor(binding.mainWeatherLayout, weatherData.temperatureInCelsius)
+
             viewLifecycleOwner.lifecycleScope.launch {
                 isFahrenheitRequiredFlow.collect { isChecked ->
-                    binding.temperatureTextView.text = initWeatherValueProvider(isChecked).provideWeatherValue(requireContext(), weatherData)
+                    binding.temperatureTextView.text =
+                        initWeatherValueProvider(isChecked).provideWeatherValue(requireContext(),
+                            weatherData)
                 }
             }
         }
 
     private fun initWeatherValueProvider(isSwitchChecked: Boolean): WeatherUnitsProvider {
         return WeatherUnitsProviderFactory().initWeatherUnitsProvider(isSwitchChecked)
+    }
+
+    private fun setBackgroundColor(view: View, temperature: Double) {
+        BackgroundDrawerFactory()
+            .provideBackgroundDrawer(temperature)
+            .setLayoutBackground(view)
     }
 }

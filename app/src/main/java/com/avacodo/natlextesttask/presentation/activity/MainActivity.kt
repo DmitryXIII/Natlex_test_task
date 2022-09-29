@@ -3,7 +3,7 @@ package com.avacodo.natlextesttask.presentation.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.avacodo.natlextesttask.R
-import com.avacodo.natlextesttask.presentation.screens.WeatherSearchingFragment
+import com.avacodo.natlextesttask.presentation.screens.weasersearching.WeatherSearchingFragment
 
 class MainActivity : AppCompatActivity(), NavigationRouter {
 

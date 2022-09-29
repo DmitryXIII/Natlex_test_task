@@ -1,4 +1,4 @@
-package com.avacodo.natlextesttask.presentation.screens
+package com.avacodo.natlextesttask.presentation.screens.weasersearching
 
 import androidx.lifecycle.viewModelScope
 import com.avacodo.natlextesttask.domain.entity.WeatherModelDomain
