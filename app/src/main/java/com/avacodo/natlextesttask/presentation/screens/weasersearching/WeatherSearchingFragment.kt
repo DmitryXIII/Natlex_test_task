@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
-import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.databinding.FragmentWeatherSearchingBinding
 import com.avacodo.natlextesttask.domain.entity.WeatherModelDomain
 import com.avacodo.natlextesttask.presentation.BaseFragment
 import com.avacodo.natlextesttask.presentation.backgrounddrawer.BackgroundDrawerFactory
+import com.avacodo.natlextesttask.presentation.searchview.SearchViewInitializer
 import com.avacodo.natlextesttask.presentation.weatherunits.WeatherUnitsProvider
 import com.avacodo.natlextesttask.presentation.weatherunits.WeatherUnitsProviderFactory
 import com.google.android.material.snackbar.Snackbar
@@ -22,7 +22,9 @@ class WeatherSearchingFragment :
     BaseFragment<FragmentWeatherSearchingBinding>(FragmentWeatherSearchingBinding::inflate) {
 
     private val viewModel by viewModel<WeatherSearchingViewModel>()
+
     private val isFahrenheitRequiredFlow = MutableStateFlow(true)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -30,8 +32,9 @@ class WeatherSearchingFragment :
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.app_bar_menu, menu)
-        val searchView = menu.findItem(R.id.action_search_weather_by_name).actionView as SearchView
-        searchView.queryHint = getString(R.string.search_view_hint)
+        SearchViewInitializer().initSearchView(menu, R.id.action_search_weather_by_name) { query ->
+            viewModel.searchWeather(query)
+        }
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -52,7 +55,6 @@ class WeatherSearchingFragment :
                 initErrorAction()
             )
         }
-        viewModel.searchWeather("Петрозаводск") // временно ... для теста вьюмодели
 
         binding.weatherUnitsSwitch.setOnCheckedChangeListener { _, _ ->
             viewModel.changeSwitchState()
