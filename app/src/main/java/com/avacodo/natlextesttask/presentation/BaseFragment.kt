@@ -9,7 +9,7 @@ import androidx.viewbinding.ViewBinding
 import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.presentation.activity.NavigationRouter
 
-abstract class BaseFragment<VB : ViewBinding>(
+abstract class BaseFragment<VB : ViewBinding, ResultType>(
     private val inflateBinding: (
         inflater: LayoutInflater,
         root: ViewGroup?,
@@ -19,6 +19,8 @@ abstract class BaseFragment<VB : ViewBinding>(
 
     private var _binding: VB? = null
     val binding: VB get() = _binding!!
+
+    abstract val viewModel: BaseViewModel<ResultType>
 
     private lateinit var router: NavigationRouter
 
@@ -41,6 +43,10 @@ abstract class BaseFragment<VB : ViewBinding>(
             router = requireActivity() as NavigationRouter
         }
     }
+
+    abstract fun provideOnLoadingAction(): () -> Unit
+    abstract fun provideOnSuccessAction(): (ResultType) -> Unit
+    abstract fun provideOnErrorAction(): (String) -> Unit
 
     override fun onDestroy() {
         super.onDestroy()

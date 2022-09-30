@@ -19,9 +19,9 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WeatherSearchingFragment :
-    BaseFragment<FragmentWeatherSearchingBinding>(FragmentWeatherSearchingBinding::inflate) {
+    BaseFragment<FragmentWeatherSearchingBinding, WeatherModelDomain>(FragmentWeatherSearchingBinding::inflate) {
 
-    private val viewModel by viewModel<WeatherSearchingViewModel>()
+    override val viewModel by viewModel<WeatherSearchingViewModel>()
 
     private val isFahrenheitRequiredFlow = MutableStateFlow(true)
 
@@ -50,9 +50,9 @@ class WeatherSearchingFragment :
 
         viewModel.getData().observe(viewLifecycleOwner) { state ->
             state.handleState(
-                initLoadingAction(),
-                initSuccessAction(),
-                initErrorAction()
+                provideOnLoadingAction(),
+                provideOnSuccessAction(),
+                provideOnErrorAction()
             )
         }
 
@@ -62,9 +62,9 @@ class WeatherSearchingFragment :
         }
     }
 
-    private fun initLoadingAction(): () -> Unit = {}
+    override fun provideOnLoadingAction(): () -> Unit = {}
 
-    private fun initErrorAction(): (String) -> Unit = { error ->
+    override fun provideOnErrorAction(): (String) -> Unit = { error ->
         binding.locationNameTextView.text = getString(R.string.empty_value)
         binding.temperatureTextView.text = getString(R.string.empty_value)
 
@@ -73,7 +73,7 @@ class WeatherSearchingFragment :
         Snackbar.make(binding.root, error, Snackbar.LENGTH_SHORT).show()
     }
 
-    private fun initSuccessAction(): (WeatherModelDomain) -> Unit =
+    override fun provideOnSuccessAction(): (WeatherModelDomain) -> Unit =
         { weatherData ->
             binding.locationNameTextView.text = weatherData.locationName
 

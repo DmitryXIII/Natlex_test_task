@@ -7,7 +7,7 @@ sealed class AppState<T> {
         actionError: (String) -> Unit,
     )
 
-    class Loading<T>() : AppState<T>() {
+    class Loading<T> : AppState<T>() {
         override fun handleState(
             actionLoading: () -> Unit,
             actionSuccess: (T) -> Unit,
