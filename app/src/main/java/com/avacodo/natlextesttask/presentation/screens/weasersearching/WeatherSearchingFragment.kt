@@ -1,6 +1,7 @@
 package com.avacodo.natlextesttask.presentation.screens.weasersearching
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
@@ -17,6 +18,7 @@ import com.avacodo.natlextesttask.presentation.weatherunits.WeatherUnitsProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
 
 class WeatherSearchingFragment :
     BaseFragment<FragmentWeatherSearchingBinding, WeatherModelDomain>(
@@ -27,6 +29,8 @@ class WeatherSearchingFragment :
     override lateinit var progressBar: ProgressBar
 
     private val isFahrenheitRequiredFlow = MutableStateFlow(true)
+
+    private val weatherSearchingAdapter = WeatherSearchingAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +50,17 @@ class WeatherSearchingFragment :
 
         progressBar = binding.weatherSearchingProgressBar
 
-        lifecycleScope.launch {
+        binding.weatherHistoryRecyclerView.apply {
+            adapter = weatherSearchingAdapter
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getLocalData().collect {
+                weatherSearchingAdapter.setData(it)
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.switchState.collect {
                 binding.weatherUnitsSwitch.isChecked = it
                 isFahrenheitRequiredFlow.value = it

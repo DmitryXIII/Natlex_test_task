@@ -3,6 +3,8 @@ package com.avacodo.natlextesttask.data
 import com.avacodo.natlextesttask.data.local.WeatherDao
 import com.avacodo.natlextesttask.data.remote.OpenWeatherMapApi
 import com.avacodo.natlextesttask.domain.entity.WeatherModelDomain
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class WeatherRepositoryImpl(
     private val remoteDataSource: OpenWeatherMapApi,
@@ -26,7 +28,11 @@ class WeatherRepositoryImpl(
         localDataSource.addWeatherData(mapper.mapWeatherDomainToLocal(weatherModelDomain))
     }
 
-    override suspend fun getLocalWeatherData(): List<WeatherModelDomain> {
-        return localDataSource.getWeatherData().map { mapper.mapWeatherLocalToDomain(it) }
+    override suspend fun getLocalWeatherData(): Flow<List<WeatherModelDomain>> {
+        return localDataSource.getWeatherData().map { weatherLocalEntityList ->
+            weatherLocalEntityList.map { weatherLocalEntity ->
+                mapper.mapWeatherLocalToDomain(weatherLocalEntity)
+            }
+        }
     }
 }

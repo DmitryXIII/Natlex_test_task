@@ -14,4 +14,6 @@
     <string name="search_view_hint">Введите название города</string>
     <string name="weather_value_in_celsius">%1s° C</string>
     <string name="weather_value_in_fahrenheit">%1s° F</string>
+    <string name="weather_list_item_value_in_celsius">%1s, %1s° C</string>
+    <string name="weather_list_item_value_in_fahrenheit">%1s, %1s° F</string>
 </resources>

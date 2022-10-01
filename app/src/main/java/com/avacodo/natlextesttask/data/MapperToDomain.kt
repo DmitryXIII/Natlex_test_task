@@ -13,7 +13,7 @@ class MapperToDomain {
                 locationName = locationName,
                 temperatureInCelsius = main.temp,
                 temperatureInFahrenheit = WeatherUnitsMapper().mapCelsiusToFahrenheit(main.temp),
-                weatherMeasurementTime = System.currentTimeMillis() / 1000,
+                weatherMeasurementTime = System.currentTimeMillis(),
             )
         }
     }
