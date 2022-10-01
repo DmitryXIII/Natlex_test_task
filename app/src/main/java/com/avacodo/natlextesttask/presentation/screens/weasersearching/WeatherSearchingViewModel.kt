@@ -5,8 +5,10 @@ import com.avacodo.natlextesttask.domain.entity.WeatherModelDomain
 import com.avacodo.natlextesttask.domain.usecase.GetWeatherUsecase
 import com.avacodo.natlextesttask.presentation.AppState
 import com.avacodo.natlextesttask.presentation.BaseViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class WeatherSearchingViewModel(private val usecase: GetWeatherUsecase) :
     BaseViewModel<WeatherModelDomain>() {
@@ -26,8 +28,11 @@ class WeatherSearchingViewModel(private val usecase: GetWeatherUsecase) :
             liveData.postValue(AppState.Error("Введите название города"))
         } else {
             liveData.postValue(AppState.Loading())
-            viewModelScope.launch(coroutineExceptionHandler) {
-                liveData.postValue(AppState.Success(usecase.getRemoteWeather(locationName)))
+            viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+                usecase.getRemoteWeather(locationName).also { weatherData ->
+                    usecase.addLocalWeatherData(weatherData)
+                    liveData.postValue(AppState.Success(weatherData))
+                }
             }
         }
     }

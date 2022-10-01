@@ -10,5 +10,7 @@ interface WeatherRepository {
         locationLongitude: Double,
     ): WeatherModelDomain
 
-    suspend fun getLocalWeatherData(): WeatherModelDomain
+    suspend fun addLocalWeatherData(weatherModelDomain: WeatherModelDomain)
+
+    suspend fun getLocalWeatherData(): List<WeatherModelDomain>
 }

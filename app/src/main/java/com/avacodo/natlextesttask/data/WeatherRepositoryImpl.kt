@@ -1,11 +1,12 @@
 package com.avacodo.natlextesttask.data
 
-import com.avacodo.natlextesttask.data.remote.MapperToDomain
+import com.avacodo.natlextesttask.data.local.WeatherDao
 import com.avacodo.natlextesttask.data.remote.OpenWeatherMapApi
 import com.avacodo.natlextesttask.domain.entity.WeatherModelDomain
 
 class WeatherRepositoryImpl(
     private val remoteDataSource: OpenWeatherMapApi,
+    private val localDataSource: WeatherDao,
     private val mapper: MapperToDomain,
 ) : WeatherRepository {
     override suspend fun getRemoteWeatherData(locationName: String): WeatherModelDomain {
@@ -21,7 +22,11 @@ class WeatherRepositoryImpl(
             locationLatitude, locationLongitude).await())
     }
 
-    override suspend fun getLocalWeatherData(): WeatherModelDomain {
-        TODO("Not yet implemented")
+    override suspend fun addLocalWeatherData(weatherModelDomain: WeatherModelDomain) {
+        localDataSource.addWeatherData(mapper.mapWeatherDomainToLocal(weatherModelDomain))
+    }
+
+    override suspend fun getLocalWeatherData(): List<WeatherModelDomain> {
+        return localDataSource.getWeatherData().map { mapper.mapWeatherLocalToDomain(it) }
     }
 }

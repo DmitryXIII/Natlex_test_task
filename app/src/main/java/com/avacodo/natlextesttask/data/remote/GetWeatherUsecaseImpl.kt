@@ -15,4 +15,12 @@ class GetWeatherUsecaseImpl(private val repository: WeatherRepository) : GetWeat
     ): WeatherModelDomain {
         return repository.getRemoteWeatherData(latitude, longitude)
     }
+
+    override suspend fun addLocalWeatherData(weatherModelDomain: WeatherModelDomain) {
+        repository.addLocalWeatherData(weatherModelDomain)
+    }
+
+    override suspend fun getLocalWeather(): List<WeatherModelDomain> {
+        return repository.getLocalWeatherData()
+    }
 }

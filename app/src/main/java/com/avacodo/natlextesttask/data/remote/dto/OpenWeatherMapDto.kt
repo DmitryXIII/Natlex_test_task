@@ -7,11 +7,11 @@ data class OpenWeatherMapDto(
     @SerializedName("coord")
     val coord: Coord,
     @SerializedName("dt")
-    val dt: Long,
+    val weatherMeasurementTime: Long,
     @SerializedName("id")
-    val id: String,
+    val locationID: String,
     @SerializedName("main")
     val main: Main,
     @SerializedName("name")
-    val name: String,
+    val locationName: String,
 )
