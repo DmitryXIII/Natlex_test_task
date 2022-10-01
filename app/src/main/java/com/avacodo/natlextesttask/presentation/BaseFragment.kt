@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.presentation.activity.NavigationRouter
+import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseFragment<VB : ViewBinding, ResultType>(
     private val inflateBinding: (
@@ -21,6 +24,8 @@ abstract class BaseFragment<VB : ViewBinding, ResultType>(
     val binding: VB get() = _binding!!
 
     abstract val viewModel: BaseViewModel<ResultType>
+
+    abstract val progressBar: ProgressBar
 
     private lateinit var router: NavigationRouter
 
@@ -44,9 +49,22 @@ abstract class BaseFragment<VB : ViewBinding, ResultType>(
         }
     }
 
-    abstract fun provideOnLoadingAction(): () -> Unit
-    abstract fun provideOnSuccessAction(): (ResultType) -> Unit
-    abstract fun provideOnErrorAction(): (String) -> Unit
+    protected open val provideOnStartLoadingAction = {
+        progressBar.isVisible = true
+    }
+
+    protected open val provideOnSuccessAction: (ResultType) -> Unit = {
+        onEndLoading()
+    }
+
+    protected open val provideOnErrorAction: (String) -> Unit = { errorMessage ->
+        onEndLoading()
+        Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun onEndLoading() {
+        progressBar.isVisible = false
+    }
 
     override fun onDestroy() {
         super.onDestroy()

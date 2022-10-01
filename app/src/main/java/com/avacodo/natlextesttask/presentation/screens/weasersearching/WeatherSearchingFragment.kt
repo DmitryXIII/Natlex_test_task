@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
+import android.widget.ProgressBar
 import androidx.lifecycle.lifecycleScope
 import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.databinding.FragmentWeatherSearchingBinding
@@ -13,15 +14,17 @@ import com.avacodo.natlextesttask.presentation.backgrounddrawer.BackgroundDrawer
 import com.avacodo.natlextesttask.presentation.searchview.SearchViewInitializer
 import com.avacodo.natlextesttask.presentation.weatherunits.WeatherUnitsProvider
 import com.avacodo.natlextesttask.presentation.weatherunits.WeatherUnitsProviderFactory
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WeatherSearchingFragment :
-    BaseFragment<FragmentWeatherSearchingBinding, WeatherModelDomain>(FragmentWeatherSearchingBinding::inflate) {
+    BaseFragment<FragmentWeatherSearchingBinding, WeatherModelDomain>(
+        FragmentWeatherSearchingBinding::inflate) {
 
     override val viewModel by viewModel<WeatherSearchingViewModel>()
+
+    override lateinit var progressBar: ProgressBar
 
     private val isFahrenheitRequiredFlow = MutableStateFlow(true)
 
@@ -41,6 +44,8 @@ class WeatherSearchingFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        progressBar = binding.weatherSearchingProgressBar
+
         lifecycleScope.launch {
             viewModel.switchState.collect {
                 binding.weatherUnitsSwitch.isChecked = it
@@ -50,9 +55,9 @@ class WeatherSearchingFragment :
 
         viewModel.getData().observe(viewLifecycleOwner) { state ->
             state.handleState(
-                provideOnLoadingAction(),
-                provideOnSuccessAction(),
-                provideOnErrorAction()
+                provideOnStartLoadingAction,
+                provideOnSuccessAction,
+                provideOnErrorAction
             )
         }
 
@@ -62,31 +67,28 @@ class WeatherSearchingFragment :
         }
     }
 
-    override fun provideOnLoadingAction(): () -> Unit = {}
-
-    override fun provideOnErrorAction(): (String) -> Unit = { error ->
+    override val provideOnErrorAction: (String) -> Unit = { errorMessage ->
+        super.provideOnErrorAction(errorMessage)
         binding.locationNameTextView.text = getString(R.string.empty_value)
         binding.temperatureTextView.text = getString(R.string.empty_value)
 
         setBackgroundColor(binding.mainWeatherLayout)
-
-        Snackbar.make(binding.root, error, Snackbar.LENGTH_SHORT).show()
     }
 
-    override fun provideOnSuccessAction(): (WeatherModelDomain) -> Unit =
-        { weatherData ->
-            binding.locationNameTextView.text = weatherData.locationName
+    override val provideOnSuccessAction: (WeatherModelDomain) -> Unit = { weatherData ->
+        super.provideOnSuccessAction(weatherData)
+        binding.locationNameTextView.text = weatherData.locationName
 
-            setBackgroundColor(binding.mainWeatherLayout, weatherData.temperatureInCelsius)
+        setBackgroundColor(binding.mainWeatherLayout, weatherData.temperatureInCelsius)
 
-            viewLifecycleOwner.lifecycleScope.launch {
-                isFahrenheitRequiredFlow.collect { isChecked ->
-                    binding.temperatureTextView.text =
-                        initWeatherValueProvider(isChecked).provideWeatherValue(requireContext(),
-                            weatherData)
-                }
+        viewLifecycleOwner.lifecycleScope.launch {
+            isFahrenheitRequiredFlow.collect { isChecked ->
+                binding.temperatureTextView.text =
+                    initWeatherValueProvider(isChecked).provideWeatherValue(requireContext(),
+                        weatherData)
             }
         }
+    }
 
     private fun initWeatherValueProvider(isSwitchChecked: Boolean): WeatherUnitsProvider {
         return WeatherUnitsProviderFactory().initWeatherUnitsProvider(isSwitchChecked)

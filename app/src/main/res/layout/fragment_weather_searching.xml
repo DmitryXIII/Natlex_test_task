@@ -60,10 +60,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_4dp"
             android:thumb="@drawable/switch_thumb"
-            app:track="@drawable/switch_track"
             app:layout_constraintBottom_toBottomOf="@id/fahrenheit_switch_label_text_view"
             app:layout_constraintEnd_toStartOf="@id/celsius_switch_label_text_view"
-            app:layout_constraintTop_toTopOf="@id/fahrenheit_switch_label_text_view" />
+            app:layout_constraintTop_toTopOf="@id/fahrenheit_switch_label_text_view"
+            app:track="@drawable/switch_track" />
 
         <TextView
             android:id="@+id/fahrenheit_switch_label_text_view"
@@ -76,6 +76,16 @@
             app:layout_constraintEnd_toStartOf="@id/weather_units_switch"
             app:layout_constraintTop_toTopOf="@id/celsius_switch_label_text_view" />
 
+        <ProgressBar
+            android:id="@+id/weather_searching_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView

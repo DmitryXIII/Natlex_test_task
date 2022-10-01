@@ -1,39 +1,39 @@
 package com.avacodo.natlextesttask.presentation
 
-sealed class AppState<T> {
+sealed class AppState<ResultType> {
     abstract fun handleState(
-        actionLoading: () -> Unit,
-        actionSuccess: (T) -> Unit,
-        actionError: (String) -> Unit,
+        onStartLoadingAction: () -> Unit,
+        onSuccessAction: (result: ResultType) -> Unit,
+        onErrorAction: (message: String) -> Unit,
     )
 
-    class Loading<T> : AppState<T>() {
+    class Loading<ResultType> : AppState<ResultType>() {
         override fun handleState(
-            actionLoading: () -> Unit,
-            actionSuccess: (T) -> Unit,
-            actionError: (String) -> Unit,
+            onStartLoadingAction: () -> Unit,
+            onSuccessAction: (result: ResultType) -> Unit,
+            onErrorAction: (message: String) -> Unit,
         ) {
-            actionLoading.invoke()
+            onStartLoadingAction.invoke()
         }
     }
 
-    class Success<T>(private val result: T) : AppState<T>() {
+    class Success<ResultType>(private val result: ResultType) : AppState<ResultType>() {
         override fun handleState(
-            actionLoading: () -> Unit,
-            actionSuccess: (T) -> Unit,
-            actionError: (String) -> Unit,
+            onStartLoadingAction: () -> Unit,
+            onSuccessAction: (result: ResultType) -> Unit,
+            onErrorAction: (message: String) -> Unit,
         ) {
-            actionSuccess.invoke(result)
+            onSuccessAction.invoke(result)
         }
     }
 
-    class Error<T>(private val message: String) : AppState<T>() {
+    class Error<ResultType>(private val message: String) : AppState<ResultType>() {
         override fun handleState(
-            actionLoading: () -> Unit,
-            actionSuccess: (T) -> Unit,
-            actionError: (String) -> Unit,
+            onStartLoadingAction: () -> Unit,
+            onSuccessAction: (result: ResultType) -> Unit,
+            onErrorAction: (message: String) -> Unit,
         ) {
-            actionError.invoke(message)
+            onErrorAction.invoke(message)
         }
     }
 }
