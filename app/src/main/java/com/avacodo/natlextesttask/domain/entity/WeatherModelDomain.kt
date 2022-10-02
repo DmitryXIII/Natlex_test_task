@@ -5,5 +5,7 @@ data class WeatherModelDomain(
     val locationName: String,
     val temperatureInCelsius: Double,
     val temperatureInFahrenheit: Double,
+    val maxTempValue: Double,
+    val minTempValue: Double,
     val weatherMeasurementTime: Long,
 )

@@ -5,4 +5,6 @@ import com.avacodo.natlextesttask.domain.entity.WeatherModelDomain
 
 interface WeatherUnitsProvider {
     fun provideWeatherValue(context: Context, weatherData: WeatherModelDomain): String
+    fun provideMaxTempValue(context: Context, weatherData: WeatherModelDomain): String
+    fun provideMinTempValue(context: Context, weatherData: WeatherModelDomain): String
 }

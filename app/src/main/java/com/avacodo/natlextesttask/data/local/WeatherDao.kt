@@ -17,4 +17,10 @@ interface WeatherDao {
             "GROUP BY locationID " +
             "ORDER BY weatherMeasurementTime DESC")
     fun getWeatherData(): Flow<List<WeatherLocalEntity>>
+
+    @Query("SELECT MAX(temperatureInCelsius) FROM WeatherLocalEntity WHERE locationID = :locationID")
+    fun getMaxTempValueByLocationID(locationID: String): Double
+
+    @Query("SELECT MIN(temperatureInCelsius) FROM WeatherLocalEntity WHERE locationID = :locationID")
+    fun getMinTempValueByLocationID(locationID: String): Double
 }

@@ -58,11 +58,14 @@ class WeatherSearchingAdapter : Adapter<WeatherSearchingAdapter.WeatherSearching
                     weatherModelDomain.locationName
                 )
 
+                searchingItemMaxTempTextView.text = weatherUnitsProvider.provideMaxTempValue(itemView.context, weatherModelDomain)
+
+                searchingItemMinTempTextView.text = weatherUnitsProvider.provideMinTempValue(itemView.context, weatherModelDomain)
+
                 searchingItemTempValueTextView.text = weatherUnitsProvider.provideWeatherValue(
                     itemView.context,
                     weatherModelDomain
                 )
-
 
                 searchingItemDateTextView.text = dateFormat.format(
                     weatherModelDomain.weatherMeasurementTime

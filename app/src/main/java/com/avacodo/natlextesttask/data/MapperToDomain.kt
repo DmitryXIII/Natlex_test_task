@@ -13,18 +13,26 @@ class MapperToDomain {
                 locationName = locationName,
                 temperatureInCelsius = main.temp,
                 temperatureInFahrenheit = WeatherUnitsMapper().mapCelsiusToFahrenheit(main.temp),
+                maxTempValue = main.temp,
+                minTempValue = main.temp,
                 weatherMeasurementTime = System.currentTimeMillis(),
             )
         }
     }
 
-    fun mapWeatherLocalToDomain(weatherLocalEntity: WeatherLocalEntity): WeatherModelDomain {
+    fun mapWeatherLocalToDomain(
+        weatherLocalEntity: WeatherLocalEntity,
+        maxTemp: Double,
+        minTemp: Double,
+    ): WeatherModelDomain {
         return with(weatherLocalEntity) {
             WeatherModelDomain(
                 locationID = locationID,
                 locationName = locationName,
                 temperatureInCelsius = temperatureInCelsius,
                 temperatureInFahrenheit = temperatureInFahrenheit,
+                maxTempValue = maxTemp,
+                minTempValue = minTemp,
                 weatherMeasurementTime = weatherMeasurementTime,
             )
         }

@@ -31,7 +31,11 @@ class WeatherRepositoryImpl(
     override suspend fun getLocalWeatherData(): Flow<List<WeatherModelDomain>> {
         return localDataSource.getWeatherData().map { weatherLocalEntityList ->
             weatherLocalEntityList.map { weatherLocalEntity ->
-                mapper.mapWeatherLocalToDomain(weatherLocalEntity)
+                mapper.mapWeatherLocalToDomain(
+                    weatherLocalEntity,
+                    localDataSource.getMaxTempValueByLocationID(weatherLocalEntity.locationID),
+                    localDataSource.getMinTempValueByLocationID(weatherLocalEntity.locationID),
+                )
             }
         }
     }

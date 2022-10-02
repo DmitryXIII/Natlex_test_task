@@ -17,7 +17,7 @@
             android:layout_width="@dimen/zero"
             android:layout_height="@dimen/zero"
             app:barrierDirection="left"
-            app:constraint_referenced_ids="max_temp_text_view, min_temp_text_view, temp_graph_image_view" />
+            app:constraint_referenced_ids="searching_item_max_temp_text_view, searching_item_min_temp_text_view, temp_graph_image_view" />
 
         <ImageView
             android:id="@+id/temp_graph_image_view"
@@ -25,9 +25,9 @@
             android:layout_height="@dimen/temp_graph_icon_size"
             android:contentDescription="@string/temp_graph_icon"
             android:src="@drawable/ic_graph"
-            app:layout_constraintBottom_toTopOf="@id/min_temp_text_view"
+            app:layout_constraintBottom_toTopOf="@id/searching_item_min_temp_text_view"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/max_temp_text_view" />
+            app:layout_constraintTop_toBottomOf="@id/searching_item_max_temp_text_view" />
 
         <TextView
             android:id="@+id/searching_item_location_name_text_view"
@@ -63,7 +63,7 @@
             tools:text="@string/searching_item_date_example" />
 
         <TextView
-            android:id="@+id/max_temp_text_view"
+            android:id="@+id/searching_item_max_temp_text_view"
             android:layout_width="@dimen/zero"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/temp_graph_image_view"
@@ -72,7 +72,7 @@
             tools:text="@string/max_temp_example" />
 
         <TextView
-            android:id="@+id/min_temp_text_view"
+            android:id="@+id/searching_item_min_temp_text_view"
             android:layout_width="@dimen/zero"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@id/searching_item_divider_view"
@@ -89,7 +89,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/min_temp_text_view" />
+            app:layout_constraintTop_toBottomOf="@id/searching_item_min_temp_text_view" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

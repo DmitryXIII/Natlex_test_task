@@ -14,4 +14,18 @@ class CelsiusProvider : WeatherUnitsProvider {
             weatherData.temperatureInCelsius
         )
     }
+
+    override fun provideMaxTempValue(context: Context, weatherData: WeatherModelDomain): String {
+        return context.getString(
+            R.string.max_temp_value_in_celsius,
+            weatherData.maxTempValue
+        )
+    }
+
+    override fun provideMinTempValue(context: Context, weatherData: WeatherModelDomain): String {
+        return context.getString(
+            R.string.min_temp_value_in_celsius,
+            weatherData.minTempValue
+        )
+    }
 }
