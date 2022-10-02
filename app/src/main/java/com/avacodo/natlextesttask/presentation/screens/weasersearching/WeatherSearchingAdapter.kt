@@ -3,6 +3,7 @@ package com.avacodo.natlextesttask.presentation.screens.weasersearching
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.avacodo.natlextesttask.R
@@ -17,17 +18,18 @@ class WeatherSearchingAdapter : Adapter<WeatherSearchingAdapter.WeatherSearching
     private var weatherDataList = listOf<WeatherModelDomain>()
 
     fun setData(mWeatherDataList: List<WeatherModelDomain>) {
+        val diffUtilCallback = DiffUtilCallback(weatherDataList, mWeatherDataList)
         weatherDataList = mWeatherDataList
-        notifyDataSetChanged()
+        DiffUtil.calculateDiff(diffUtilCallback).dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherSearchingViewHolder {
         return WeatherSearchingViewHolder(
             (FragmentWeatherSearchingItemBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false))
-            .root)
+                LayoutInflater.from(parent.context),
+                parent,
+                false))
+                .root)
     }
 
     override fun onBindViewHolder(holder: WeatherSearchingViewHolder, position: Int) {
@@ -47,8 +49,28 @@ class WeatherSearchingAdapter : Adapter<WeatherSearchingAdapter.WeatherSearching
                     weatherModelDomain.locationName,
                     weatherModelDomain.temperatureInCelsius)
 
-                searchingItemDateTextView.text = dateFormat.format(weatherModelDomain.weatherMeasurementTime)
+                searchingItemDateTextView.text =
+                    dateFormat.format(weatherModelDomain.weatherMeasurementTime)
             }
+        }
+    }
+
+    class DiffUtilCallback(
+        private val oldList: List<WeatherModelDomain>,
+        private val newList: List<WeatherModelDomain>,
+    ) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int = oldList.size
+        override fun getNewListSize(): Int = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return areContentsTheSame(oldItemPosition, newItemPosition)
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldItem = oldList[oldItemPosition]
+            val newItem = newList[newItemPosition]
+            return oldItem == newItem
         }
     }
 }

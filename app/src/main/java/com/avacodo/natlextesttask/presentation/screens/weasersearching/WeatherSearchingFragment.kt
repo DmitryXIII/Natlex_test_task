@@ -1,7 +1,6 @@
 package com.avacodo.natlextesttask.presentation.screens.weasersearching
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
@@ -18,7 +17,6 @@ import com.avacodo.natlextesttask.presentation.weatherunits.WeatherUnitsProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.text.SimpleDateFormat
 
 class WeatherSearchingFragment :
     BaseFragment<FragmentWeatherSearchingBinding, WeatherModelDomain>(
@@ -57,6 +55,7 @@ class WeatherSearchingFragment :
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.getLocalData().collect {
                 weatherSearchingAdapter.setData(it)
+                binding.weatherHistoryRecyclerView.smoothScrollToPosition(0)
             }
         }
 

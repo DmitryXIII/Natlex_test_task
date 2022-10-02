@@ -12,6 +12,9 @@ interface WeatherDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addWeatherData(weatherLocalEntity: WeatherLocalEntity)
 
-    @Query("SELECT * FROM WeatherLocalEntity GROUP BY locationID ORDER BY weatherMeasurementTime DESC")
+    @Query("SELECT *, MAX (weatherMeasurementTime)" +
+            "FROM WeatherLocalEntity " +
+            "GROUP BY locationID " +
+            "ORDER BY weatherMeasurementTime DESC")
     fun getWeatherData(): Flow<List<WeatherLocalEntity>>
 }
