@@ -54,15 +54,18 @@ class WeatherSearchingAdapter : Adapter<WeatherSearchingAdapter.WeatherSearching
         private val dateFormat = SimpleDateFormat(DATE_FORMAT_PATTERN)
         fun bind(weatherModelDomain: WeatherModelDomain) {
             FragmentWeatherSearchingItemBinding.bind(itemView).apply {
-                with(itemView.context) {
-                    searchingItemLocationNameTextView.text = this.getString(
-                        R.string.weather_list_item_location_name,
-                        weatherModelDomain.locationName
-                    )
+                initMainItemData(this, weatherModelDomain)
+                initOptionalItemData(this, weatherModelDomain)
+            }
+        }
 
-                    if (weatherModelDomain.weatherRequestCount < 2) {
-                        searchingItemOptionalGroup.isVisible = false
-                    } else {
+        private fun initMainItemData(
+            binding: FragmentWeatherSearchingItemBinding,
+            weatherModelDomain: WeatherModelDomain,
+        ) {
+            with(binding) {
+                with(binding.root.context) {
+                    if (weatherModelDomain.weatherRequestCount > 1) {
                         searchingItemOptionalGroup.isVisible = true
 
                         searchingItemMaxTempTextView.text =
@@ -76,18 +79,31 @@ class WeatherSearchingAdapter : Adapter<WeatherSearchingAdapter.WeatherSearching
                                 this,
                                 weatherModelDomain
                             )
-
-                        searchingItemTempValueTextView.text =
-                            weatherUnitsProvider.provideWeatherValue(
-                                this,
-                                weatherModelDomain
-                            )
                     }
                 }
+            }
+        }
 
-                searchingItemDateTextView.text = dateFormat.format(
-                    weatherModelDomain.weatherMeasurementTime
-                )
+        private fun initOptionalItemData(
+            binding: FragmentWeatherSearchingItemBinding,
+            weatherModelDomain: WeatherModelDomain,
+        ) {
+            with(binding) {
+                with(binding.root.context) {
+                    searchingItemLocationNameTextView.text = this.getString(
+                        R.string.weather_list_item_location_name,
+                        weatherModelDomain.locationName
+                    )
+
+                    searchingItemTempValueTextView.text = weatherUnitsProvider.provideWeatherValue(
+                        this,
+                        weatherModelDomain
+                    )
+
+                    searchingItemDateTextView.text = dateFormat.format(
+                        weatherModelDomain.weatherMeasurementTime
+                    )
+                }
             }
         }
     }
