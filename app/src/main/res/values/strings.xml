@@ -6,7 +6,8 @@
     <string name="fahrenheit_switch_label">F</string>
     <string name="menu_title_search_by_name">Weather search by location name</string>
     <string name="menu_title_search_by_coords">Weather search by location coords</string>
-    <string name="searching_item_temp_value_example">Moscow, 25° C</string>
+    <string name="searching_item_location_name_example">Moscow, </string>
+    <string name="searching_item_temp_value_example">25° C</string>
     <string name="searching_item_date_example">01.01.2022 12:00:00</string>
     <string name="max_temp_example">max: 30° C</string>
     <string name="min_temp_example">mix: 20° C</string>
@@ -14,6 +15,5 @@
     <string name="search_view_hint">Введите название города</string>
     <string name="weather_value_in_celsius">%1s° C</string>
     <string name="weather_value_in_fahrenheit">%1s° F</string>
-    <string name="weather_list_item_value_in_celsius">%1s, %1s° C</string>
-    <string name="weather_list_item_value_in_fahrenheit">%1s, %1s° F</string>
+    <string name="weather_list_item_location_name">%1s,\ </string>
 </resources>

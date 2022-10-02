@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.databinding.FragmentWeatherSearchingItemBinding
 import com.avacodo.natlextesttask.domain.entity.WeatherModelDomain
+import com.avacodo.natlextesttask.presentation.weatherunits.WeatherUnitsProvider
+import com.avacodo.natlextesttask.presentation.weatherunits.WeatherUnitsProviderFactory
 import java.text.SimpleDateFormat
 
 private const val DATE_FORMAT_PATTERN = "dd.MM.yyyy HH:mm:ss"
@@ -17,10 +19,22 @@ class WeatherSearchingAdapter : Adapter<WeatherSearchingAdapter.WeatherSearching
 
     private var weatherDataList = listOf<WeatherModelDomain>()
 
+    private var weatherUnitsProvider = WeatherUnitsProviderFactory().initWeatherUnitsProvider(true)
+
     fun setData(mWeatherDataList: List<WeatherModelDomain>) {
         val diffUtilCallback = DiffUtilCallback(weatherDataList, mWeatherDataList)
         weatherDataList = mWeatherDataList
         DiffUtil.calculateDiff(diffUtilCallback).dispatchUpdatesTo(this)
+    }
+
+    fun setWeatherUnits(mIsSwitchChecked: Boolean) {
+        weatherUnitsProvider =
+            WeatherUnitsProviderFactory().initWeatherUnitsProvider(mIsSwitchChecked)
+        notifyItemRangeChanged(0, weatherDataList.size)
+    }
+
+    private fun initWeatherValueProvider(isSwitchChecked: Boolean): WeatherUnitsProvider {
+        return WeatherUnitsProviderFactory().initWeatherUnitsProvider(isSwitchChecked)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherSearchingViewHolder {
@@ -44,10 +58,12 @@ class WeatherSearchingAdapter : Adapter<WeatherSearchingAdapter.WeatherSearching
         private val dateFormat = SimpleDateFormat(DATE_FORMAT_PATTERN)
         fun bind(weatherModelDomain: WeatherModelDomain) {
             FragmentWeatherSearchingItemBinding.bind(itemView).apply {
-                searchingItemTempValueTextView.text = root.context.getString(
-                    R.string.weather_list_item_value_in_celsius,
-                    weatherModelDomain.locationName,
-                    weatherModelDomain.temperatureInCelsius)
+                searchingItemLocationNameTextView.text =
+                    itemView.context.getString(R.string.weather_list_item_location_name,
+                        weatherModelDomain.locationName)
+                searchingItemTempValueTextView.text =
+                    weatherUnitsProvider.provideWeatherValue(itemView.context, weatherModelDomain)
+
 
                 searchingItemDateTextView.text =
                     dateFormat.format(weatherModelDomain.weatherMeasurementTime)

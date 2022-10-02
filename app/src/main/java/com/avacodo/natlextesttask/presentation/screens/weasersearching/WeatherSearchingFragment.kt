@@ -46,6 +46,14 @@ class WeatherSearchingFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.switchState.collect {
+                binding.weatherUnitsSwitch.isChecked = it
+                isFahrenheitRequiredFlow.value = it
+                weatherSearchingAdapter.setWeatherUnits(binding.weatherUnitsSwitch.isChecked)
+            }
+        }
+
         progressBar = binding.weatherSearchingProgressBar
 
         binding.weatherHistoryRecyclerView.apply {
@@ -59,13 +67,6 @@ class WeatherSearchingFragment :
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.switchState.collect {
-                binding.weatherUnitsSwitch.isChecked = it
-                isFahrenheitRequiredFlow.value = it
-            }
-        }
-
         viewModel.getData().observe(viewLifecycleOwner) { state ->
             state.handleState(
                 provideOnStartLoadingAction,
@@ -74,9 +75,10 @@ class WeatherSearchingFragment :
             )
         }
 
-        binding.weatherUnitsSwitch.setOnCheckedChangeListener { _, _ ->
+        binding.weatherUnitsSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.changeSwitchState()
-            isFahrenheitRequiredFlow.value = binding.weatherUnitsSwitch.isChecked
+            weatherSearchingAdapter.setWeatherUnits(isChecked)
+            isFahrenheitRequiredFlow.value = isChecked
         }
     }
 
