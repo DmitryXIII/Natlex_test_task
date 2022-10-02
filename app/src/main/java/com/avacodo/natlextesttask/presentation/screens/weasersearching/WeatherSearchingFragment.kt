@@ -23,14 +23,11 @@ class WeatherSearchingFragment :
         FragmentWeatherSearchingBinding::inflate) {
 
     override val viewModel by viewModel<WeatherSearchingViewModel>()
-
-    override lateinit var progressBar: ProgressBar
-
-    private val isFahrenheitRequiredFlow = MutableStateFlow(true)
-
-    private var weatherUnitsProvider = initWeatherValueProvider(true)
-
+    override val progressBar: ProgressBar by lazy { binding.weatherSearchingProgressBar }
+    private val isSwitchCheckedFlow = MutableStateFlow(true)
     private val weatherSearchingAdapter = WeatherSearchingAdapter()
+    private var currentWeatherData: WeatherModelDomain? = null
+    private var weatherUnitsProvider = initWeatherValueProvider(true)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,24 +46,24 @@ class WeatherSearchingFragment :
         super.onViewCreated(view, savedInstanceState)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.switchState.collect {
-                binding.weatherUnitsSwitch.isChecked = it
-                isFahrenheitRequiredFlow.value = it
-                weatherUnitsProvider = initWeatherValueProvider(it)
-                weatherSearchingAdapter.setWeatherUnits(weatherUnitsProvider)
+            launch {
+                viewModel.switchState.collect {
+                    initOnViewCreatedState(it)
+                }
             }
-        }
 
-        progressBar = binding.weatherSearchingProgressBar
+            launch {
+                viewModel.getLocalData().collect {
+                    weatherSearchingAdapter.setData(it)
+                    binding.weatherHistoryRecyclerView.smoothScrollToPosition(0)
+                }
+            }
 
-        binding.weatherHistoryRecyclerView.apply {
-            adapter = weatherSearchingAdapter
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getLocalData().collect {
-                weatherSearchingAdapter.setData(it)
-                binding.weatherHistoryRecyclerView.smoothScrollToPosition(0)
+            launch {
+                isSwitchCheckedFlow.collect { isChecked ->
+                    weatherUnitsProvider = initWeatherValueProvider(isChecked)
+                    displayWeatherValue()
+                }
             }
         }
 
@@ -78,36 +75,47 @@ class WeatherSearchingFragment :
             )
         }
 
+        binding.weatherHistoryRecyclerView.adapter = weatherSearchingAdapter
+
+        initSwitch()
+    }
+
+    private fun initSwitch() {
         binding.weatherUnitsSwitch.setOnCheckedChangeListener { _, isChecked ->
+            isSwitchCheckedFlow.value = isChecked
             viewModel.changeSwitchState()
-            weatherSearchingAdapter.setWeatherUnits(initWeatherValueProvider(isChecked))
-            isFahrenheitRequiredFlow.value = isChecked
+            weatherSearchingAdapter.setWeatherUnits(weatherUnitsProvider)
         }
+    }
+
+    private fun initOnViewCreatedState(isSwitchChecked: Boolean) {
+        binding.weatherUnitsSwitch.isChecked = isSwitchChecked
+        isSwitchCheckedFlow.value = isSwitchChecked
+        weatherUnitsProvider = initWeatherValueProvider(isSwitchChecked)
+        weatherSearchingAdapter.setWeatherUnits(weatherUnitsProvider)
     }
 
     override val provideOnErrorAction: (String) -> Unit = { errorMessage ->
         super.provideOnErrorAction(errorMessage)
         binding.locationNameTextView.text = getString(R.string.empty_value)
         binding.temperatureTextView.text = getString(R.string.empty_value)
-
         setBackgroundColor(binding.mainWeatherLayout)
     }
 
     override val provideOnSuccessAction: (WeatherModelDomain) -> Unit = { weatherData ->
         super.provideOnSuccessAction(weatherData)
         binding.locationNameTextView.text = weatherData.locationName
-
         setBackgroundColor(binding.mainWeatherLayout, weatherData.temperatureInCelsius)
+        currentWeatherData = weatherData
+        displayWeatherValue()
+    }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            isFahrenheitRequiredFlow.collect { isChecked ->
-                weatherUnitsProvider = initWeatherValueProvider(isChecked)
-
-                binding.temperatureTextView.text = weatherUnitsProvider.provideWeatherValue(
-                    requireContext(),
-                    weatherData
-                )
-            }
+    private fun displayWeatherValue() {
+        currentWeatherData?.let {
+            binding.temperatureTextView.text = weatherUnitsProvider.provideWeatherValue(
+                requireContext(),
+                it
+            )
         }
     }
 
