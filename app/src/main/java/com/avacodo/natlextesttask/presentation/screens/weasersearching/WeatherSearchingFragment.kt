@@ -28,6 +28,8 @@ class WeatherSearchingFragment :
 
     private val isFahrenheitRequiredFlow = MutableStateFlow(true)
 
+    private var weatherUnitsProvider = initWeatherValueProvider(true)
+
     private val weatherSearchingAdapter = WeatherSearchingAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +52,8 @@ class WeatherSearchingFragment :
             viewModel.switchState.collect {
                 binding.weatherUnitsSwitch.isChecked = it
                 isFahrenheitRequiredFlow.value = it
-                weatherSearchingAdapter.setWeatherUnits(binding.weatherUnitsSwitch.isChecked)
+                weatherUnitsProvider = initWeatherValueProvider(it)
+                weatherSearchingAdapter.setWeatherUnits(weatherUnitsProvider)
             }
         }
 
@@ -77,7 +80,7 @@ class WeatherSearchingFragment :
 
         binding.weatherUnitsSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.changeSwitchState()
-            weatherSearchingAdapter.setWeatherUnits(isChecked)
+            weatherSearchingAdapter.setWeatherUnits(initWeatherValueProvider(isChecked))
             isFahrenheitRequiredFlow.value = isChecked
         }
     }
@@ -98,9 +101,12 @@ class WeatherSearchingFragment :
 
         viewLifecycleOwner.lifecycleScope.launch {
             isFahrenheitRequiredFlow.collect { isChecked ->
-                binding.temperatureTextView.text =
-                    initWeatherValueProvider(isChecked).provideWeatherValue(requireContext(),
-                        weatherData)
+                weatherUnitsProvider = initWeatherValueProvider(isChecked)
+
+                binding.temperatureTextView.text = weatherUnitsProvider.provideWeatherValue(
+                    requireContext(),
+                    weatherData
+                )
             }
         }
     }

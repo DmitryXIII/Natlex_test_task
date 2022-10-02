@@ -27,14 +27,9 @@ class WeatherSearchingAdapter : Adapter<WeatherSearchingAdapter.WeatherSearching
         DiffUtil.calculateDiff(diffUtilCallback).dispatchUpdatesTo(this)
     }
 
-    fun setWeatherUnits(mIsSwitchChecked: Boolean) {
-        weatherUnitsProvider =
-            WeatherUnitsProviderFactory().initWeatherUnitsProvider(mIsSwitchChecked)
+    fun setWeatherUnits(mWeatherUnitsProvider: WeatherUnitsProvider) {
+        weatherUnitsProvider = mWeatherUnitsProvider
         notifyItemRangeChanged(0, weatherDataList.size)
-    }
-
-    private fun initWeatherValueProvider(isSwitchChecked: Boolean): WeatherUnitsProvider {
-        return WeatherUnitsProviderFactory().initWeatherUnitsProvider(isSwitchChecked)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherSearchingViewHolder {
@@ -58,15 +53,20 @@ class WeatherSearchingAdapter : Adapter<WeatherSearchingAdapter.WeatherSearching
         private val dateFormat = SimpleDateFormat(DATE_FORMAT_PATTERN)
         fun bind(weatherModelDomain: WeatherModelDomain) {
             FragmentWeatherSearchingItemBinding.bind(itemView).apply {
-                searchingItemLocationNameTextView.text =
-                    itemView.context.getString(R.string.weather_list_item_location_name,
-                        weatherModelDomain.locationName)
-                searchingItemTempValueTextView.text =
-                    weatherUnitsProvider.provideWeatherValue(itemView.context, weatherModelDomain)
+                searchingItemLocationNameTextView.text = itemView.context.getString(
+                    R.string.weather_list_item_location_name,
+                    weatherModelDomain.locationName
+                )
+
+                searchingItemTempValueTextView.text = weatherUnitsProvider.provideWeatherValue(
+                    itemView.context,
+                    weatherModelDomain
+                )
 
 
-                searchingItemDateTextView.text =
-                    dateFormat.format(weatherModelDomain.weatherMeasurementTime)
+                searchingItemDateTextView.text = dateFormat.format(
+                    weatherModelDomain.weatherMeasurementTime
+                )
             }
         }
     }
