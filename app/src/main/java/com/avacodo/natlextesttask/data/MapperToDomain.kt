@@ -16,6 +16,7 @@ class MapperToDomain {
                 maxTempValue = main.temp,
                 minTempValue = main.temp,
                 weatherMeasurementTime = System.currentTimeMillis(),
+                weatherRequestCount = 1,
             )
         }
     }
@@ -24,6 +25,7 @@ class MapperToDomain {
         weatherLocalEntity: WeatherLocalEntity,
         maxTemp: Double,
         minTemp: Double,
+        requestCount: Int,
     ): WeatherModelDomain {
         return with(weatherLocalEntity) {
             WeatherModelDomain(
@@ -34,6 +36,7 @@ class MapperToDomain {
                 maxTempValue = maxTemp,
                 minTempValue = minTemp,
                 weatherMeasurementTime = weatherMeasurementTime,
+                weatherRequestCount = requestCount,
             )
         }
     }

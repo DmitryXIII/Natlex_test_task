@@ -23,4 +23,7 @@ interface WeatherDao {
 
     @Query("SELECT MIN(temperatureInCelsius) FROM WeatherLocalEntity WHERE locationID = :locationID")
     fun getMinTempValueByLocationID(locationID: String): Double
+
+    @Query("SELECT COUNT(locationID) FROM WeatherLocalEntity WHERE locationID = :locationID ")
+    fun getCountByLocationID(locationID: String): Int
 }

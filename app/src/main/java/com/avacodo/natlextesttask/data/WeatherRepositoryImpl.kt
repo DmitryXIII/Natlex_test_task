@@ -35,6 +35,7 @@ class WeatherRepositoryImpl(
                     weatherLocalEntity,
                     localDataSource.getMaxTempValueByLocationID(weatherLocalEntity.locationID),
                     localDataSource.getMinTempValueByLocationID(weatherLocalEntity.locationID),
+                    localDataSource.getCountByLocationID(weatherLocalEntity.locationID)
                 )
             }
         }

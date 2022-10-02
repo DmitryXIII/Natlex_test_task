@@ -8,4 +8,5 @@ data class WeatherModelDomain(
     val maxTempValue: Double,
     val minTempValue: Double,
     val weatherMeasurementTime: Long,
+    val weatherRequestCount: Int,
 )

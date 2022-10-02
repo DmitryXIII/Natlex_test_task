@@ -8,16 +8,57 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/default_layout_padding"
-        android:paddingTop="@dimen/default_layout_padding">
+        android:layout_height="100dp"
+        android:paddingHorizontal="@dimen/default_layout_padding">
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/searching_item_barrier"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/searching_item_optional_guideline"
             android:layout_width="@dimen/zero"
             android:layout_height="@dimen/zero"
-            app:barrierDirection="left"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.75" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/searching_item_optional_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:constraint_referenced_ids="searching_item_max_temp_text_view, searching_item_min_temp_text_view, temp_graph_image_view" />
+
+        <TextView
+            android:id="@+id/searching_item_location_name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:autoSizeTextType="uniform"
+            android:maxLines="1"
+            app:layout_constraintBottom_toTopOf="@id/searching_item_date_text_view"
+            app:layout_constraintEnd_toStartOf="@id/searching_item_temp_value_text_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/searching_item_location_name_example" />
+
+        <TextView
+            android:id="@+id/searching_item_temp_value_text_view"
+            android:layout_width="@dimen/zero"
+            android:layout_height="wrap_content"
+            android:autoSizeTextType="uniform"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            app:layout_constraintBaseline_toBaselineOf="@id/searching_item_location_name_text_view"
+            app:layout_constraintEnd_toStartOf="@id/searching_item_optional_guideline"
+            app:layout_constraintStart_toEndOf="@id/searching_item_location_name_text_view"
+            tools:text="@string/searching_item_temp_value_example" />
+
+        <TextView
+            android:id="@+id/searching_item_date_text_view"
+            android:layout_width="@dimen/zero"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/searching_item_optional_guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/searching_item_location_name_text_view"
+            tools:text="@string/searching_item_date_example" />
 
         <ImageView
             android:id="@+id/temp_graph_image_view"
@@ -27,47 +68,20 @@
             android:src="@drawable/ic_graph"
             app:layout_constraintBottom_toTopOf="@id/searching_item_min_temp_text_view"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="@id/searching_item_optional_guideline"
             app:layout_constraintTop_toBottomOf="@id/searching_item_max_temp_text_view" />
-
-        <TextView
-            android:id="@+id/searching_item_location_name_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-            app:layout_constraintBottom_toTopOf="@id/searching_item_date_text_view"
-            app:layout_constraintEnd_toStartOf="@id/searching_item_temp_value_text_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/temp_graph_image_view"
-            tools:text="@string/searching_item_location_name_example" />
-
-        <TextView
-            android:id="@+id/searching_item_temp_value_text_view"
-            android:layout_width="@dimen/zero"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-            app:layout_constraintBaseline_toBaselineOf="@id/searching_item_location_name_text_view"
-            app:layout_constraintEnd_toStartOf="@id/searching_item_barrier"
-            app:layout_constraintStart_toEndOf="@id/searching_item_location_name_text_view"
-            app:layout_constraintTop_toTopOf="@id/temp_graph_image_view"
-            tools:text="@string/searching_item_temp_value_example" />
-
-        <TextView
-            android:id="@+id/searching_item_date_text_view"
-            android:layout_width="@dimen/zero"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-            app:layout_constraintBottom_toBottomOf="@id/temp_graph_image_view"
-            app:layout_constraintEnd_toStartOf="@id/searching_item_barrier"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/searching_item_location_name_text_view"
-            tools:text="@string/searching_item_date_example" />
 
         <TextView
             android:id="@+id/searching_item_max_temp_text_view"
             android:layout_width="@dimen/zero"
             android:layout_height="wrap_content"
+            android:autoSizeTextType="uniform"
+            android:gravity="end"
+            android:maxLines="1"
             app:layout_constraintBottom_toTopOf="@id/temp_graph_image_view"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/searching_item_optional_guideline"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/max_temp_example" />
 
@@ -75,8 +89,12 @@
             android:id="@+id/searching_item_min_temp_text_view"
             android:layout_width="@dimen/zero"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/searching_item_divider_view"
+            android:autoSizeTextType="uniform"
+            android:gravity="end"
+            android:maxLines="1"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/searching_item_optional_guideline"
             app:layout_constraintTop_toBottomOf="@id/temp_graph_image_view"
             tools:text="@string/min_temp_example" />
 
@@ -84,12 +102,10 @@
             android:id="@+id/searching_item_divider_view"
             android:layout_width="@dimen/zero"
             android:layout_height="1dp"
-            android:layout_marginTop="@dimen/default_layout_padding"
             android:background="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/searching_item_min_temp_text_view" />
+            app:layout_constraintStart_toStartOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

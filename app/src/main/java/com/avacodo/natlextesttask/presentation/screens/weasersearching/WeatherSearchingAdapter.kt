@@ -3,6 +3,7 @@ package com.avacodo.natlextesttask.presentation.screens.weasersearching
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -53,19 +54,36 @@ class WeatherSearchingAdapter : Adapter<WeatherSearchingAdapter.WeatherSearching
         private val dateFormat = SimpleDateFormat(DATE_FORMAT_PATTERN)
         fun bind(weatherModelDomain: WeatherModelDomain) {
             FragmentWeatherSearchingItemBinding.bind(itemView).apply {
-                searchingItemLocationNameTextView.text = itemView.context.getString(
-                    R.string.weather_list_item_location_name,
-                    weatherModelDomain.locationName
-                )
+                with(itemView.context) {
+                    searchingItemLocationNameTextView.text = this.getString(
+                        R.string.weather_list_item_location_name,
+                        weatherModelDomain.locationName
+                    )
 
-                searchingItemMaxTempTextView.text = weatherUnitsProvider.provideMaxTempValue(itemView.context, weatherModelDomain)
+                    if (weatherModelDomain.weatherRequestCount < 2) {
+                        searchingItemOptionalGroup.isVisible = false
+                    } else {
+                        searchingItemOptionalGroup.isVisible = true
 
-                searchingItemMinTempTextView.text = weatherUnitsProvider.provideMinTempValue(itemView.context, weatherModelDomain)
+                        searchingItemMaxTempTextView.text =
+                            weatherUnitsProvider.provideMaxTempValue(
+                                this,
+                                weatherModelDomain
+                            )
 
-                searchingItemTempValueTextView.text = weatherUnitsProvider.provideWeatherValue(
-                    itemView.context,
-                    weatherModelDomain
-                )
+                        searchingItemMinTempTextView.text =
+                            weatherUnitsProvider.provideMinTempValue(
+                                this,
+                                weatherModelDomain
+                            )
+
+                        searchingItemTempValueTextView.text =
+                            weatherUnitsProvider.provideWeatherValue(
+                                this,
+                                weatherModelDomain
+                            )
+                    }
+                }
 
                 searchingItemDateTextView.text = dateFormat.format(
                     weatherModelDomain.weatherMeasurementTime
