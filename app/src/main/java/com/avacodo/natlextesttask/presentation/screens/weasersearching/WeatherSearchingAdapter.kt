@@ -66,6 +66,29 @@ class WeatherSearchingAdapter(private val clickListener: OnRecyclerItemClickList
         ) {
             with(binding) {
                 with(binding.root.context) {
+                    searchingItemLocationNameTextView.text = this.getString(
+                        R.string.weather_list_item_location_name,
+                        weatherModelDomain.locationName
+                    )
+
+                    searchingItemTempValueTextView.text = weatherUnitsProvider.provideWeatherValue(
+                        this,
+                        weatherModelDomain
+                    )
+
+                    searchingItemDateTextView.text = dateFormat.format(
+                        weatherModelDomain.weatherMeasurementTime
+                    )
+                }
+            }
+        }
+
+        private fun initOptionalItemData(
+            binding: FragmentWeatherSearchingItemBinding,
+            weatherModelDomain: WeatherModelDomain,
+        ) {
+            with(binding) {
+                with(binding.root.context) {
                     if (weatherModelDomain.weatherRequestCount < 2) {
                         searchingItemOptionalGroup.isVisible = false
                     } else {
@@ -87,29 +110,6 @@ class WeatherSearchingAdapter(private val clickListener: OnRecyclerItemClickList
                             clickListener.onItemClick(weatherModelDomain.locationID)
                         }
                     }
-                }
-            }
-        }
-
-        private fun initOptionalItemData(
-            binding: FragmentWeatherSearchingItemBinding,
-            weatherModelDomain: WeatherModelDomain,
-        ) {
-            with(binding) {
-                with(binding.root.context) {
-                    searchingItemLocationNameTextView.text = this.getString(
-                        R.string.weather_list_item_location_name,
-                        weatherModelDomain.locationName
-                    )
-
-                    searchingItemTempValueTextView.text = weatherUnitsProvider.provideWeatherValue(
-                        this,
-                        weatherModelDomain
-                    )
-
-                    searchingItemDateTextView.text = dateFormat.format(
-                        weatherModelDomain.weatherMeasurementTime
-                    )
                 }
             }
         }
