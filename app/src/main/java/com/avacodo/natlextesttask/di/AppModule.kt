@@ -8,6 +8,8 @@ import com.avacodo.natlextesttask.data.remote.GetWeatherUsecaseImpl
 import com.avacodo.natlextesttask.data.remote.OpenWeatherMapApi
 import com.avacodo.natlextesttask.data.remote.RetrofitClient
 import com.avacodo.natlextesttask.domain.usecase.GetWeatherUsecase
+import com.avacodo.natlextesttask.presentation.locationmanager.LocationCoordsManager
+import com.avacodo.natlextesttask.presentation.locationmanager.LocationCoordsProvider
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.WeatherSearchingViewModel
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -20,6 +22,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 private const val BASE_URL = "https://api.openweathermap.org/"
 
 val appModule = module {
+    single<LocationCoordsProvider> { LocationCoordsManager() }
+
     single<GetWeatherUsecase> { GetWeatherUsecaseImpl(repository = get()) }
 
     single<WeatherRepository> {

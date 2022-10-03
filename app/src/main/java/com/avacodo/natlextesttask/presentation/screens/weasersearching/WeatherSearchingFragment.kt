@@ -1,7 +1,6 @@
 package com.avacodo.natlextesttask.presentation.screens.weasersearching
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -11,10 +10,9 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.databinding.FragmentWeatherSearchingBinding
-import com.avacodo.natlextesttask.domain.entity.MyLocationCoords
 import com.avacodo.natlextesttask.domain.entity.WeatherModelDomain
 import com.avacodo.natlextesttask.presentation.BaseFragment
-import com.avacodo.natlextesttask.presentation.activity.MainActivity
+import com.avacodo.natlextesttask.presentation.activity.WeatherLocationCoordsProvider
 import com.avacodo.natlextesttask.presentation.backgrounddrawer.BackgroundDrawerFactory
 import com.avacodo.natlextesttask.presentation.searchview.SearchViewInitializer
 import com.avacodo.natlextesttask.presentation.weatherunits.WeatherUnitsProvider
@@ -52,9 +50,8 @@ class WeatherSearchingFragment :
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_search_weather_by_coords) {
-            (requireActivity() as MainActivity).provideLocationCoords {
+            (requireActivity() as WeatherLocationCoordsProvider).provideLocationCoords {
                     viewModel.searchWeather(it.latitude, it.longitude)
-                    Log.d("@#@", "================FROM FRAGMENT: $it")
                 }
             }
         return super.onOptionsItemSelected(item)
@@ -152,8 +149,4 @@ class WeatherSearchingFragment :
             .provideBackgroundDrawer()
             .setLayoutBackground(view)
     }
-}
-
-fun interface OnLocationCoordsReceive {
-    fun onReceiveCoords(myLocationCoords: MyLocationCoords)
 }

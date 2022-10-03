@@ -1,26 +1,16 @@
 package com.avacodo.natlextesttask.presentation.activity
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.location.Geocoder
 import android.os.Bundle
-import android.text.Html
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import com.avacodo.natlextesttask.R
-import com.avacodo.natlextesttask.domain.entity.MyLocationCoords
-import com.avacodo.natlextesttask.presentation.screens.weasersearching.OnLocationCoordsReceive
+import com.avacodo.natlextesttask.presentation.locationmanager.LocationCoordsProvider
+import com.avacodo.natlextesttask.presentation.locationmanager.OnLocationCoordsReceiver
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.WeatherSearchingFragment
-import com.google.android.gms.location.LocationServices
-import java.util.*
+import org.koin.android.ext.android.inject
 
-class MainActivity : AppCompatActivity(), NavigationRouter {
+class MainActivity : AppCompatActivity(), NavigationRouter, WeatherLocationCoordsProvider {
 
-    private lateinit var locationCallback: OnLocationCoordsReceive
-
-    private val locationProvider by lazy {
-        LocationServices.getFusedLocationProviderClient(this)
-    }
+    private val locationCoordsManager: LocationCoordsProvider by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,37 +30,10 @@ class MainActivity : AppCompatActivity(), NavigationRouter {
         //TODO("навигация на экран с графиком температур")
     }
 
-    fun provideLocationCoords(callback: OnLocationCoordsReceive) {
-        locationCallback = callback
-        checkLocationPermission()
-    }
-
-    private fun checkLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(
-                applicationContext,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-            == PackageManager.PERMISSION_GRANTED
-        ) {
-            getLocationCoords()
-        } else {
-            ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                13)
-        }
-    }
-
-    private fun getLocationCoords() {
-        locationProvider.lastLocation.addOnCompleteListener {
-            val geocoder = Geocoder(applicationContext, Locale.getDefault())
-            val resultList = geocoder.getFromLocation(it.result.latitude, it.result.longitude, 1)
-
-            resultList?.let {
-                val lat = (Html.fromHtml(resultList[0].latitude.toString(),
-                    Html.FROM_HTML_MODE_LEGACY)).toString().toDouble()
-                val lon = (Html.fromHtml(resultList[0].longitude.toString(),
-                    Html.FROM_HTML_MODE_LEGACY)).toString().toDouble()
-                locationCallback.onReceiveCoords(MyLocationCoords(lat, lon))
-            }
+    override fun provideLocationCoords(onReceiveCoordsCallback: OnLocationCoordsReceiver) {
+        locationCoordsManager.run {
+            setCallback(onReceiveCoordsCallback)
+            checkLocationPermission(this@MainActivity)
         }
     }
 
@@ -79,10 +42,10 @@ class MainActivity : AppCompatActivity(), NavigationRouter {
         permissions: Array<out String>,
         grantResults: IntArray,
     ) {
-        if (requestCode == 13) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getLocationCoords()
-            }
-        }
+        locationCoordsManager.onRequestPermissionsResult(
+            this,
+            requestCode,
+            permissions,
+            grantResults)
     }
 }
