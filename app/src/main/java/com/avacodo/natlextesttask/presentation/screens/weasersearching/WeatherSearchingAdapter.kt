@@ -16,7 +16,8 @@ import java.text.SimpleDateFormat
 
 private const val DATE_FORMAT_PATTERN = "dd.MM.yyyy HH:mm:ss"
 
-class WeatherSearchingAdapter : Adapter<WeatherSearchingAdapter.WeatherSearchingViewHolder>() {
+class WeatherSearchingAdapter(private val clickListener: OnRecyclerItemClickListener) :
+    Adapter<WeatherSearchingAdapter.WeatherSearchingViewHolder>() {
 
     private var weatherDataList = listOf<WeatherModelDomain>()
 
@@ -65,7 +66,9 @@ class WeatherSearchingAdapter : Adapter<WeatherSearchingAdapter.WeatherSearching
         ) {
             with(binding) {
                 with(binding.root.context) {
-                    if (weatherModelDomain.weatherRequestCount > 1) {
+                    if (weatherModelDomain.weatherRequestCount < 2) {
+                        searchingItemOptionalGroup.isVisible = false
+                    } else {
                         searchingItemOptionalGroup.isVisible = true
 
                         searchingItemMaxTempTextView.text =
@@ -79,6 +82,10 @@ class WeatherSearchingAdapter : Adapter<WeatherSearchingAdapter.WeatherSearching
                                 this,
                                 weatherModelDomain
                             )
+
+                        tempGraphImageView.setOnClickListener {
+                            clickListener.onItemClick(weatherModelDomain.locationID)
+                        }
                     }
                 }
             }
@@ -126,4 +133,8 @@ class WeatherSearchingAdapter : Adapter<WeatherSearchingAdapter.WeatherSearching
             return oldItem == newItem
         }
     }
+}
+
+fun interface OnRecyclerItemClickListener {
+    fun onItemClick(locationID: String)
 }

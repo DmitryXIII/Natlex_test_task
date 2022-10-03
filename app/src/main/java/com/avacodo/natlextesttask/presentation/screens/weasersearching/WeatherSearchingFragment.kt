@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.databinding.FragmentWeatherSearchingBinding
@@ -25,7 +26,9 @@ class WeatherSearchingFragment :
     override val viewModel by viewModel<WeatherSearchingViewModel>()
     override val progressBar: ProgressBar by lazy { binding.weatherSearchingProgressBar }
     private val isSwitchCheckedFlow = MutableStateFlow(true)
-    private val weatherSearchingAdapter = WeatherSearchingAdapter()
+    private val weatherSearchingAdapter = WeatherSearchingAdapter {
+        Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show() // todo: сделать навигацию на экран с графиком
+    }
     private var currentWeatherData: WeatherModelDomain? = null
     private var weatherUnitsProvider = initWeatherValueProvider(true)
 
