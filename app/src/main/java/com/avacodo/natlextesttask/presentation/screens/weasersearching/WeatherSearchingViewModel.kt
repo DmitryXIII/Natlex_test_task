@@ -1,6 +1,5 @@
 package com.avacodo.natlextesttask.presentation.screens.weasersearching
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.avacodo.natlextesttask.domain.entity.WeatherModelDomain
 import com.avacodo.natlextesttask.domain.usecase.GetWeatherUsecase
@@ -13,8 +12,6 @@ import kotlinx.coroutines.launch
 
 class WeatherSearchingViewModel(private val usecase: GetWeatherUsecase) :
     BaseViewModel<WeatherModelDomain>() {
-
-    private val livaLocalData = MutableLiveData<List<WeatherModelDomain>>()
 
     private var switchIsChecked = true
 
@@ -32,8 +29,11 @@ class WeatherSearchingViewModel(private val usecase: GetWeatherUsecase) :
 
     fun searchWeather(locationName: String) {
         if (locationName.isEmpty()) {
-            liveData.postValue(AppState.Error("Введите название города")) //todo: сделать маппер ошибок через ресурсы
+            liveData.postValue(AppState.Error("Введите название города"))
+        //todo: сделать маппер ошибок через ресурсы
+        //todo: проверить необходимость проверки на isEmpty (возможно, searchView по дефолту не реагирует на клик, если запрос пустой)
         } else {
+            //todo: сделать обрезку пробелов в конце запроса
             liveData.postValue(AppState.Loading())
             viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
                 usecase.getRemoteWeather(locationName).also { weatherData ->
