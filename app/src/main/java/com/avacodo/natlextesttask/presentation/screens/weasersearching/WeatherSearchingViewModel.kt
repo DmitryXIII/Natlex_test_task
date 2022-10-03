@@ -46,8 +46,11 @@ class WeatherSearchingViewModel(private val usecase: GetWeatherUsecase) :
 
     fun searchWeather(latitude: Double, longitude: Double) {
         liveData.postValue(AppState.Loading())
-        viewModelScope.launch(coroutineExceptionHandler) {
-            liveData.postValue(AppState.Success(usecase.getRemoteWeather(latitude, longitude)))
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+            usecase.getRemoteWeather(latitude, longitude).also { weatherData ->
+                usecase.addLocalWeatherData(weatherData)
+                liveData.postValue(AppState.Success(weatherData))
+            }
         }
     }
 }
