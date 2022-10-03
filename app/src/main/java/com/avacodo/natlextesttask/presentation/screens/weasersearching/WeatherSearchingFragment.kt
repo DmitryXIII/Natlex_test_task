@@ -3,6 +3,7 @@ package com.avacodo.natlextesttask.presentation.screens.weasersearching
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -43,6 +44,13 @@ class WeatherSearchingFragment :
             viewModel.searchWeather(query)
         }
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.action_search_weather_by_coords) {
+            Toast.makeText(requireContext(), "on Location click", Toast.LENGTH_SHORT).show()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
