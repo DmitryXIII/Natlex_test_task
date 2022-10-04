@@ -20,4 +20,8 @@
     <string name="max_temp_value_in_fahrenheit">max: %1s° F</string>
     <string name="min_temp_value_in_fahrenheit">min: %1s° F</string>
     <string name="weather_list_item_location_name">%1s,\ </string>
+    <string name="alert_dialog_negative_button">Отклонить</string>
+    <string name="alert_dialog_positive_button">Разрешить</string>
+    <string name="alert_dialog_message">Здесь будет убедительное сообщение, что пользователю необходимо разрешить доступ к местоположению</string>
+    <string name="alert_dialog_title">Предупреждение</string>
 </resources>

@@ -3,10 +3,10 @@ package com.avacodo.natlextesttask.presentation.locationmanager
 import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Geocoder
-import android.text.Html
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.domain.entity.MyLocationCoords
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -24,20 +24,19 @@ class LocationCoordsManager : LocationCoordsProvider {
     }
 
     override fun checkLocationPermission(activity: AppCompatActivity) {
-        activity.run {
-            when {
-                ContextCompat
-                    .checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
-                        PackageManager.PERMISSION_GRANTED -> {
-                    getLocationCoords(this)
-                }
-
-                shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
-                    onShowRequestPermissionRationale(this)
-                }
-
-                else -> requestPermission(this)
+        when {
+            ContextCompat
+                .checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) ==
+                    PackageManager.PERMISSION_GRANTED -> {
+                getLocationCoords(activity)
             }
+
+            activity.shouldShowRequestPermissionRationale(
+                Manifest.permission.ACCESS_FINE_LOCATION) -> {
+                onShowRequestPermissionRationale(activity)
+            }
+
+            else -> requestPermission(activity)
         }
     }
 
@@ -60,29 +59,25 @@ class LocationCoordsManager : LocationCoordsProvider {
                     MAX_GEOCODER_RESULT)
 
                 resultList?.let {
-                    val lat = (Html.fromHtml(
-                        resultList.first().latitude.toString(),
-                        Html.FROM_HTML_MODE_LEGACY))
-                        .toString().toDouble()
-
-                    val lon = (Html.fromHtml(
-                        resultList.first().longitude.toString(),
-                        Html.FROM_HTML_MODE_LEGACY))
-                        .toString().toDouble()
-
-                    locationCallback.onReceiveCoords(MyLocationCoords(lat, lon))
+                    locationCallback.onReceiveCoords(
+                        MyLocationCoords(
+                            latitude = resultList.first().latitude,
+                            longitude = resultList.first().longitude
+                        ))
                 }
             }
     }
 
     override fun onShowRequestPermissionRationale(activity: AppCompatActivity) {
         MaterialAlertDialogBuilder(activity)
-            .setTitle("Заголовок")
-            .setMessage("Убедительное сообщение")
-            .setPositiveButton("Разрешить") { _, _ ->
+            .setTitle(activity.getString(R.string.alert_dialog_title))
+            .setMessage(activity.getString(R.string.alert_dialog_message))
+            .setPositiveButton(
+                activity.getString(R.string.alert_dialog_positive_button)) { _, _ ->
                 requestPermission(activity)
             }
-            .setNegativeButton("Запретить") { dialog, _ ->
+            .setNegativeButton(
+                activity.getString(R.string.alert_dialog_negative_button)) { dialog, _ ->
                 dialog.dismiss()
             }
             .show()

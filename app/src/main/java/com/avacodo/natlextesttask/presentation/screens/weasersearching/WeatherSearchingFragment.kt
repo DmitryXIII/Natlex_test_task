@@ -1,6 +1,7 @@
 package com.avacodo.natlextesttask.presentation.screens.weasersearching
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -51,6 +52,7 @@ class WeatherSearchingFragment :
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_search_weather_by_coords) {
             (requireActivity() as WeatherLocationCoordsProvider).provideLocationCoords {
+                Log.d("@#@", "onOptionsItemSelected: $it")
                     viewModel.searchWeather(it.latitude, it.longitude)
                 }
             }
