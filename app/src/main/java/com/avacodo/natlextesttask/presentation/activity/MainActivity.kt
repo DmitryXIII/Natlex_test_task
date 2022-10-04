@@ -6,18 +6,17 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.avacodo.natlextesttask.R
-import com.avacodo.natlextesttask.presentation.locationmanager.LocationCoordsProvider
-import com.avacodo.natlextesttask.presentation.locationmanager.OnLocationCoordsReceiver
-import com.avacodo.natlextesttask.presentation.locationmanager.LocationSettingsManager
+import com.avacodo.natlextesttask.presentation.extensions.showAlertDialogWithoutNegativeButton
+import com.avacodo.natlextesttask.presentation.location.LocationCoordsProvider
+import com.avacodo.natlextesttask.presentation.location.OnLocationCoordsReceiver
+import com.avacodo.natlextesttask.presentation.location.LocationSettingsManager
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.WeatherSearchingFragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity(), NavigationRouter, WeatherLocationCoordsProvider {
 
     private val locationCoordsManager: LocationCoordsProvider by inject()
     private val locationLocationSettingsManager: LocationSettingsManager by inject()
-    private lateinit var onReceiveCoordsCallback: OnLocationCoordsReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +37,8 @@ class MainActivity : AppCompatActivity(), NavigationRouter, WeatherLocationCoord
     }
 
     override fun provideLocationCoords(onReceiveCoordsCallback: OnLocationCoordsReceiver) {
-        this.onReceiveCoordsCallback = onReceiveCoordsCallback
-        locationLocationSettingsManager.checkLocationSettings(this@MainActivity, this.onReceiveCoordsCallback)
+        locationCoordsManager.setCallback(onReceiveCoordsCallback)
+        locationLocationSettingsManager.checkLocationSettings(this@MainActivity)
     }
 
     override fun onRequestPermissionsResult(
@@ -58,17 +57,14 @@ class MainActivity : AppCompatActivity(), NavigationRouter, WeatherLocationCoord
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (resultCode) {
             Activity.RESULT_OK -> {
-                locationLocationSettingsManager.checkLocationPermission(this, onReceiveCoordsCallback)
+                locationLocationSettingsManager.checkLocationPermission(this)
                 Log.d("@#@", "onActivityResult: RESULT OK")
             }
             Activity.RESULT_CANCELED -> {
-                MaterialAlertDialogBuilder(this)
-                    .setTitle("Сообщение")
-                    .setMessage("Включите геолокацию")
-                    .setPositiveButton("OK") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .show()
+                showAlertDialogWithoutNegativeButton(
+                    R.string.default_alert_title,
+                    R.string.alert_message_if_location_is_off
+                ) { it.dismiss() }
             }
         }
     }

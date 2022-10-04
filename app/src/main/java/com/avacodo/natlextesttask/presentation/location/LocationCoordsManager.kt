@@ -1,17 +1,15 @@
-package com.avacodo.natlextesttask.presentation.locationmanager
+package com.avacodo.natlextesttask.presentation.location
 
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Looper
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.domain.entity.MyLocationCoords
+import com.avacodo.natlextesttask.presentation.extensions.showAlertDialogWithNegativeButton
 import com.google.android.gms.location.*
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.util.*
 
 private const val PERMISSION_REQUEST_CODE = 13
 
@@ -72,18 +70,14 @@ class LocationCoordsManager : LocationCoordsProvider {
     }
 
     override fun onShowRequestPermissionRationale(activity: AppCompatActivity) {
-        MaterialAlertDialogBuilder(activity)
-            .setTitle(activity.getString(R.string.alert_dialog_title))
-            .setMessage(activity.getString(R.string.alert_dialog_message))
-            .setPositiveButton(
-                activity.getString(R.string.alert_dialog_positive_button)) { _, _ ->
-                requestPermission(activity)
-            }
-            .setNegativeButton(
-                activity.getString(R.string.alert_dialog_negative_button)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
+        with(activity) {
+            showAlertDialogWithNegativeButton(
+                R.string.alert_dialog_title_permission_rationale,
+                R.string.alert_dialog_message_permission_rationale,
+                R.string.alert_dialog_positive_button_permission_rationale,
+                R.string.alert_dialog_negative_button_permission_rationale,
+            ) { requestPermission(this) }
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -92,8 +86,10 @@ class LocationCoordsManager : LocationCoordsProvider {
         permissions: Array<out String>,
         grantResults: IntArray,
     ) {
-        if (requestCode == 13) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults.first()
+                == PackageManager.PERMISSION_GRANTED
+            ) {
                 getLocationCoords(activity)
             }
         }

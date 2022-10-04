@@ -1,4 +1,4 @@
-package com.avacodo.natlextesttask.presentation.locationmanager
+package com.avacodo.natlextesttask.presentation.location
 
 import androidx.appcompat.app.AppCompatActivity
 

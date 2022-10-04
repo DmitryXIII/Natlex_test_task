@@ -20,8 +20,13 @@
     <string name="max_temp_value_in_fahrenheit">max: %1s° F</string>
     <string name="min_temp_value_in_fahrenheit">min: %1s° F</string>
     <string name="weather_list_item_location_name">%1s,\ </string>
-    <string name="alert_dialog_negative_button">Отклонить</string>
-    <string name="alert_dialog_positive_button">Разрешить</string>
-    <string name="alert_dialog_message">Здесь будет убедительное сообщение, что пользователю необходимо разрешить доступ к местоположению</string>
-    <string name="alert_dialog_title">Предупреждение</string>
+    <string name="alert_dialog_negative_button_permission_rationale">Отклонить</string>
+    <string name="alert_dialog_positive_button_permission_rationale">Разрешить</string>
+    <string name="alert_dialog_message_permission_rationale">Здесь будет убедительное сообщение, что пользователю необходимо разрешить доступ к местоположению</string>
+    <string name="alert_dialog_title_permission_rationale">Предупреждение</string>
+    <string name="default_alert_title">Сообщение</string>
+    <string name="default_alert_positive_button">OK</string>
+    <string name="unable_to_turn_location_on">На данном устройстве отсутствуют настройки определения местоположения</string>
+    <string name="alert_message_if_location_is_off">При выключенном определении местоположения функция получения данных о погоде по местоположению работать не будет</string>
+    <string name="default_alert_negative_button">Отменить</string>
 </resources>
