@@ -1,4 +1,4 @@
-package com.avacodo.natlextesttask.presentation.location
+package com.avacodo.natlextesttask.presentation.location.settings
 
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -12,14 +12,14 @@ private const val SETTINGS_REQUEST_CODE = 50
 private const val DEFAULT_REQUEST_INTERVAL = 10000L
 private const val DEFAULT_REQUEST_FAST_INTERVAL = 5000L
 
-class LocationSettingsManager(private val locationCoordsManager: LocationCoordsProvider) {
+class NatlexAppLocationSettingsManager(): AppLocationSettingsManager {
 
     private val builder = LocationSettingsRequest.Builder()
         .addLocationRequest(createLocationRequest(Priority.PRIORITY_HIGH_ACCURACY))
         .addLocationRequest(createLocationRequest(Priority.PRIORITY_BALANCED_POWER_ACCURACY))
         .setNeedBle(true)
 
-    private fun createLocationRequest(mPriority: Int): LocationRequest {
+    override fun createLocationRequest(mPriority: Int): LocationRequest {
         return LocationRequest.create().apply {
             interval = DEFAULT_REQUEST_INTERVAL
             fastestInterval = DEFAULT_REQUEST_FAST_INTERVAL
@@ -27,12 +27,15 @@ class LocationSettingsManager(private val locationCoordsManager: LocationCoordsP
         }
     }
 
-    fun checkLocationSettings(activity: AppCompatActivity) {
+    override fun checkIfLocationSettingsOn(
+        activity: AppCompatActivity,
+        onLocationSettingsOn: () -> Unit,
+    ) {
         LocationServices.getSettingsClient(activity).checkLocationSettings(builder.build())
             .addOnCompleteListener {
                 try {
                     it.getResult(ApiException::class.java)
-                    checkLocationPermission(activity)
+                    onLocationSettingsOn.invoke()
                 } catch (exception: ApiException) {
                     when (exception.statusCode) {
                         LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
@@ -50,9 +53,5 @@ class LocationSettingsManager(private val locationCoordsManager: LocationCoordsP
                     }
                 }
             }
-    }
-
-    fun checkLocationPermission(activity: AppCompatActivity) {
-        locationCoordsManager.checkLocationPermission(activity)
     }
 }

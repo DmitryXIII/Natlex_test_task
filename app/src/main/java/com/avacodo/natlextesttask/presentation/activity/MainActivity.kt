@@ -7,16 +7,14 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.presentation.extensions.showAlertDialogWithoutNegativeButton
-import com.avacodo.natlextesttask.presentation.location.LocationCoordsProvider
-import com.avacodo.natlextesttask.presentation.location.OnLocationCoordsReceiver
-import com.avacodo.natlextesttask.presentation.location.LocationSettingsManager
+import com.avacodo.natlextesttask.presentation.location.AppLocationGlobalManager
+import com.avacodo.natlextesttask.presentation.location.permission.OnLocationCoordsReceiver
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.WeatherSearchingFragment
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity(), NavigationRouter, WeatherLocationCoordsProvider {
 
-    private val locationCoordsManager: LocationCoordsProvider by inject()
-    private val locationLocationSettingsManager: LocationSettingsManager by inject()
+    private val locationManager: AppLocationGlobalManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +35,8 @@ class MainActivity : AppCompatActivity(), NavigationRouter, WeatherLocationCoord
     }
 
     override fun provideLocationCoords(onReceiveCoordsCallback: OnLocationCoordsReceiver) {
-        locationCoordsManager.setCallback(onReceiveCoordsCallback)
-        locationLocationSettingsManager.checkLocationSettings(this@MainActivity)
+        locationManager.setOnReceiveLocationCallback(onReceiveCoordsCallback)
+        locationManager.checkLocationSettings(this@MainActivity)
     }
 
     override fun onRequestPermissionsResult(
@@ -46,7 +44,7 @@ class MainActivity : AppCompatActivity(), NavigationRouter, WeatherLocationCoord
         permissions: Array<out String>,
         grantResults: IntArray,
     ) {
-        locationCoordsManager.onRequestPermissionsResult(
+        locationManager.onRequestPermissionsResult(
             this,
             requestCode,
             permissions,
@@ -57,7 +55,7 @@ class MainActivity : AppCompatActivity(), NavigationRouter, WeatherLocationCoord
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (resultCode) {
             Activity.RESULT_OK -> {
-                locationLocationSettingsManager.checkLocationPermission(this)
+                locationManager.checkLocationPermission(this)
                 Log.d("@#@", "onActivityResult: RESULT OK")
             }
             Activity.RESULT_CANCELED -> {

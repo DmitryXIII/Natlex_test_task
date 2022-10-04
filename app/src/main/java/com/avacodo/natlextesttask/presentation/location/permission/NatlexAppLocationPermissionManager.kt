@@ -1,40 +1,36 @@
-package com.avacodo.natlextesttask.presentation.location
+package com.avacodo.natlextesttask.presentation.location.permission
 
 import android.Manifest
+import android.app.Activity
 import android.content.pm.PackageManager
-import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.avacodo.natlextesttask.R
-import com.avacodo.natlextesttask.domain.entity.MyLocationCoords
 import com.avacodo.natlextesttask.presentation.extensions.showAlertDialogWithNegativeButton
-import com.google.android.gms.location.*
 
 private const val PERMISSION_REQUEST_CODE = 13
 
-class LocationCoordsManager : LocationCoordsProvider {
+class NatlexAppLocationPermissionManager : AppLocationPermissionManager {
 
-    private lateinit var onReceiveLocationCallback: OnLocationCoordsReceiver // todo: подумать про lateinit
-
-    override fun setCallback(onReceiveCoordsCallback: OnLocationCoordsReceiver) {
-        onReceiveLocationCallback = onReceiveCoordsCallback
-    }
-
-    override fun checkLocationPermission(activity: AppCompatActivity) {
-        when {
+    override fun checkLocationPermission(activity: AppCompatActivity): Boolean {
+        return when {
             ContextCompat
                 .checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) ==
                     PackageManager.PERMISSION_GRANTED -> {
-                getLocationCoords(activity)
+                true
             }
 
             activity.shouldShowRequestPermissionRationale(
                 Manifest.permission.ACCESS_FINE_LOCATION) -> {
                 onShowRequestPermissionRationale(activity)
+                false
             }
 
-            else -> requestPermission(activity)
+            else -> {
+                requestPermission(activity)
+                false
+            }
         }
     }
 
@@ -43,30 +39,6 @@ class LocationCoordsManager : LocationCoordsProvider {
             activity,
             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
             PERMISSION_REQUEST_CODE)
-    }
-
-    override fun getLocationCoords(activity: AppCompatActivity) {
-        val locationClient = LocationServices
-            .getFusedLocationProviderClient(activity)
-
-        val locationRequest = LocationRequest
-            .create()
-            .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
-
-        val locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
-                locationClient.removeLocationUpdates(this)
-                onReceiveLocationCallback.onReceiveCoords(
-                    MyLocationCoords(
-                        locationResult.locations.first().latitude,
-                        locationResult.locations.first().longitude
-                    ))
-            }
-        }
-
-        locationClient.requestLocationUpdates(locationRequest,
-            locationCallback,
-            Looper.getMainLooper())
     }
 
     override fun onShowRequestPermissionRationale(activity: AppCompatActivity) {
@@ -85,12 +57,13 @@ class LocationCoordsManager : LocationCoordsProvider {
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray,
+        onPermissionGrantedAction: (Activity) -> Unit
     ) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults.first()
                 == PackageManager.PERMISSION_GRANTED
             ) {
-                getLocationCoords(activity)
+                onPermissionGrantedAction.invoke(activity)
             }
         }
     }

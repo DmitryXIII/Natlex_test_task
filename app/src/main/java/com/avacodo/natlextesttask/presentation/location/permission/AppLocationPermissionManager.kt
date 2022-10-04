@@ -1,17 +1,17 @@
-package com.avacodo.natlextesttask.presentation.location
+package com.avacodo.natlextesttask.presentation.location.permission
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 
-interface LocationCoordsProvider {
-    fun setCallback(onReceiveCoordsCallback: OnLocationCoordsReceiver)
-    fun checkLocationPermission(activity: AppCompatActivity)
-    fun getLocationCoords(activity: AppCompatActivity)
+interface AppLocationPermissionManager {
+    fun checkLocationPermission(activity: AppCompatActivity): Boolean
     fun onShowRequestPermissionRationale(activity: AppCompatActivity)
     fun requestPermission(activity: AppCompatActivity)
     fun onRequestPermissionsResult(
         activity: AppCompatActivity,
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
+        onPermissionGrantedAction: (Activity) -> Unit
     )
 }

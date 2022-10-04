@@ -1,4 +1,4 @@
-package com.avacodo.natlextesttask.presentation.location
+package com.avacodo.natlextesttask.presentation.location.permission
 
 import com.avacodo.natlextesttask.domain.entity.MyLocationCoords
 
