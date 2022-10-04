@@ -2,25 +2,25 @@ package com.avacodo.natlextesttask.presentation.locationmanager
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.location.Geocoder
+import android.os.Looper
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.domain.entity.MyLocationCoords
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.*
 
 private const val PERMISSION_REQUEST_CODE = 13
-private const val MAX_GEOCODER_RESULT = 1
 
 class LocationCoordsManager : LocationCoordsProvider {
 
-    private lateinit var locationCallback: OnLocationCoordsReceiver // todo: подумать про lateinit
+    private lateinit var onReceiveLocationCallback: OnLocationCoordsReceiver // todo: подумать про lateinit
 
     override fun setCallback(onReceiveCoordsCallback: OnLocationCoordsReceiver) {
-        locationCallback = onReceiveCoordsCallback
+        onReceiveLocationCallback = onReceiveCoordsCallback
     }
 
     override fun checkLocationPermission(activity: AppCompatActivity) {
@@ -48,24 +48,27 @@ class LocationCoordsManager : LocationCoordsProvider {
     }
 
     override fun getLocationCoords(activity: AppCompatActivity) {
-        LocationServices
+        val locationClient = LocationServices
             .getFusedLocationProviderClient(activity)
-            .lastLocation
-            .addOnCompleteListener {
-                val geocoder = Geocoder(activity, Locale.getDefault())
-                val resultList = geocoder.getFromLocation(
-                    it.result.latitude,
-                    it.result.longitude,
-                    MAX_GEOCODER_RESULT)
 
-                resultList?.let {
-                    locationCallback.onReceiveCoords(
-                        MyLocationCoords(
-                            latitude = resultList.first().latitude,
-                            longitude = resultList.first().longitude
-                        ))
-                }
+        val locationRequest = LocationRequest
+            .create()
+            .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                locationClient.removeLocationUpdates(this)
+                onReceiveLocationCallback.onReceiveCoords(
+                    MyLocationCoords(
+                        locationResult.locations.first().latitude,
+                        locationResult.locations.first().longitude
+                    ))
             }
+        }
+
+        locationClient.requestLocationUpdates(locationRequest,
+            locationCallback,
+            Looper.getMainLooper())
     }
 
     override fun onShowRequestPermissionRationale(activity: AppCompatActivity) {
