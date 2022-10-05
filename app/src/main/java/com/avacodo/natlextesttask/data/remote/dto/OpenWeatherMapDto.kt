@@ -1,6 +1,5 @@
 package com.avacodo.natlextesttask.data.remote.dto
 
-
 import com.google.gson.annotations.SerializedName
 
 data class OpenWeatherMapDto(

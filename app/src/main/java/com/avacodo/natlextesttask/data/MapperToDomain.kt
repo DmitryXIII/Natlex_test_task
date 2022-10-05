@@ -12,9 +12,8 @@ class MapperToDomain {
                 locationID = locationID,
                 locationName = locationName,
                 temperatureInCelsius = main.temp,
-                temperatureInFahrenheit = WeatherUnitsMapper().mapCelsiusToFahrenheit(main.temp),
-                maxTempValue = main.temp,
-                minTempValue = main.temp,
+                maxTempValueInCelsius = main.temp,
+                minTempValueInCelsius = main.temp,
                 weatherMeasurementTime = System.currentTimeMillis(),
                 weatherRequestCount = 1,
             )
@@ -32,9 +31,8 @@ class MapperToDomain {
                 locationID = locationID,
                 locationName = locationName,
                 temperatureInCelsius = temperatureInCelsius,
-                temperatureInFahrenheit = temperatureInFahrenheit,
-                maxTempValue = maxTemp,
-                minTempValue = minTemp,
+                maxTempValueInCelsius = maxTemp,
+                minTempValueInCelsius = minTemp,
                 weatherMeasurementTime = weatherMeasurementTime,
                 weatherRequestCount = requestCount,
             )
@@ -47,7 +45,6 @@ class MapperToDomain {
                 locationID = locationID,
                 locationName = locationName,
                 temperatureInCelsius = temperatureInCelsius,
-                temperatureInFahrenheit = temperatureInFahrenheit,
                 weatherMeasurementTime = weatherMeasurementTime,
             )
         }

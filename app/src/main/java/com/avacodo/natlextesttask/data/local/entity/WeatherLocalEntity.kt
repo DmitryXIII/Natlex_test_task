@@ -15,6 +15,5 @@ class WeatherLocalEntity(
     val locationID: String,
     val locationName: String,
     val temperatureInCelsius: Double,
-    val temperatureInFahrenheit: Double,
     val weatherMeasurementTime: Long,
 )
