@@ -8,13 +8,16 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.databinding.FragmentWeatherSearchingBinding
+import com.avacodo.natlextesttask.domain.entity.MyLocationCoords
 import com.avacodo.natlextesttask.domain.entity.WeatherModelDomain
 import com.avacodo.natlextesttask.presentation.BaseFragment
 import com.avacodo.natlextesttask.presentation.activity.WeatherLocationCoordsProvider
 import com.avacodo.natlextesttask.presentation.backgrounddrawer.BackgroundDrawerFactory
+import com.avacodo.natlextesttask.presentation.location.permission.OnLocationCoordsReceiver
 import com.avacodo.natlextesttask.presentation.searchview.SearchViewInitializer
 import com.avacodo.natlextesttask.presentation.weatherunits.WeatherUnitsProvider
 import com.avacodo.natlextesttask.presentation.weatherunits.WeatherUnitsProviderFactory
@@ -51,11 +54,19 @@ class WeatherSearchingFragment :
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_search_weather_by_coords) {
-            (requireActivity() as WeatherLocationCoordsProvider).provideLocationCoords {
-                Log.d("@#@", "onOptionsItemSelected: $it")
-                    viewModel.searchWeather(it.latitude, it.longitude)
+            (requireActivity() as WeatherLocationCoordsProvider).provideLocationCoords(object :
+                OnLocationCoordsReceiver {
+                override fun onStartLocationRequest() {
+                    binding.weatherSearchingProgressBar.isVisible = true
                 }
-            }
+
+                override fun onSuccessLocationRequest(myLocationCoords: MyLocationCoords) {
+                    binding.weatherSearchingProgressBar.isVisible = false
+                    Log.d("@#@", "onOptionsItemSelected: $myLocationCoords")
+                    viewModel.searchWeather(myLocationCoords.latitude, myLocationCoords.longitude)
+                }
+            })
+        }
         return super.onOptionsItemSelected(item)
     }
 

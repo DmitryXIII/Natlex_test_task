@@ -11,6 +11,8 @@ class NatlexAppLocationData: AppLocationData {
         activity: Activity,
         onReceiveLocationCallback: OnLocationCoordsReceiver,
     ) {
+        onReceiveLocationCallback.onStartLocationRequest()
+
         val locationClient = LocationServices
             .getFusedLocationProviderClient(activity)
 
@@ -22,7 +24,7 @@ class NatlexAppLocationData: AppLocationData {
         val locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationClient.removeLocationUpdates(this)
-                onReceiveLocationCallback.onReceiveCoords(
+                onReceiveLocationCallback.onSuccessLocationRequest(
                     MyLocationCoords(
                         locationResult.locations.first().latitude,
                         locationResult.locations.first().longitude

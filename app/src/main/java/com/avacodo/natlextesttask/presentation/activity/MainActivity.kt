@@ -35,8 +35,10 @@ class MainActivity : AppCompatActivity(), NavigationRouter, WeatherLocationCoord
     }
 
     override fun provideLocationCoords(onReceiveCoordsCallback: OnLocationCoordsReceiver) {
-        locationManager.setOnReceiveLocationCallback(onReceiveCoordsCallback)
-        locationManager.checkLocationSettings(this@MainActivity)
+        locationManager.run {
+            setOnReceiveLocationCallback(onReceiveCoordsCallback)
+            checkLocationSettings(this@MainActivity)
+        }
     }
 
     override fun onRequestPermissionsResult(
