@@ -3,8 +3,8 @@ package com.avacodo.natlextesttask.presentation.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.presentation.extensions.showAlertDialogWithoutNegativeButton
 import com.avacodo.natlextesttask.presentation.location.AppLocationGlobalManager
@@ -12,6 +12,8 @@ import com.avacodo.natlextesttask.presentation.location.permission.OnLocationCoo
 import com.avacodo.natlextesttask.presentation.screens.graph.WeatherGraphFragment
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.WeatherSearchingFragment
 import org.koin.android.ext.android.inject
+
+private const val NAVIGATION_BACKSTACK = "NAVIGATION_BACKSTACK"
 
 class MainActivity : AppCompatActivity(), NavigationRouter, WeatherLocationCoordsProvider {
 
@@ -24,19 +26,23 @@ class MainActivity : AppCompatActivity(), NavigationRouter, WeatherLocationCoord
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         if (savedInstanceState == null) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.main_navigation_container, WeatherSearchingFragment())
-                .commit()
+            navigateToDestination(WeatherSearchingFragment())
         }
     }
 
     override fun navigateToTemperatureGraphScreen(locationID: String) {
+        navigateToDestination(WeatherGraphFragment.newInstance(locationID), true)
+    }
+
+    override fun navigateToDestination(destination: Fragment, isBackstackRequired: Boolean) {
         supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.main_navigation_container, WeatherGraphFragment.newInstance(locationID))
-            .addToBackStack("")
-            .commit()
+            .beginTransaction().apply {
+                replace(R.id.main_navigation_container, destination)
+                if (isBackstackRequired) {
+                    addToBackStack(NAVIGATION_BACKSTACK)
+                }
+                commit()
+            }
     }
 
     override fun provideLocationCoords(onReceiveCoordsCallback: OnLocationCoordsReceiver) {
@@ -63,7 +69,6 @@ class MainActivity : AppCompatActivity(), NavigationRouter, WeatherLocationCoord
         when (resultCode) {
             Activity.RESULT_OK -> {
                 locationManager.checkLocationPermission(this)
-                Log.d("@#@", "onActivityResult: RESULT OK")
             }
             Activity.RESULT_CANCELED -> {
                 showAlertDialogWithoutNegativeButton(

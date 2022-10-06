@@ -10,6 +10,7 @@ import com.avacodo.natlextesttask.data.remote.RetrofitClient
 import com.avacodo.natlextesttask.data.WeatherGraphUsecaseImpl
 import com.avacodo.natlextesttask.data.graph.WeatherGraphRepository
 import com.avacodo.natlextesttask.data.graph.WeatherGraphRepositoryImpl
+import com.avacodo.natlextesttask.domain.entity.WeatherGraphDataDomain
 import com.avacodo.natlextesttask.domain.usecase.GetWeatherUsecase
 import com.avacodo.natlextesttask.domain.usecase.WeatherGraphUsecase
 import com.avacodo.natlextesttask.presentation.location.AppLocationGlobalManager
@@ -21,6 +22,7 @@ import com.avacodo.natlextesttask.presentation.location.permission.NatlexAppLoca
 import com.avacodo.natlextesttask.presentation.location.settings.AppLocationSettingsManager
 import com.avacodo.natlextesttask.presentation.location.settings.NatlexAppLocationSettingsManager
 import com.avacodo.natlextesttask.presentation.screens.graph.WeatherGraphViewModel
+import com.avacodo.natlextesttask.presentation.screens.graph.chartbuilder.*
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.WeatherSearchingViewModel
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -33,17 +35,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 private const val BASE_URL = "https://api.openweathermap.org/"
 
 val appModule = module {
-    single<AppLocationGlobalManager> {
-        NatlexAppLocationGlobalManager(
-            locationSettingsManager = get(),
-            locationPermissionManager = get(),
-            locationDatasource = get()
-        )
-    }
-
-    single<AppLocationSettingsManager> { NatlexAppLocationSettingsManager() }
-    single<AppLocationPermissionManager> { NatlexAppLocationPermissionManager() }
-    single<AppLocationData> { NatlexAppLocationData() }
     single<GetWeatherUsecase> { GetWeatherUsecaseImpl(repository = get()) }
     single<WeatherGraphUsecase> { WeatherGraphUsecaseImpl(repository = get()) }
 
@@ -82,4 +73,28 @@ val retrofitModule = module {
 
 val roomModule = module {
     single { WeatherDatabase.getUserDatabase(androidContext()).weatherDao }
+}
+
+val locationModule = module {
+    single<AppLocationGlobalManager> {
+        NatlexAppLocationGlobalManager(
+            locationSettingsManager = get(),
+            locationPermissionManager = get(),
+            locationDatasource = get()
+        )
+    }
+
+    single<AppLocationSettingsManager> { NatlexAppLocationSettingsManager() }
+    single<AppLocationPermissionManager> { NatlexAppLocationPermissionManager() }
+    single<AppLocationData> { NatlexAppLocationData() }
+}
+
+val graphModule = module {
+    single<ChartValueFormatter> { WeatherChartValueFormatter() }
+
+    factory<ChartInitializer<WeatherGraphDataDomain>> {
+        WeatherChartInitializer(chartValueFormatter = get())
+    }
+
+    factory<ChartBuilder<WeatherGraphDataDomain>> { WeatherChartBuilder(chartInitializer = get()) }
 }
