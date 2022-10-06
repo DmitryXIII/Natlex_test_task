@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.presentation.extensions.showAlertDialogWithoutNegativeButton
-import com.avacodo.natlextesttask.presentation.location.AppLocationGlobalManager
-import com.avacodo.natlextesttask.presentation.location.permission.OnLocationCoordsReceiver
+import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.AppLocationGlobalManager
+import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.permission.OnLocationCoordsReceiver
 import com.avacodo.natlextesttask.presentation.screens.graph.WeatherGraphFragment
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.WeatherSearchingFragment
 import org.koin.android.ext.android.inject

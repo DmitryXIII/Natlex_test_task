@@ -1,4 +1,4 @@
-package com.avacodo.natlextesttask.presentation.searchview
+package com.avacodo.natlextesttask.presentation.screens.weasersearching.searchview
 
 import android.view.Menu
 

@@ -14,11 +14,11 @@ import com.avacodo.natlextesttask.domain.entity.MyLocationCoords
 import com.avacodo.natlextesttask.domain.entity.WeatherModelDomain
 import com.avacodo.natlextesttask.presentation.BaseFragment
 import com.avacodo.natlextesttask.presentation.activity.WeatherLocationCoordsProvider
-import com.avacodo.natlextesttask.presentation.backgrounddrawer.BackgroundDrawerFactory
-import com.avacodo.natlextesttask.presentation.location.permission.OnLocationCoordsReceiver
-import com.avacodo.natlextesttask.presentation.searchview.SearchViewInitializer
-import com.avacodo.natlextesttask.presentation.weatherunits.WeatherUnitsProvider
-import com.avacodo.natlextesttask.presentation.weatherunits.WeatherUnitsProviderFactory
+import com.avacodo.natlextesttask.presentation.screens.weasersearching.backgrounddrawer.BackgroundDrawerFactory
+import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.permission.OnLocationCoordsReceiver
+import com.avacodo.natlextesttask.presentation.screens.weasersearching.searchview.SearchViewInitializer
+import com.avacodo.natlextesttask.domain.weatherunits.WeatherUnitsProvider
+import com.avacodo.natlextesttask.domain.weatherunits.WeatherUnitsProviderFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -137,8 +137,7 @@ class WeatherSearchingFragment :
     private fun displayWeatherValue() {
         currentWeatherData?.let {
             binding.temperatureTextView.text = weatherUnitsProvider.provideWeatherValue(
-                requireContext(),
-                it
+                it.temperatureInCelsius
             )
         }
     }

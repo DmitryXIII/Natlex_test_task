@@ -1,4 +1,4 @@
-package com.avacodo.natlextesttask.presentation.location.settings
+package com.avacodo.natlextesttask.presentation.screens.weasersearching.location.settings
 
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.location.LocationRequest

@@ -1,4 +1,4 @@
-package com.avacodo.natlextesttask.presentation.weatherunits
+package com.avacodo.natlextesttask.domain.weatherunits
 
 class WeatherUnitsProviderFactory {
     fun initWeatherUnitsProvider(isCelsiusRequired: Boolean): WeatherUnitsProvider {

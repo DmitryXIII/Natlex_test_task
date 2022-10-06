@@ -1,4 +1,4 @@
-package com.avacodo.natlextesttask.presentation.backgrounddrawer
+package com.avacodo.natlextesttask.presentation.screens.weasersearching.backgrounddrawer
 
 import android.view.View
 

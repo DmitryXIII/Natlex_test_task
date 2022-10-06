@@ -1,4 +1,4 @@
-package com.avacodo.natlextesttask.presentation.location.settings
+package com.avacodo.natlextesttask.presentation.screens.weasersearching.location.settings
 
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity

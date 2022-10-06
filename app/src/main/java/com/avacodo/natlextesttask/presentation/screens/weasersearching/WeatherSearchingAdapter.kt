@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.databinding.FragmentWeatherSearchingItemBinding
 import com.avacodo.natlextesttask.domain.entity.WeatherModelDomain
-import com.avacodo.natlextesttask.presentation.weatherunits.WeatherUnitsProvider
-import com.avacodo.natlextesttask.presentation.weatherunits.WeatherUnitsProviderFactory
+import com.avacodo.natlextesttask.domain.weatherunits.WeatherUnitsProvider
+import com.avacodo.natlextesttask.domain.weatherunits.WeatherUnitsProviderFactory
 import java.text.SimpleDateFormat
 
 private const val DATE_FORMAT_PATTERN = "dd.MM.yyyy HH:mm:ss"
@@ -72,8 +72,7 @@ class WeatherSearchingAdapter(private val clickListener: OnRecyclerItemClickList
                     )
 
                     searchingItemTempValueTextView.text = weatherUnitsProvider.provideWeatherValue(
-                        this,
-                        weatherModelDomain
+                        weatherModelDomain.temperatureInCelsius
                     )
 
                     searchingItemDateTextView.text = dateFormat.format(
@@ -88,27 +87,23 @@ class WeatherSearchingAdapter(private val clickListener: OnRecyclerItemClickList
             weatherModelDomain: WeatherModelDomain,
         ) {
             with(binding) {
-                with(binding.root.context) {
-                    if (weatherModelDomain.weatherRequestCount < 2) {
-                        searchingItemOptionalGroup.isVisible = false
-                    } else {
-                        searchingItemOptionalGroup.isVisible = true
+                if (weatherModelDomain.weatherRequestCount < 2) {
+                    searchingItemOptionalGroup.isVisible = false
+                } else {
+                    searchingItemOptionalGroup.isVisible = true
 
-                        searchingItemMaxTempTextView.text =
-                            weatherUnitsProvider.provideMaxTempValue(
-                                this,
-                                weatherModelDomain
-                            )
+                    searchingItemMaxTempTextView.text =
+                        weatherUnitsProvider.provideMaxTempValue(
+                            weatherModelDomain.maxTempValueInCelsius
+                        )
 
-                        searchingItemMinTempTextView.text =
-                            weatherUnitsProvider.provideMinTempValue(
-                                this,
-                                weatherModelDomain
-                            )
+                    searchingItemMinTempTextView.text =
+                        weatherUnitsProvider.provideMinTempValue(
+                            weatherModelDomain.minTempValueInCelsius
+                        )
 
-                        tempGraphImageView.setOnClickListener {
-                            clickListener.onItemClick(weatherModelDomain.locationID)
-                        }
+                    tempGraphImageView.setOnClickListener {
+                        clickListener.onItemClick(weatherModelDomain.locationID)
                     }
                 }
             }

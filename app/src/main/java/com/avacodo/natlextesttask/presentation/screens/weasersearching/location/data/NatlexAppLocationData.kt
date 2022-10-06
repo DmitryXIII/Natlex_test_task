@@ -1,9 +1,9 @@
-package com.avacodo.natlextesttask.presentation.location.data
+package com.avacodo.natlextesttask.presentation.screens.weasersearching.location.data
 
 import android.app.Activity
 import android.os.Looper
 import com.avacodo.natlextesttask.domain.entity.MyLocationCoords
-import com.avacodo.natlextesttask.presentation.location.permission.OnLocationCoordsReceiver
+import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.permission.OnLocationCoordsReceiver
 import com.google.android.gms.location.*
 
 class NatlexAppLocationData: AppLocationData {

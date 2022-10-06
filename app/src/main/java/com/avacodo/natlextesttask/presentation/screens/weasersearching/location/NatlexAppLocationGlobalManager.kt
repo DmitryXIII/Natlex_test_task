@@ -1,11 +1,11 @@
-package com.avacodo.natlextesttask.presentation.location
+package com.avacodo.natlextesttask.presentation.screens.weasersearching.location
 
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
-import com.avacodo.natlextesttask.presentation.location.data.AppLocationData
-import com.avacodo.natlextesttask.presentation.location.permission.AppLocationPermissionManager
-import com.avacodo.natlextesttask.presentation.location.permission.OnLocationCoordsReceiver
-import com.avacodo.natlextesttask.presentation.location.settings.AppLocationSettingsManager
+import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.data.AppLocationData
+import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.permission.AppLocationPermissionManager
+import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.permission.OnLocationCoordsReceiver
+import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.settings.AppLocationSettingsManager
 
 class NatlexAppLocationGlobalManager(
     private val locationSettingsManager: AppLocationSettingsManager,

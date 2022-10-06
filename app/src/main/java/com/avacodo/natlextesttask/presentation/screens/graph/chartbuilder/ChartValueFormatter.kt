@@ -6,5 +6,4 @@ interface ChartValueFormatter {
     fun getXAxisFormatter(xAxisDataList: List<String>): ValueFormatter
     fun getYAxisFormatter(isCelsiusRequired: Boolean): ValueFormatter
     fun getDataFormatter(): ValueFormatter
-    fun roundValueToOneDecimal(value: Float): Float
 }

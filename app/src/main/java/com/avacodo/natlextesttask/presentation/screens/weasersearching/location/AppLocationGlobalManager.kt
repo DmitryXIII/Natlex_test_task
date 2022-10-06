@@ -1,8 +1,8 @@
-package com.avacodo.natlextesttask.presentation.location
+package com.avacodo.natlextesttask.presentation.screens.weasersearching.location
 
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
-import com.avacodo.natlextesttask.presentation.location.permission.OnLocationCoordsReceiver
+import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.permission.OnLocationCoordsReceiver
 
 interface AppLocationGlobalManager {
     fun checkLocationSettings(activity: AppCompatActivity)
