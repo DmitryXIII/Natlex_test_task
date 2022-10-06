@@ -9,6 +9,7 @@ import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.presentation.extensions.showAlertDialogWithoutNegativeButton
 import com.avacodo.natlextesttask.presentation.location.AppLocationGlobalManager
 import com.avacodo.natlextesttask.presentation.location.permission.OnLocationCoordsReceiver
+import com.avacodo.natlextesttask.presentation.screens.graph.WeatherGraphFragment
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.WeatherSearchingFragment
 import org.koin.android.ext.android.inject
 
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity(), NavigationRouter, WeatherLocationCoord
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.main_navigation_container, WeatherSearchingFragment())
+                .replace(R.id.main_navigation_container, WeatherGraphFragment())
                 .commit()
         }
     }
