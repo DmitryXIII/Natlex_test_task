@@ -5,6 +5,7 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.LineDataSet
 
 interface ChartInitializer<T> {
+    fun setRequiredWeatherUnits(isCelsiusRequired: Boolean)
     fun initNewValues(weatherGraphDataDomain: T)
     fun initXAxis(xAxis: XAxis)
     fun initAxisLeft(yAxis: YAxis)

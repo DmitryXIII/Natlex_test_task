@@ -31,7 +31,7 @@ class WeatherSearchingFragment :
     override val progressBar: ProgressBar by lazy { binding.weatherSearchingProgressBar }
     private val isSwitchCheckedFlow = MutableStateFlow(true)
     private val weatherSearchingAdapter = WeatherSearchingAdapter { locationID ->
-        router.navigateToTemperatureGraphScreen(locationID)
+        router.navigateToTemperatureGraphScreen(locationID, binding.weatherUnitsSwitch.isChecked)
     }
     private var currentWeatherData: WeatherModelDomain? = null
     private var weatherUnitsProvider = initWeatherValueProvider(true)

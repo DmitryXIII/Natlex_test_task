@@ -30,8 +30,11 @@ class MainActivity : AppCompatActivity(), NavigationRouter, WeatherLocationCoord
         }
     }
 
-    override fun navigateToTemperatureGraphScreen(locationID: String) {
-        navigateToDestination(WeatherGraphFragment.newInstance(locationID), true)
+    override fun navigateToTemperatureGraphScreen(locationID: String, isCelsiusRequired: Boolean) {
+        navigateToDestination(WeatherGraphFragment.newInstance(
+            locationID,
+            isCelsiusRequired),
+            true)
     }
 
     override fun navigateToDestination(destination: Fragment, isBackstackRequired: Boolean) {

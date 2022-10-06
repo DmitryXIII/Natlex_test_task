@@ -12,9 +12,10 @@ class WeatherChartBuilder(
     private val chartInitializer: ChartInitializer<WeatherGraphDataDomain>
 ) : ChartBuilder<WeatherGraphDataDomain> {
 
-    override fun build(chartView: LineChart) {
+    override fun build(chartView: LineChart, isCelsiusRequired: Boolean) {
         chartView.apply {
             chartInitializer.run {
+                setRequiredWeatherUnits(isCelsiusRequired)
                 initAxisRight(axisRight)
                 initAxisLeft(axisLeft)
                 initXAxis(xAxis)

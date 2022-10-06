@@ -12,6 +12,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val LOCATION_ID_ARG_KEY = "LOCATION_ID"
+private const val IS_CELSIUS_REQUIRED_ARG_KEY = "IS_CELSIUS_REQUIRED"
 
 class WeatherGraphFragment : BaseFragment<FragmentWeatherGraphBinding, WeatherGraphDataDomain>(
     FragmentWeatherGraphBinding::inflate) {
@@ -25,10 +26,13 @@ class WeatherGraphFragment : BaseFragment<FragmentWeatherGraphBinding, WeatherGr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        chartBuilder.build(binding.weatherGraphChartView)
-
         val currentLocationID =
             arguments?.getString(LOCATION_ID_ARG_KEY) ?: getString(R.string.argument_error)
+
+        val isCelsiusRequired =
+            arguments?.getBoolean(IS_CELSIUS_REQUIRED_ARG_KEY) ?: true
+
+        chartBuilder.build(binding.weatherGraphChartView, isCelsiusRequired)
 
         viewModel.getData().observe(viewLifecycleOwner) {
             it.handleState(
@@ -47,9 +51,11 @@ class WeatherGraphFragment : BaseFragment<FragmentWeatherGraphBinding, WeatherGr
     }
 
     companion object {
-        fun newInstance(locationID: String): WeatherGraphFragment {
+        fun newInstance(locationID: String, isCelsiusRequired: Boolean): WeatherGraphFragment {
             return WeatherGraphFragment().apply {
-                arguments = bundleOf(LOCATION_ID_ARG_KEY to locationID)
+                arguments = bundleOf(
+                    LOCATION_ID_ARG_KEY to locationID,
+                    IS_CELSIUS_REQUIRED_ARG_KEY to isCelsiusRequired)
             }
         }
     }

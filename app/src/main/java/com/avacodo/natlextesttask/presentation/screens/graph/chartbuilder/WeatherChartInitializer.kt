@@ -22,6 +22,10 @@ class WeatherChartInitializer(
     private val yAxisValuesList = mutableListOf<Entry>()
     private val dateFormat = SimpleDateFormat(DATE_FORMAT_PATTERN)
 
+    override fun setRequiredWeatherUnits(isCelsiusRequired: Boolean) {
+        chartValueFormatter.initWeatherUnitsProvider(isCelsiusRequired)
+    }
+
     override fun initXAxis(xAxis: XAxis) {
         xAxis.apply {
             setDrawGridLines(false)
@@ -35,7 +39,7 @@ class WeatherChartInitializer(
     override fun initAxisLeft(yAxis: YAxis) {
         yAxis.apply {
             setDrawGridLines(false)
-            valueFormatter = chartValueFormatter.getYAxisFormatter(true)
+            valueFormatter = chartValueFormatter.getYAxisFormatter()
         }
     }
 
