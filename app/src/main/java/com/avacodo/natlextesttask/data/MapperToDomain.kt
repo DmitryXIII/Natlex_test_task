@@ -2,7 +2,7 @@ package com.avacodo.natlextesttask.data
 
 import com.avacodo.natlextesttask.data.local.entity.WeatherLocalEntity
 import com.avacodo.natlextesttask.data.remote.dto.OpenWeatherMapDto
-import com.avacodo.natlextesttask.domain.WeatherUnitsMapper
+import com.avacodo.natlextesttask.domain.entity.GraphEntryDomain
 import com.avacodo.natlextesttask.domain.entity.WeatherModelDomain
 
 class MapperToDomain {
@@ -46,6 +46,16 @@ class MapperToDomain {
                 locationName = locationName,
                 temperatureInCelsius = temperatureInCelsius,
                 weatherMeasurementTime = weatherMeasurementTime,
+            )
+        }
+    }
+
+    fun mapWeatherLocalToGraphEntry(weatherLocalEntity: WeatherLocalEntity): GraphEntryDomain {
+        return with(weatherLocalEntity) {
+            GraphEntryDomain(
+                locationID = locationID,
+                temperature = temperatureInCelsius,
+                weatherRequestTimeL = weatherMeasurementTime,
             )
         }
     }

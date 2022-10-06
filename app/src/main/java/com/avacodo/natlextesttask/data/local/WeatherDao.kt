@@ -32,4 +32,19 @@ interface WeatherDao {
             "FROM WeatherLocalEntity " +
             "WHERE locationID = :locationID ")
     fun getCountByLocationID(locationID: String): Int
+
+    @Query("SELECT * " +
+            "FROM WeatherLocalEntity " +
+            "WHERE locationID = :locationID")
+    fun getLocalWeatherDataByID(locationID: String): List<WeatherLocalEntity>
+
+    @Query("SELECT MIN(weatherMeasurementTime) " +
+            "FROM WeatherLocalEntity " +
+            "WHERE locationID = :locationID")
+    fun getMinRequestTime(locationID: String): Long
+
+    @Query("SELECT MAX(weatherMeasurementTime) " +
+            "FROM WeatherLocalEntity " +
+            "WHERE locationID = :locationID")
+    fun getMaxRequestTime(locationID: String): Long
 }

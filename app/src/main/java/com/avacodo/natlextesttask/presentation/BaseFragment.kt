@@ -27,7 +27,7 @@ abstract class BaseFragment<VB : ViewBinding, ResultType>(
 
     abstract val progressBar: ProgressBar
 
-    private lateinit var router: NavigationRouter
+    protected lateinit var router: NavigationRouter
 
     override fun onCreateView(
         inflater: LayoutInflater,

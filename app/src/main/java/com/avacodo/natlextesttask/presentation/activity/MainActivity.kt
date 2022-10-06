@@ -26,13 +26,17 @@ class MainActivity : AppCompatActivity(), NavigationRouter, WeatherLocationCoord
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.main_navigation_container, WeatherGraphFragment())
+                .replace(R.id.main_navigation_container, WeatherSearchingFragment())
                 .commit()
         }
     }
 
-    override fun navigateToTemperatureGraphScreen() {
-        //TODO("навигация на экран с графиком температур")
+    override fun navigateToTemperatureGraphScreen(locationID: String) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.main_navigation_container, WeatherGraphFragment.newInstance(locationID))
+            .addToBackStack("")
+            .commit()
     }
 
     override fun provideLocationCoords(onReceiveCoordsCallback: OnLocationCoordsReceiver) {

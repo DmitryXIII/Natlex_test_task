@@ -1,11 +1,11 @@
-package com.avacodo.natlextesttask.data.remote
+package com.avacodo.natlextesttask.data
 
-import com.avacodo.natlextesttask.data.WeatherRepository
+import com.avacodo.natlextesttask.data.remote.WeatherSearchRepository
 import com.avacodo.natlextesttask.domain.entity.WeatherModelDomain
 import com.avacodo.natlextesttask.domain.usecase.GetWeatherUsecase
 import kotlinx.coroutines.flow.Flow
 
-class GetWeatherUsecaseImpl(private val repository: WeatherRepository) : GetWeatherUsecase {
+class GetWeatherUsecaseImpl(private val repository: WeatherSearchRepository) : GetWeatherUsecase {
     override suspend fun getRemoteWeather(locationName: String): WeatherModelDomain {
         return repository.getRemoteWeatherData(locationName)
     }

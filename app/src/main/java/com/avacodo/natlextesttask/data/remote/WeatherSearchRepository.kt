@@ -1,9 +1,9 @@
-package com.avacodo.natlextesttask.data
+package com.avacodo.natlextesttask.data.remote
 
 import com.avacodo.natlextesttask.domain.entity.WeatherModelDomain
 import kotlinx.coroutines.flow.Flow
 
-interface WeatherRepository {
+interface WeatherSearchRepository {
     suspend fun getRemoteWeatherData(locationName: String): WeatherModelDomain
 
     suspend fun getRemoteWeatherData(

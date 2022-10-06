@@ -1,13 +1,17 @@
 package com.avacodo.natlextesttask.di
 
 import com.avacodo.natlextesttask.data.MapperToDomain
-import com.avacodo.natlextesttask.data.WeatherRepository
-import com.avacodo.natlextesttask.data.WeatherRepositoryImpl
+import com.avacodo.natlextesttask.data.remote.WeatherSearchRepository
+import com.avacodo.natlextesttask.data.remote.WeatherRepositoryImpl
 import com.avacodo.natlextesttask.data.local.WeatherDatabase
-import com.avacodo.natlextesttask.data.remote.GetWeatherUsecaseImpl
+import com.avacodo.natlextesttask.data.GetWeatherUsecaseImpl
 import com.avacodo.natlextesttask.data.remote.OpenWeatherMapApi
 import com.avacodo.natlextesttask.data.remote.RetrofitClient
+import com.avacodo.natlextesttask.data.WeatherGraphUsecaseImpl
+import com.avacodo.natlextesttask.data.graph.WeatherGraphRepository
+import com.avacodo.natlextesttask.data.graph.WeatherGraphRepositoryImpl
 import com.avacodo.natlextesttask.domain.usecase.GetWeatherUsecase
+import com.avacodo.natlextesttask.domain.usecase.WeatherGraphUsecase
 import com.avacodo.natlextesttask.presentation.location.AppLocationGlobalManager
 import com.avacodo.natlextesttask.presentation.location.NatlexAppLocationGlobalManager
 import com.avacodo.natlextesttask.presentation.location.data.AppLocationData
@@ -16,6 +20,7 @@ import com.avacodo.natlextesttask.presentation.location.permission.AppLocationPe
 import com.avacodo.natlextesttask.presentation.location.permission.NatlexAppLocationPermissionManager
 import com.avacodo.natlextesttask.presentation.location.settings.AppLocationSettingsManager
 import com.avacodo.natlextesttask.presentation.location.settings.NatlexAppLocationSettingsManager
+import com.avacodo.natlextesttask.presentation.screens.graph.WeatherGraphViewModel
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.WeatherSearchingViewModel
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -37,25 +42,30 @@ val appModule = module {
     }
 
     single<AppLocationSettingsManager> { NatlexAppLocationSettingsManager() }
-
     single<AppLocationPermissionManager> { NatlexAppLocationPermissionManager() }
-
     single<AppLocationData> { NatlexAppLocationData() }
-
     single<GetWeatherUsecase> { GetWeatherUsecaseImpl(repository = get()) }
+    single<WeatherGraphUsecase> { WeatherGraphUsecaseImpl(repository = get()) }
 
-    single<WeatherRepository> {
+    single<WeatherSearchRepository> {
         WeatherRepositoryImpl(
             remoteDataSource = get(),
             localDataSource = get(),
             mapper = get())
     }
 
-    factory { MapperToDomain() }
+    single<WeatherGraphRepository> {
+        WeatherGraphRepositoryImpl(
+            localDataSource = get(),
+            mapper = get())
+    }
+
+    single { MapperToDomain() }
 }
 
 val viewModelModule = module {
     viewModel { WeatherSearchingViewModel(usecase = get()) }
+    viewModel { WeatherGraphViewModel(usecase = get()) }
 }
 
 val retrofitModule = module {

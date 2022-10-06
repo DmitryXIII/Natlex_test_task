@@ -1,5 +1,6 @@
 package com.avacodo.natlextesttask.presentation.screens.graph.chartbuilder
 
+import android.util.Log
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.formatter.ValueFormatter
 import kotlin.math.roundToInt
@@ -28,7 +29,8 @@ class ChartValueFormatter {
     fun getDataFormatter(): ValueFormatter {
         return object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
-                return (((value * 10).roundToInt()) / 10f).toString().substring(0, 4)
+                val result = (((value * 10).roundToInt()) / 10f).toString()
+                return result.substring(0, result.indexOf(".") + 2)
             }
         }
     }

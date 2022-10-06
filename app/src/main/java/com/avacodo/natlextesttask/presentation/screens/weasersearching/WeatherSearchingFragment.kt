@@ -1,13 +1,11 @@
 package com.avacodo.natlextesttask.presentation.screens.weasersearching
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.avacodo.natlextesttask.R
@@ -32,9 +30,8 @@ class WeatherSearchingFragment :
     override val viewModel by viewModel<WeatherSearchingViewModel>()
     override val progressBar: ProgressBar by lazy { binding.weatherSearchingProgressBar }
     private val isSwitchCheckedFlow = MutableStateFlow(true)
-    private val weatherSearchingAdapter = WeatherSearchingAdapter {
-        Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT)
-            .show() // todo: сделать навигацию на экран с графиком
+    private val weatherSearchingAdapter = WeatherSearchingAdapter { locationID ->
+        router.navigateToTemperatureGraphScreen(locationID)
     }
     private var currentWeatherData: WeatherModelDomain? = null
     private var weatherUnitsProvider = initWeatherValueProvider(true)
@@ -62,7 +59,6 @@ class WeatherSearchingFragment :
 
                 override fun onSuccessLocationRequest(myLocationCoords: MyLocationCoords) {
                     binding.weatherSearchingProgressBar.isVisible = false
-                    Log.d("@#@", "onOptionsItemSelected: $myLocationCoords")
                     viewModel.searchWeather(myLocationCoords.latitude, myLocationCoords.longitude)
                 }
             })
