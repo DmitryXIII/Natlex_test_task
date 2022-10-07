@@ -142,13 +142,14 @@ class WeatherGraphFragment : BaseFragment<FragmentWeatherGraphBinding, WeatherGr
 //        val xAxisValuesList = mutableListOf<String>()
         //        val yAxisValuesList = mutableListOf<Entry>()
 
-        val xAxisValuesList = weatherGraphDataDomain.weatherData.map {graphEntryDomain ->
+        val xAxisValuesList = weatherGraphDataDomain.weatherData.map { graphEntryDomain ->
             dateFormat.format(graphEntryDomain.weatherRequestTime)
         }
 
-        val yAxisValuesList = weatherGraphDataDomain.weatherData.mapIndexed { index, graphEntryDomain ->
-            Entry(index.toFloat(), graphEntryDomain.temperature.toFloat())
-        }
+        val yAxisValuesList =
+            weatherGraphDataDomain.weatherData.mapIndexed { index, graphEntryDomain ->
+                Entry(index.toFloat(), graphEntryDomain.temperature.toFloat())
+            }
 
 //        for (index in weatherGraphDataDomain.weatherData.indices) {
 //            yAxisValuesList.add(Entry(index.toFloat(), weatherGraphDataDomain.weatherData[index].temperature.toFloat()))
@@ -168,29 +169,34 @@ class WeatherGraphFragment : BaseFragment<FragmentWeatherGraphBinding, WeatherGr
         }
 
         binding.weatherGraphChartView.apply {
+            animateY(100)
+            axisLeft.apply {
+                setDrawGridLines(false)
+                valueFormatter = object : ValueFormatter() {
+                    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+                        return unitsProvider.provideWeatherValue(value.toDouble())
+                    }
+                }
+            }
 
-//            axisLeft.apply {
-//                setDrawGridLines(false)
-//                valueFormatter = object : ValueFormatter() {
-//                    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-//                        return unitsProvider.provideWeatherValue(value.toDouble())
-//                    }
-//                }
-//            }
-//
-//            axisRight.isEnabled = false
-//
-//            xAxis.apply {
-//                setDrawGridLines(false)
-//                valueFormatter = object : ValueFormatter() {
-//                    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-//                        return xAxisValuesList[value.toInt()]
-//                    }
-//                }
-//                position = XAxis.XAxisPosition.BOTTOM
-//                granularity = X_AXIS_GRANULARITY
-//                labelRotationAngle = X_AXIS_LABEL_ANGLE
-//            }
+            axisRight.isEnabled = false
+
+            xAxis.apply {
+                setDrawGridLines(false)
+                valueFormatter = object : ValueFormatter() {
+                    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+                        val index = value.toInt()
+                        return if (index < xAxisValuesList.size && index >=0) {
+                            xAxisValuesList[index]
+                        } else {
+                            ""
+                        }
+                    }
+                }
+                position = XAxis.XAxisPosition.BOTTOM
+                granularity = X_AXIS_GRANULARITY
+                labelRotationAngle = X_AXIS_LABEL_ANGLE
+            }
 
             setScaleEnabled(true)
 
@@ -200,6 +206,7 @@ class WeatherGraphFragment : BaseFragment<FragmentWeatherGraphBinding, WeatherGr
             }
 
             data = LineData(dataSet)
+            notifyDataSetChanged()
             invalidate()
         }
     }
