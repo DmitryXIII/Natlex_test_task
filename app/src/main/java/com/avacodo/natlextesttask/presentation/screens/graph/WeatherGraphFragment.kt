@@ -21,8 +21,6 @@ class WeatherGraphFragment : BaseFragment<FragmentWeatherGraphBinding, WeatherGr
 
     override val viewModel by viewModel<WeatherGraphViewModel>()
 
-    override val progressBar by lazy { binding.weatherGraphProgressBar }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

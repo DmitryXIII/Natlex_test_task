@@ -13,7 +13,6 @@ class WeatherGraphViewModel(private val usecase: WeatherGraphUsecase) :
 
     fun getWeatherGraphData(locationID: String) {
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-            liveData.postValue(AppState.Loading())
             liveData.postValue(AppState.Success(usecase.getWeatherGraphData(locationID)))
         }
     }

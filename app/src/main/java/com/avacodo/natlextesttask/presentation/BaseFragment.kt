@@ -25,7 +25,7 @@ abstract class BaseFragment<VB : ViewBinding, ResultType>(
 
     abstract val viewModel: BaseViewModel<ResultType>
 
-    abstract val progressBar: ProgressBar
+    protected open val progressBar: ProgressBar? = null
 
     protected lateinit var router: NavigationRouter
 
@@ -50,7 +50,7 @@ abstract class BaseFragment<VB : ViewBinding, ResultType>(
     }
 
     protected open val provideOnStartLoadingAction = {
-        progressBar.isVisible = true
+        progressBar?.isVisible = true
     }
 
     protected open val provideOnSuccessAction: (ResultType) -> Unit = {
@@ -63,7 +63,7 @@ abstract class BaseFragment<VB : ViewBinding, ResultType>(
     }
 
     private fun onEndLoading() {
-        progressBar.isVisible = false
+        progressBar?.isVisible = false
     }
 
     override fun onDestroy() {
