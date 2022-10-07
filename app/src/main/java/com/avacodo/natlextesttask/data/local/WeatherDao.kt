@@ -47,4 +47,15 @@ interface WeatherDao {
             "FROM WeatherLocalEntity " +
             "WHERE locationID = :locationID")
     fun getMaxRequestTime(locationID: String): Long
+
+    @Query("SELECT *" +
+            "FROM WeatherLocalEntity " +
+            "WHERE locationID = :locationID " +
+            "AND weatherMeasurementTime >= :timeFrom " +
+            "AND weatherMeasurementTime <= :timeTo")
+    fun getLocalWeatherDataByTimeRange(
+        locationID: String,
+        timeFrom: Long,
+        timeTo: Long,
+    ): List<WeatherLocalEntity>
 }

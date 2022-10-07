@@ -55,7 +55,7 @@ class MapperToDomain {
             GraphEntryDomain(
                 locationID = locationID,
                 temperature = temperatureInCelsius,
-                weatherRequestTimeL = weatherMeasurementTime,
+                weatherRequestTime = weatherMeasurementTime,
             )
         }
     }

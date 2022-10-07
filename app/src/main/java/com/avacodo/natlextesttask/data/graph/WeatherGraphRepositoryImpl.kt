@@ -14,6 +14,16 @@ class WeatherGraphRepositoryImpl(
         }
     }
 
+    override suspend fun getLocalWeatherDataByRange(
+        locationID: String,
+        timeFrom: Long,
+        timeTo: Long,
+    ): List<GraphEntryDomain> {
+        return localDataSource.getLocalWeatherDataByTimeRange(locationID, timeFrom, timeTo).map {
+            mapper.mapWeatherLocalToGraphEntry(it)
+        }
+    }
+
     override suspend fun getMaxRequestTime(locationID: String): Long {
         return localDataSource.getMaxRequestTime(locationID)
     }

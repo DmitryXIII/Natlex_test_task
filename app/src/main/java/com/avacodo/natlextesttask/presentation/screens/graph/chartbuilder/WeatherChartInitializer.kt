@@ -57,7 +57,7 @@ class WeatherChartInitializer(
                     weatherGraphDataDomain.weatherData[index].temperature.toFloat()))
 
             xAxisValuesList.add(
-                dateFormat.format(weatherGraphDataDomain.weatherData[index].weatherRequestTimeL))
+                dateFormat.format(weatherGraphDataDomain.weatherData[index].weatherRequestTime))
         }
     }
 

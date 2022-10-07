@@ -13,4 +13,16 @@ class WeatherGraphUsecaseImpl(private val repository: WeatherGraphRepository) :
             minRequestTime = repository.getMinRequestTime(locationID)
         )
     }
+
+    override suspend fun getWeatherGraphDataByRange(
+        locationID: String,
+        timeFrom: Long,
+        timeTo: Long,
+    ): WeatherGraphDataDomain {
+        return WeatherGraphDataDomain(
+            weatherData = repository.getLocalWeatherDataByRange(locationID, timeFrom, timeTo),
+            maxRequestTime = repository.getMaxRequestTime(locationID),
+            minRequestTime = repository.getMinRequestTime(locationID)
+        )
+    }
 }

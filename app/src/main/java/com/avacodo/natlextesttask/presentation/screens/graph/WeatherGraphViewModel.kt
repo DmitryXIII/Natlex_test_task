@@ -11,9 +11,16 @@ import kotlinx.coroutines.launch
 class WeatherGraphViewModel(private val usecase: WeatherGraphUsecase) :
     BaseViewModel<WeatherGraphDataDomain>() {
 
-    fun getWeatherGraphData(locationID: String) {
+    fun onInitialization(locationID: String) {
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-            liveData.postValue(AppState.Success(usecase.getWeatherGraphData(locationID)))
+            liveData.postValue(AppState.Initial(usecase.getWeatherGraphData(locationID)))
+        }
+    }
+
+    fun getWeatherGraphDataByRange(locationID: String, timeFrom: Long, timeTo: Long) {
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+            liveData.postValue(AppState.Success(
+                usecase.getWeatherGraphDataByRange(locationID, timeFrom, timeTo)))
         }
     }
 }

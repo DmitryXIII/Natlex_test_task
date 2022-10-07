@@ -93,9 +93,10 @@ class WeatherSearchingFragment :
 
         viewModel.getData().observe(viewLifecycleOwner) { state ->
             state.handleState(
+                onInit(),
                 provideOnStartLoadingAction,
                 provideOnSuccessAction,
-                provideOnErrorAction
+                provideOnErrorAction,
             )
         }
 
@@ -157,4 +158,6 @@ class WeatherSearchingFragment :
             .provideBackgroundDrawer()
             .setLayoutBackground(view)
     }
+
+    private fun onInit(): (WeatherModelDomain) -> Unit = {}
 }

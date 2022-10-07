@@ -57,6 +57,10 @@ abstract class BaseFragment<VB : ViewBinding, ResultType>(
         onEndLoading()
     }
 
+    protected open val provideOnInitAction: (ResultType) -> Unit = {
+        onEndLoading()
+    }
+
     protected open val provideOnErrorAction: (String) -> Unit = { errorMessage ->
         onEndLoading()
         Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_SHORT).show()

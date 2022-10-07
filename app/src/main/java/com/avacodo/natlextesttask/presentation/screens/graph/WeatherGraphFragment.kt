@@ -1,6 +1,7 @@
 package com.avacodo.natlextesttask.presentation.screens.graph
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import com.avacodo.natlextesttask.R
@@ -10,6 +11,8 @@ import com.avacodo.natlextesttask.presentation.BaseFragment
 import com.avacodo.natlextesttask.presentation.screens.graph.chartbuilder.ChartBuilder
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
 
 private const val LOCATION_ID_ARG_KEY = "LOCATION_ID"
 private const val IS_CELSIUS_REQUIRED_ARG_KEY = "IS_CELSIUS_REQUIRED"
@@ -37,15 +40,58 @@ class WeatherGraphFragment : BaseFragment<FragmentWeatherGraphBinding, WeatherGr
                 onStartLoadingAction = provideOnStartLoadingAction,
                 onSuccessAction = provideOnSuccessAction,
                 onErrorAction = provideOnErrorAction,
+                onInitializationAction = provideOnInitAction
             )
         }
 
-        viewModel.getWeatherGraphData(currentLocationID)
+        viewModel.onInitialization(currentLocationID)
     }
 
-    override val provideOnSuccessAction: (WeatherGraphDataDomain) -> Unit = {
+    override val provideOnSuccessAction: (WeatherGraphDataDomain) -> Unit = { weatherGraphData ->
         super.provideOnSuccessAction
-        chartBuilder.invalidate(binding.weatherGraphChartView, it)
+        Log.d("@#@", "MINUTES_COUNT = $weatherGraphData")
+//        chartBuilder.clear(binding.weatherGraphChartView)
+        chartBuilder.build(binding.weatherGraphChartView, true)
+    }
+
+    override val provideOnInitAction: (WeatherGraphDataDomain) -> Unit = { weatherGraphData ->
+        val requestTimesList = mutableListOf<Long>()
+        val startTime = weatherGraphData.minRequestTime / 60000 * 60000
+        val endTime = weatherGraphData.maxRequestTime / 60000 * 60000
+        val minutesCount = ((endTime - startTime) / 60000).toInt() + 1
+        val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
+        Log.d("@#@", "MINUTES_COUNT = $minutesCount")
+
+        for (i in 0..minutesCount) {
+            Log.d("@#@", "INDEX = $i")
+            requestTimesList.add(startTime + i * 60000L)
+        }
+
+        Log.d("@#@", "FIRST_TIME = ${requestTimesList.first()}")
+        Log.d("@#@", "LAST_TIME = ${requestTimesList.last()}")
+
+        binding.weatherGraphRangeSlider.apply {
+            values = listOf(0f, minutesCount.toFloat())
+            valueFrom = values.first()
+            valueTo = values.last()
+            stepSize = 1f
+            setMinSeparationValue(1f)
+
+            setLabelFormatter { value: Float ->
+                dateFormat.format(requestTimesList[value.toInt()])
+            }
+
+            addOnChangeListener { slider, _, _ ->
+//                viewModel.getWeatherGraphDataByRange(
+//                    locationID = weatherGraphData.weatherData.first().locationID,
+//                    timeFrom = requestTimesList[values.first().toInt()],
+//                    timeTo = requestTimesList[values.last().toInt()]
+//                )
+                Log.d("@#@", "VALUE = ${slider.values.first()} -- ${slider.values.last()} ")
+            }
+
+        }
+        chartBuilder.invalidate(binding.weatherGraphChartView, weatherGraphData)
     }
 
     companion object {
