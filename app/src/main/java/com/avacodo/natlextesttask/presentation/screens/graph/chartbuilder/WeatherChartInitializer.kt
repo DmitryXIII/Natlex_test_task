@@ -15,13 +15,11 @@ private const val X_AXIS_GRANULARITY = 1f
 private const val CHART_TEXT_SIZE = 12f
 
 class WeatherChartInitializer(
-    private val chartValueFormatter: ChartValueFormatter
-    ) : ChartInitializer<WeatherGraphDataDomain> {
-
-    private val xAxisValuesList = mutableListOf<String>()
-    private val yAxisValuesList = mutableListOf<Entry>()
+    private val chartValueFormatter: ChartValueFormatter,
+) : ChartInitializer<WeatherGraphDataDomain> {
     private val dateFormat = SimpleDateFormat(DATE_FORMAT_PATTERN)
-
+    private var xAxisValuesList = listOf<String>()
+    private var yAxisValuesList = listOf<Entry>()
     override fun setRequiredWeatherUnits(isCelsiusRequired: Boolean) {
         chartValueFormatter.initWeatherUnitsProvider(isCelsiusRequired)
     }
@@ -47,17 +45,13 @@ class WeatherChartInitializer(
         yAxis.isEnabled = false
     }
 
-    override fun initNewValues(weatherGraphDataDomain: WeatherGraphDataDomain) {
-        xAxisValuesList.clear()
-        yAxisValuesList.clear()
+    override fun setChartData(chartData: WeatherGraphDataDomain) {
+        xAxisValuesList = chartData.weatherData.map { graphEntryDomain ->
+            dateFormat.format(graphEntryDomain.weatherRequestTime)
+        }
 
-        for (index in weatherGraphDataDomain.weatherData.indices) {
-            yAxisValuesList.add(
-                Entry(index.toFloat(),
-                    weatherGraphDataDomain.weatherData[index].temperature.toFloat()))
-
-            xAxisValuesList.add(
-                dateFormat.format(weatherGraphDataDomain.weatherData[index].weatherRequestTime))
+        yAxisValuesList = chartData.weatherData.mapIndexed { index, graphEntryDomain ->
+            Entry(index.toFloat(), graphEntryDomain.temperature.toFloat())
         }
     }
 

@@ -96,5 +96,5 @@ val graphModule = module {
         WeatherChartInitializer(chartValueFormatter = get())
     }
 
-    factory<ChartBuilder<WeatherGraphDataDomain>> { WeatherChartBuilder() }
+    factory<ChartBuilder<WeatherGraphDataDomain>> { WeatherChartBuilder(chartInitializer = get()) }
 }

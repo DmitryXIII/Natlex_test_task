@@ -12,10 +12,15 @@ class WeatherChartValueFormatter : ChartValueFormatter {
         unitsProvider = WeatherUnitsProviderFactory().initWeatherUnitsProvider(isCelsiusRequired)
     }
 
-    override fun getXAxisFormatter(xAxisDataList: List<String>): ValueFormatter {
+    override fun getXAxisFormatter(xAxisValuesList: List<String>): ValueFormatter {
         return object : ValueFormatter() {
             override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-                return xAxisDataList[value.toInt()]
+                val index = value.toInt()
+                return if (index < xAxisValuesList.size && index >= 0) {
+                    xAxisValuesList[index]
+                } else {
+                    ""
+                }
             }
         }
     }
