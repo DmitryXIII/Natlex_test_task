@@ -28,18 +28,11 @@ class WeatherSearchingViewModel(private val usecase: GetWeatherUsecase) :
     }
 
     fun searchWeather(locationName: String) {
-        if (locationName.isEmpty()) {
-            liveData.postValue(AppState.Error("Введите название города"))
-        //todo: сделать маппер ошибок через ресурсы
-        //todo: проверить необходимость проверки на isEmpty (возможно, searchView по дефолту не реагирует на клик, если запрос пустой)
-        } else {
-            //todo: сделать обрезку пробелов в конце запроса
-            liveData.postValue(AppState.Loading())
-            viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-                usecase.getRemoteWeather(locationName).also { weatherData ->
-                    usecase.addLocalWeatherData(weatherData)
-                    liveData.postValue(AppState.Success(weatherData))
-                }
+        liveData.postValue(AppState.Loading())
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+            usecase.getRemoteWeather(locationName).also { weatherData ->
+                usecase.addLocalWeatherData(weatherData)
+                liveData.postValue(AppState.Success(weatherData))
             }
         }
     }

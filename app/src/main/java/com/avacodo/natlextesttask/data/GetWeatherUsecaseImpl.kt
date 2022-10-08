@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 class GetWeatherUsecaseImpl(private val repository: WeatherSearchRepository) : GetWeatherUsecase {
     override suspend fun getRemoteWeather(locationName: String): WeatherModelDomain {
-        return repository.getRemoteWeatherData(locationName)
+        return repository.getRemoteWeatherData(locationName.trim())
     }
 
     override suspend fun getRemoteWeather(
