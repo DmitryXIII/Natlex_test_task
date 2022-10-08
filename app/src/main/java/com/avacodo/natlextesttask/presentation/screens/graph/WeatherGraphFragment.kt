@@ -1,6 +1,7 @@
 package com.avacodo.natlextesttask.presentation.screens.graph
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import com.avacodo.natlextesttask.R
@@ -26,10 +27,14 @@ class WeatherGraphFragment : BaseFragment<FragmentWeatherGraphBinding, WeatherGr
 
     private var isSwitchChecked = true
 
+    private var isFragmentStateSaved = false
+
     private lateinit var currentLocationID: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        isFragmentStateSaved = (savedInstanceState != null)
 
         arguments?.let {
             isSwitchChecked = it.getBoolean(IS_SWITCH_CHECKED_ARG_KEY)
@@ -46,7 +51,13 @@ class WeatherGraphFragment : BaseFragment<FragmentWeatherGraphBinding, WeatherGr
             )
         }
 
-        viewModel.onInitialization(currentLocationID)
+        if (savedInstanceState == null) {
+            viewModel.onInitialization(currentLocationID)
+        } else {
+            sliderInitializer.initSlider(binding.weatherGraphRangeSlider) { timeFrom, timeTo ->
+                viewModel.getWeatherGraphDataByRange(currentLocationID, timeFrom, timeTo)
+            }
+        }
     }
 
     override val provideOnSuccessAction: (WeatherGraphDataDomain) -> Unit = { weatherGraphData ->
@@ -55,7 +66,7 @@ class WeatherGraphFragment : BaseFragment<FragmentWeatherGraphBinding, WeatherGr
     }
 
     override val provideOnInitAction: (WeatherGraphDataDomain) -> Unit = { weatherGraphData ->
-        sliderInitializer.initSlider(
+        sliderInitializer.setSliderData(
             binding.weatherGraphRangeSlider,
             weatherGraphData) { timeFrom, timeTo ->
             viewModel.getWeatherGraphDataByRange(currentLocationID, timeFrom, timeTo)

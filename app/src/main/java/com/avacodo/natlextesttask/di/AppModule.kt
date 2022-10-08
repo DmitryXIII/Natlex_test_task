@@ -98,7 +98,7 @@ val graphModule = module {
         WeatherChartInitializer(chartValueFormatter = get())
     }
 
-    factory<SliderInitializer<WeatherGraphDataDomain>> { WeatherGraphSliderInitializer() }
+    single<SliderInitializer<WeatherGraphDataDomain>> { WeatherGraphSliderInitializer() }
 
     factory<ChartBuilder<WeatherGraphDataDomain>> { WeatherChartBuilder(chartInitializer = get()) }
 }

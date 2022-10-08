@@ -11,16 +11,18 @@ private const val SLIDER_STEP_SIZE= 1f
 private const val MIN_SLIDER_SEPARATION= 1f
 
 class WeatherGraphSliderInitializer : SliderInitializer<WeatherGraphDataDomain> {
-    override fun initSlider(
+    private val requestTimesList = mutableListOf<Long>()
+    private val dateFormat = SimpleDateFormat(SLIDER_LABEL_DATE_FORMAT_PATTERN)
+
+    override fun setSliderData(
         sliderView: RangeSlider,
         sliderData: WeatherGraphDataDomain,
         onSliderChangeAction: (timeFrom: Long, timeTo: Long) -> Unit,
     ) {
-        val requestTimesList = mutableListOf<Long>()
+        requestTimesList.clear()
         val startTime = sliderData.minRequestTime / MILLISECONDS_IN_MINUTE * MILLISECONDS_IN_MINUTE
         val endTime = sliderData.maxRequestTime / MILLISECONDS_IN_MINUTE * MILLISECONDS_IN_MINUTE
         val minutesCount = ((endTime - startTime) / MILLISECONDS_IN_MINUTE).toInt() + 1
-        val dateFormat = SimpleDateFormat(SLIDER_LABEL_DATE_FORMAT_PATTERN)
 
         for (i in 0..minutesCount) {
             requestTimesList.add(startTime + i * MILLISECONDS_IN_MINUTE)
@@ -33,16 +35,34 @@ class WeatherGraphSliderInitializer : SliderInitializer<WeatherGraphDataDomain> 
             stepSize = SLIDER_STEP_SIZE
             setMinSeparationValue(MIN_SLIDER_SEPARATION)
 
-            setLabelFormatter { value: Float ->
-                dateFormat.format(requestTimesList[value.toInt()])
-            }
+            initSlider(sliderView, onSliderChangeAction)
 
-            addOnChangeListener { slider, _, _ ->
-                onSliderChangeAction.invoke(
-                    requestTimesList[slider.values.first().toInt()],
-                    requestTimesList[slider.values.last().toInt()]
-                )
-            }
+//            setLabelFormatter { value: Float ->
+//                dateFormat.format(requestTimesList[value.toInt()])
+//            }
+//
+//            addOnChangeListener { slider, _, _ ->
+//                onSliderChangeAction.invoke(
+//                    requestTimesList[slider.values.first().toInt()],
+//                    requestTimesList[slider.values.last().toInt()]
+//                )
+//            }
+        }
+    }
+
+    override fun initSlider(
+        sliderView: RangeSlider,
+        onSliderChangeAction: (timeFrom: Long, timeTo: Long) -> Unit
+    ) {
+        sliderView.setLabelFormatter { value: Float ->
+            dateFormat.format(requestTimesList[value.toInt()])
+        }
+
+        sliderView.addOnChangeListener { slider, _, _ ->
+            onSliderChangeAction.invoke(
+                requestTimesList[slider.values.first().toInt()],
+                requestTimesList[slider.values.last().toInt()]
+            )
         }
     }
 }
