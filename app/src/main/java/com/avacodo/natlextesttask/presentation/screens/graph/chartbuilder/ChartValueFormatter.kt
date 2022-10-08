@@ -6,5 +6,5 @@ interface ChartValueFormatter {
     fun getXAxisFormatter(xAxisValuesList: List<String>): ValueFormatter
     fun getYAxisFormatter(): ValueFormatter
     fun getDataFormatter(): ValueFormatter
-    fun initWeatherUnitsProvider(isCelsiusRequired: Boolean)
+    fun initWeatherUnitsProvider(isSwitchChecked: Boolean)
 }

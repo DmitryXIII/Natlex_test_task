@@ -23,6 +23,8 @@ import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.settings.NatlexAppLocationSettingsManager
 import com.avacodo.natlextesttask.presentation.screens.graph.WeatherGraphViewModel
 import com.avacodo.natlextesttask.presentation.screens.graph.chartbuilder.*
+import com.avacodo.natlextesttask.presentation.screens.graph.slider.SliderInitializer
+import com.avacodo.natlextesttask.presentation.screens.graph.slider.WeatherGraphSliderInitializer
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.WeatherSearchingViewModel
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -95,6 +97,8 @@ val graphModule = module {
     factory<ChartInitializer<WeatherGraphDataDomain>> {
         WeatherChartInitializer(chartValueFormatter = get())
     }
+
+    factory<SliderInitializer<WeatherGraphDataDomain>> { WeatherGraphSliderInitializer() }
 
     factory<ChartBuilder<WeatherGraphDataDomain>> { WeatherChartBuilder(chartInitializer = get()) }
 }

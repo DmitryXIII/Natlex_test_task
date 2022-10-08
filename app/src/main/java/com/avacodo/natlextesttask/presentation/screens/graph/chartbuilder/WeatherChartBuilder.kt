@@ -7,6 +7,7 @@ import com.github.mikephil.charting.data.LineData
 
 private const val CHART_DESCRIPTION = "Дата"
 private const val CHART_TEXT_SIZE = 12f
+private const val EXTRA_RIGHT_OFFSET = 20f
 
 class WeatherChartBuilder(
     private val chartInitializer: ChartInitializer<WeatherGraphDataDomain>,
@@ -14,24 +15,24 @@ class WeatherChartBuilder(
 
     override fun build(
         chartView: LineChart,
-        isCelsiusRequired: Boolean,
+        isSwitchChecked: Boolean,
         chartData: WeatherGraphDataDomain,
     ) {
         chartView.apply {
             setScaleEnabled(true)
-
+            extraRightOffset = EXTRA_RIGHT_OFFSET
             description = Description().apply {
                 text = CHART_DESCRIPTION
                 textSize = CHART_TEXT_SIZE
             }
 
             chartInitializer.run {
-                setRequiredWeatherUnits(isCelsiusRequired)
+                setRequiredWeatherUnits(isSwitchChecked)
                 setChartData(chartData)
                 initAxisLeft(axisLeft)
                 initAxisRight(axisRight)
                 initXAxis(xAxis)
-                data = LineData(chartInitializer.initDataSet())
+                data = LineData(chartInitializer.initDataSet(chartView.context))
             }
 
             invalidate()

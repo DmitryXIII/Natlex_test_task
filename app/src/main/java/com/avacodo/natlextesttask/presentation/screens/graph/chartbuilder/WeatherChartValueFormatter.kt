@@ -8,8 +8,8 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 class WeatherChartValueFormatter : ChartValueFormatter {
     private lateinit var unitsProvider: WeatherUnitsProvider
 
-    override fun initWeatherUnitsProvider(isCelsiusRequired: Boolean) {
-        unitsProvider = WeatherUnitsProviderFactory().initWeatherUnitsProvider(isCelsiusRequired)
+    override fun initWeatherUnitsProvider(isSwitchChecked: Boolean) {
+        unitsProvider = WeatherUnitsProviderFactory().initWeatherUnitsProvider(isSwitchChecked)
     }
 
     override fun getXAxisFormatter(xAxisValuesList: List<String>): ValueFormatter {

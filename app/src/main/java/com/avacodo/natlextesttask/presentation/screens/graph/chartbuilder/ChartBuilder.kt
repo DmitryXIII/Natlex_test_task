@@ -5,7 +5,7 @@ import com.github.mikephil.charting.charts.LineChart
 interface ChartBuilder<T> {
     fun build(
         chartView: LineChart,
-        isCelsiusRequired: Boolean,
+        isSwitchChecked: Boolean,
         chartData: T,
     )
 }
