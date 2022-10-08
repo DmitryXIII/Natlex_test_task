@@ -6,7 +6,6 @@ interface SliderInitializer<T> {
     fun setSliderData(
         sliderView: RangeSlider,
         sliderData: T,
-        onSliderChangeAction: (timeFrom: Long, timeTo: Long) -> Unit,
     )
 
     fun initSlider(

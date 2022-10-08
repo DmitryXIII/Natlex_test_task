@@ -49,15 +49,15 @@ abstract class BaseFragment<VB : ViewBinding, ResultType>(
         }
     }
 
+    protected open val provideOnInitAction: (ResultType) -> Unit = {
+        onEndLoading()
+    }
+
     protected open val provideOnStartLoadingAction = {
         progressBar?.isVisible = true
     }
 
     protected open val provideOnSuccessAction: (ResultType) -> Unit = {
-        onEndLoading()
-    }
-
-    protected open val provideOnInitAction: (ResultType) -> Unit = {
         onEndLoading()
     }
 
