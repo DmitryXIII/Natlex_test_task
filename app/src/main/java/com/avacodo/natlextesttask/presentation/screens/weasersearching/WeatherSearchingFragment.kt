@@ -21,13 +21,13 @@ import com.avacodo.natlextesttask.domain.weatherunits.WeatherUnitsProvider
 import com.avacodo.natlextesttask.domain.weatherunits.WeatherUnitsProviderFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class WeatherSearchingFragment :
     BaseFragment<FragmentWeatherSearchingBinding, WeatherModelDomain>(
         FragmentWeatherSearchingBinding::inflate) {
 
-    override val viewModel by viewModel<WeatherSearchingViewModel>()
+    override val viewModel by stateViewModel<WeatherSearchingViewModel>()
     override val progressBar: ProgressBar by lazy { binding.weatherSearchingProgressBar }
     private val isSwitchCheckedFlow = MutableStateFlow(true)
     private val weatherSearchingAdapter = WeatherSearchingAdapter { locationID ->
@@ -69,13 +69,11 @@ class WeatherSearchingFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            launch {
-                viewModel.switchState.collect {
-                    initOnViewCreatedState(it)
-                }
-            }
+        viewModel.getSwitchCheckedState().observe(viewLifecycleOwner) { switchCheckedState ->
+            initOnViewCreatedState(switchCheckedState)
+        }
 
+        viewLifecycleOwner.lifecycleScope.launch {
             launch {
                 viewModel.getLocalData().collect {
                     weatherSearchingAdapter.setData(it)
@@ -108,7 +106,6 @@ class WeatherSearchingFragment :
     private fun initSwitch() {
         binding.weatherUnitsSwitch.setOnCheckedChangeListener { _, isChecked ->
             isSwitchCheckedFlow.value = isChecked
-            viewModel.changeSwitchState()
             weatherSearchingAdapter.setWeatherUnits(weatherUnitsProvider)
         }
     }
@@ -157,5 +154,10 @@ class WeatherSearchingFragment :
         BackgroundDrawerFactory()
             .provideBackgroundDrawer()
             .setLayoutBackground(view)
+    }
+
+    override fun onDestroyView() {
+        viewModel.saveSwitchCheckedState(binding.weatherUnitsSwitch.isChecked)
+        super.onDestroyView()
     }
 }

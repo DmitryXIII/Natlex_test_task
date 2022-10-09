@@ -1,5 +1,7 @@
 package com.avacodo.natlextesttask.presentation.screens.weasersearching
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.avacodo.natlextesttask.domain.entity.WeatherModelDomain
 import com.avacodo.natlextesttask.domain.usecase.GetWeatherUsecase
@@ -10,21 +12,24 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
-class WeatherSearchingViewModel(private val usecase: GetWeatherUsecase) :
+private const val SWITCH_STATE_KEY = "SWITCH_STATE"
+
+class WeatherSearchingViewModel(
+    private val usecase: GetWeatherUsecase,
+    private val state: SavedStateHandle,
+) :
     BaseViewModel<WeatherModelDomain>() {
 
-    private var switchIsChecked = true
+    private val switchCheckedState = state.getLiveData(SWITCH_STATE_KEY, true)
 
-    val switchState = flow {
-        emit(switchIsChecked)
+    fun getSwitchCheckedState(): LiveData<Boolean> = switchCheckedState
+
+    fun saveSwitchCheckedState(switchIsChecked: Boolean) {
+        state[SWITCH_STATE_KEY] = switchIsChecked
     }
 
     suspend fun getLocalData(): Flow<List<WeatherModelDomain>> {
         return usecase.getLocalWeather()
-    }
-
-    fun changeSwitchState() {
-        switchIsChecked = !switchIsChecked
     }
 
     fun searchWeather(locationName: String) {
