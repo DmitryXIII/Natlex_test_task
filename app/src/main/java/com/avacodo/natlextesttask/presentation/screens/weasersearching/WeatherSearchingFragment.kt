@@ -6,6 +6,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.avacodo.natlextesttask.R
@@ -16,9 +17,9 @@ import com.avacodo.natlextesttask.presentation.BaseFragment
 import com.avacodo.natlextesttask.presentation.activity.WeatherLocationCoordsProvider
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.backgrounddrawer.BackgroundDrawerFactory
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.permission.OnLocationCoordsReceiver
-import com.avacodo.natlextesttask.presentation.screens.weasersearching.searchview.SearchViewInitializer
 import com.avacodo.natlextesttask.domain.weatherunits.WeatherUnitsProvider
 import com.avacodo.natlextesttask.domain.weatherunits.WeatherUnitsProviderFactory
+import com.avacodo.natlextesttask.presentation.screens.weasersearching.searchview.SearchViewInitializer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
@@ -28,6 +29,7 @@ class WeatherSearchingFragment :
         FragmentWeatherSearchingBinding::inflate) {
 
     override val viewModel by stateViewModel<WeatherSearchingViewModel>()
+    private val searchInitializer = SearchViewInitializer()
     override val progressBar: ProgressBar by lazy { binding.weatherSearchingProgressBar }
     private val isSwitchCheckedFlow = MutableStateFlow(true)
     private val weatherSearchingAdapter = WeatherSearchingAdapter { locationID ->
@@ -35,7 +37,7 @@ class WeatherSearchingFragment :
     }
     private lateinit var currentWeatherData: WeatherModelDomain
     private var weatherUnitsProvider = initWeatherValueProvider(true)
-
+    private var queryToSave = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -43,7 +45,18 @@ class WeatherSearchingFragment :
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.app_bar_menu, menu)
-        SearchViewInitializer().initSearchView(menu, R.id.action_search_weather_by_name) { query ->
+        val searchMenuItem = menu.findItem(R.id.action_search_weather_by_name)
+        val searchView = searchMenuItem.actionView as SearchView
+        val onQueryChangeAction: (String) -> Unit = { newQuery ->
+            queryToSave = newQuery
+        }
+
+        viewModel.getSearchViewSavedQuery().observe(viewLifecycleOwner) { savedQuery ->
+            searchInitializer.setSavedQuery(searchMenuItem, searchView, savedQuery)
+            queryToSave = savedQuery
+        }
+
+        searchInitializer.initSearchView(searchView, onQueryChangeAction) { query ->
             viewModel.searchWeather(query)
         }
         super.onCreateOptionsMenu(menu, inflater)
@@ -132,7 +145,7 @@ class WeatherSearchingFragment :
     }
 
     private fun displayWeatherValue() {
-        if(this::currentWeatherData.isInitialized) {
+        if (this::currentWeatherData.isInitialized) {
             binding.temperatureTextView.text = weatherUnitsProvider.provideWeatherValue(
                 currentWeatherData.temperatureInCelsius
             )
@@ -157,6 +170,7 @@ class WeatherSearchingFragment :
 
     override fun onDestroyView() {
         viewModel.saveSwitchCheckedState(binding.weatherUnitsSwitch.isChecked)
+        viewModel.saveSearchViewSavedQuery(queryToSave)
         super.onDestroyView()
     }
 }

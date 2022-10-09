@@ -1,22 +1,39 @@
 package com.avacodo.natlextesttask.presentation.screens.weasersearching.searchview
 
-import android.view.Menu
-import androidx.annotation.IdRes
+import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import com.avacodo.natlextesttask.presentation.extensions.hideKeyboard
 
 class SearchViewInitializer : SearchViewInitialise {
-    override fun initSearchView(menu: Menu, @IdRes searchViewItemID: Int, action: (String) -> Unit) {
-        (menu.findItem(searchViewItemID).actionView as SearchView).apply {
+    override fun initSearchView(
+        searchView: SearchView,
+        actionOnQueryChange: (String) -> Unit,
+        actionOnQuerySubmit: (String) -> Unit,
+    ) {
+        searchView.apply {
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
-                    action.invoke(query)
+                    actionOnQuerySubmit.invoke(query)
                     hideKeyboard()
                     return true
                 }
 
-                override fun onQueryTextChange(newText: String) = true
+                override fun onQueryTextChange(newText: String): Boolean {
+                    actionOnQueryChange.invoke(newText)
+                    return true
+                }
             })
+        }
+    }
+
+    override fun setSavedQuery(
+        searchMenuItem: MenuItem,
+        searchView: SearchView,
+        savedQuery: String,
+    ) {
+        if (savedQuery.isNotEmpty()) {
+            searchMenuItem.expandActionView()
+            searchView.setQuery(savedQuery, true)
         }
     }
 }

@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 private const val SWITCH_STATE_KEY = "SWITCH_STATE"
+private const val SAVED_QUERY_KEY = "SAVED_QUERY"
 
 class WeatherSearchingViewModel(
     private val usecase: GetWeatherUsecase,
@@ -21,11 +22,18 @@ class WeatherSearchingViewModel(
     BaseViewModel<WeatherModelDomain>() {
 
     private val switchCheckedState = state.getLiveData(SWITCH_STATE_KEY, true)
+    private val searchViewSavedQuery = state.getLiveData(SAVED_QUERY_KEY, "")
 
     fun getSwitchCheckedState(): LiveData<Boolean> = switchCheckedState
 
+    fun getSearchViewSavedQuery(): LiveData<String> = searchViewSavedQuery
+
     fun saveSwitchCheckedState(switchIsChecked: Boolean) {
         state[SWITCH_STATE_KEY] = switchIsChecked
+    }
+
+    fun saveSearchViewSavedQuery(queryToSave: String) {
+        state[SAVED_QUERY_KEY] = queryToSave
     }
 
     suspend fun getLocalData(): Flow<List<WeatherModelDomain>> {
