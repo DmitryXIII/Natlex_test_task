@@ -33,7 +33,7 @@ class WeatherSearchingFragment :
     private val weatherSearchingAdapter = WeatherSearchingAdapter { locationID ->
         router.navigateToTemperatureGraphScreen(locationID, binding.weatherUnitsSwitch.isChecked)
     }
-    private var currentWeatherData: WeatherModelDomain? = null
+    private lateinit var currentWeatherData: WeatherModelDomain
     private var weatherUnitsProvider = initWeatherValueProvider(true)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,9 +132,9 @@ class WeatherSearchingFragment :
     }
 
     private fun displayWeatherValue() {
-        currentWeatherData?.let {
+        if(this::currentWeatherData.isInitialized) {
             binding.temperatureTextView.text = weatherUnitsProvider.provideWeatherValue(
-                it.temperatureInCelsius
+                currentWeatherData.temperatureInCelsius
             )
         }
     }
