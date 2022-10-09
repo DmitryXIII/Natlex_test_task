@@ -10,7 +10,7 @@ import com.avacodo.natlextesttask.presentation.BaseFragment
 import com.avacodo.natlextesttask.presentation.screens.graph.chartbuilder.ChartBuilder
 import com.avacodo.natlextesttask.presentation.screens.graph.slider.SliderInitializer
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 private const val LOCATION_ID_ARG_KEY = "LOCATION_ID"
 private const val IS_SWITCH_CHECKED_ARG_KEY = "IS_SWITCH_CHECKED"
@@ -22,7 +22,7 @@ class WeatherGraphFragment : BaseFragment<FragmentWeatherGraphBinding, WeatherGr
 
     private val sliderInitializer by inject<SliderInitializer<WeatherGraphDataDomain>>()
 
-    override val viewModel by viewModel<WeatherGraphViewModel>()
+    override val viewModel by stateViewModel<WeatherGraphViewModel>()
 
     private var isSwitchChecked = true
 
@@ -42,11 +42,11 @@ class WeatherGraphFragment : BaseFragment<FragmentWeatherGraphBinding, WeatherGr
                 onStartLoadingAction = provideOnStartLoadingAction,
                 onSuccessAction = provideOnSuccessAction,
                 onErrorAction = provideOnErrorAction,
-                onInitializationAction = provideOnInitAction
             )
         }
 
         if (savedInstanceState == null) {
+            viewModel.saveSliderIsInitializedState(false)
             viewModel.onInitialization(currentLocationID)
         }
 
@@ -57,11 +57,15 @@ class WeatherGraphFragment : BaseFragment<FragmentWeatherGraphBinding, WeatherGr
 
     override val provideOnSuccessAction: (WeatherGraphDataDomain) -> Unit = { weatherGraphData ->
         super.provideOnSuccessAction
+        viewModel.getSliderIsInitializedState()
+            .observe(viewLifecycleOwner) { sliderIsInitializedState ->
+                if (!sliderIsInitializedState) {
+                    sliderInitializer.setSliderData(binding.weatherGraphRangeSlider,
+                        weatherGraphData)
+                    viewModel.saveSliderIsInitializedState(true)
+                }
+            }
         chartBuilder.build(binding.weatherGraphChartView, isSwitchChecked, weatherGraphData)
-    }
-
-    override val provideOnInitAction: (WeatherGraphDataDomain) -> Unit = { weatherGraphData ->
-        sliderInitializer.setSliderData(binding.weatherGraphRangeSlider, weatherGraphData)
     }
 
     companion object {

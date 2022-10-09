@@ -58,7 +58,7 @@ val appModule = module {
 
 val viewModelModule = module {
     viewModel { WeatherSearchingViewModel(usecase = get(), state = get()) }
-    viewModel { WeatherGraphViewModel(usecase = get()) }
+    viewModel { WeatherGraphViewModel(usecase = get(), state = get()) }
 }
 
 val retrofitModule = module {

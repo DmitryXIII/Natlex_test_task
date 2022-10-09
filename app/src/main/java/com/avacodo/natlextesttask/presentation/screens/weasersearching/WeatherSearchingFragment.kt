@@ -91,7 +91,6 @@ class WeatherSearchingFragment :
 
         viewModel.getData().observe(viewLifecycleOwner) { state ->
             state.handleState(
-                provideOnInitAction,
                 provideOnStartLoadingAction,
                 provideOnSuccessAction,
                 provideOnErrorAction,
