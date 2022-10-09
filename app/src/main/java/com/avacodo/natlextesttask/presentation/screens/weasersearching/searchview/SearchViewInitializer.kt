@@ -4,6 +4,7 @@ import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import com.avacodo.natlextesttask.presentation.extensions.hideKeyboard
 
+
 class SearchViewInitializer : SearchViewInitialise {
     override fun initSearchView(
         searchView: SearchView,
@@ -11,6 +12,7 @@ class SearchViewInitializer : SearchViewInitialise {
         actionOnQuerySubmit: (String) -> Unit,
     ) {
         searchView.apply {
+            maxWidth = Int.MAX_VALUE
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     actionOnQuerySubmit.invoke(query)
