@@ -11,8 +11,8 @@
         android:id="@+id/weather_graph_chart_view"
         android:layout_width="@dimen/zero"
         android:layout_height="@dimen/zero"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.5"
+        app:layout_constraintEnd_toStartOf="@id/filter_data_text_view"
+        app:layout_constraintHeight_percent="0.85"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,13 +27,13 @@
 
     <TextView
         android:id="@+id/filter_data_text_view"
-        android:layout_width="@dimen/zero"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="@dimen/graph_filter_hint_text_size"
-        app:layout_constraintVertical_bias="0"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/weather_graph_chart_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/weather_graph_range_slider" />
+        android:layout_marginStart="@dimen/margin_4dp"
+        app:layout_constraintStart_toEndOf="@id/weather_graph_chart_view"
+        app:layout_constraintTop_toTopOf="@id/weather_graph_chart_view" />
 </androidx.constraintlayout.widget.ConstraintLayout>

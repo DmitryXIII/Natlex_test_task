@@ -10,6 +10,10 @@ interface SliderInitializer<T> {
 
     fun initSlider(
         sliderView: RangeSlider,
-        onSliderChangeAction: (timeFrom: Long, timeTo: Long) -> Unit,
+        onSliderChangeAction: (
+            timeFrom: Long,
+            timeTo: Long,
+            hintTimeFrom: String,
+            hintTimeTo: String) -> Unit,
     )
 }

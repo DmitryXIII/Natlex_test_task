@@ -30,4 +30,5 @@
     <string name="alert_message_if_location_is_off">При выключенном определении местоположения функция получения данных о погоде по местоположению работать не будет</string>
     <string name="default_alert_negative_button">Отменить</string>
     <string name="argument_error">Ошибка передачи аргумента</string>
+    <string name="filter_data_hint">Данные за период:\nот %1s\nдо %2s</string>
 </resources>

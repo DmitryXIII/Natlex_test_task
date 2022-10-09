@@ -38,7 +38,12 @@ class WeatherGraphSliderInitializer : SliderInitializer<WeatherGraphDataDomain> 
 
     override fun initSlider(
         sliderView: RangeSlider,
-        onSliderChangeAction: (timeFrom: Long, timeTo: Long) -> Unit,
+        onSliderChangeAction: (
+            timeFrom: Long,
+            timeTo: Long,
+            hintTimeFrom: String,
+            hintTimeTo: String,
+        ) -> Unit,
     ) {
         sliderView.setLabelFormatter { value: Float ->
             dateFormat.format(requestTimesList[value.toInt()])
@@ -47,7 +52,9 @@ class WeatherGraphSliderInitializer : SliderInitializer<WeatherGraphDataDomain> 
         sliderView.addOnChangeListener { slider, _, _ ->
             onSliderChangeAction.invoke(
                 requestTimesList[slider.values.first().toInt()],
-                requestTimesList[slider.values.last().toInt()]
+                requestTimesList[slider.values.last().toInt()],
+                dateFormat.format(requestTimesList[slider.values.first().toInt()]),
+                dateFormat.format(requestTimesList[slider.values.last().toInt()])
             )
         }
     }

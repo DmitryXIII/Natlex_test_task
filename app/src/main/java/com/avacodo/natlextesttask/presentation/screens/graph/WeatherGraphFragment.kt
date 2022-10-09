@@ -50,8 +50,9 @@ class WeatherGraphFragment : BaseFragment<FragmentWeatherGraphBinding, WeatherGr
             viewModel.onInitialization(currentLocationID)
         }
 
-        sliderInitializer.initSlider(binding.weatherGraphRangeSlider) { timeFrom, timeTo ->
+        sliderInitializer.initSlider(binding.weatherGraphRangeSlider) { timeFrom, timeTo, hintTimeFrom, hintTimeTo ->
             viewModel.getWeatherGraphDataByRange(currentLocationID, timeFrom, timeTo)
+            binding.filterDataTextView.text = getString(R.string.filter_data_hint, hintTimeFrom, hintTimeTo)
         }
     }
 
