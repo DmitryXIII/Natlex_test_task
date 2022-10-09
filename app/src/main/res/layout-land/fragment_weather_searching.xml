@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/default_layout_padding">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_weather_layout"
@@ -89,6 +88,7 @@
         android:id="@+id/weather_history_recycler_view"
         android:layout_width="@dimen/zero"
         android:layout_height="@dimen/zero"
+        android:layout_marginHorizontal="@dimen/default_layout_padding"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

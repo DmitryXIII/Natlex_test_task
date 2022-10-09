@@ -9,7 +9,6 @@ import com.avacodo.natlextesttask.presentation.AppState
 import com.avacodo.natlextesttask.presentation.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 private const val SWITCH_STATE_KEY = "SWITCH_STATE"

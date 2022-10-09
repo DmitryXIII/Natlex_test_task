@@ -13,15 +13,16 @@ import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.databinding.FragmentWeatherSearchingBinding
 import com.avacodo.natlextesttask.domain.entity.MyLocationCoords
 import com.avacodo.natlextesttask.domain.entity.WeatherModelDomain
+import com.avacodo.natlextesttask.domain.weatherunits.WeatherUnitsProvider
+import com.avacodo.natlextesttask.domain.weatherunits.WeatherUnitsProviderFactory
 import com.avacodo.natlextesttask.presentation.BaseFragment
 import com.avacodo.natlextesttask.presentation.activity.WeatherLocationCoordsProvider
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.backgrounddrawer.BackgroundDrawerFactory
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.permission.OnLocationCoordsReceiver
-import com.avacodo.natlextesttask.domain.weatherunits.WeatherUnitsProvider
-import com.avacodo.natlextesttask.domain.weatherunits.WeatherUnitsProviderFactory
-import com.avacodo.natlextesttask.presentation.screens.weasersearching.searchview.SearchViewInitializer
+import com.avacodo.natlextesttask.presentation.screens.weasersearching.searchview.SearchViewInitialise
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class WeatherSearchingFragment :
@@ -29,7 +30,7 @@ class WeatherSearchingFragment :
         FragmentWeatherSearchingBinding::inflate) {
 
     override val viewModel by stateViewModel<WeatherSearchingViewModel>()
-    private val searchInitializer = SearchViewInitializer()
+    private val searchViewInitializer: SearchViewInitialise by inject()
     override val progressBar: ProgressBar by lazy { binding.weatherSearchingProgressBar }
     private val isSwitchCheckedFlow = MutableStateFlow(true)
     private val weatherSearchingAdapter = WeatherSearchingAdapter { locationID ->
@@ -37,7 +38,8 @@ class WeatherSearchingFragment :
     }
     private lateinit var currentWeatherData: WeatherModelDomain
     private var weatherUnitsProvider = initWeatherValueProvider(true)
-    private var queryToSave = ""
+    private lateinit var queryToSave: String
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -52,11 +54,11 @@ class WeatherSearchingFragment :
         }
 
         viewModel.getSearchViewSavedQuery().observe(viewLifecycleOwner) { savedQuery ->
-            searchInitializer.setSavedQuery(searchMenuItem, searchView, savedQuery)
+            searchViewInitializer.setSavedQuery(searchMenuItem, searchView, savedQuery)
             queryToSave = savedQuery
         }
 
-        searchInitializer.initSearchView(searchView, onQueryChangeAction) { query ->
+        searchViewInitializer.initSearchView(searchView, onQueryChangeAction) { query ->
             viewModel.searchWeather(query)
         }
         super.onCreateOptionsMenu(menu, inflater)
