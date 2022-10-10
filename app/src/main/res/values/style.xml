@@ -22,4 +22,20 @@
         <item name="android:thumb">@drawable/switch_thumb</item>
         <item name="track">@drawable/switch_track</item>
     </style>
+
+    <style name="appMaterialSlider" parent="Widget.MaterialComponents.Slider">
+        <item name="materialThemeOverlay">@style/themeOverlayAppSlider</item>
+        <item name="labelStyle">@style/appSliderLabel</item>
+    </style>
+
+    <style name="themeOverlayAppSlider" parent="">
+        <item name="colorPrimary">@color/white_90</item>
+        <item name="colorOnPrimary">@color/bg_gradient_dark</item>
+        <item name="colorOnSurface">@color/white_90</item>
+    </style>
+
+    <style name="appSliderLabel" parent="Widget.MaterialComponents.Tooltip">
+        <item name="android:textColor">@color/white_90</item>
+        <item name="backgroundTint">@color/bg_gradient_dark</item>
+    </style>
 </resources>

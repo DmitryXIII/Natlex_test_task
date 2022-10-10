@@ -14,5 +14,6 @@
         <!-- Customize your theme here. -->
         <item name="materialAlertDialogTheme">@style/appMaterialAlertDialog</item>
         <item name="switchStyle">@style/appMaterialSwitch</item>
+        <item name="sliderStyle">@style/appMaterialSlider</item>
     </style>
 </resources>

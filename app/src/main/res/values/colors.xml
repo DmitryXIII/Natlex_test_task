@@ -7,6 +7,7 @@
     <color name="black">#FF000000</color>
     <color name="black_80">#CC000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="white_90">#E6FFFFFF</color>
     <color name="low_temperature">#4FC3F7</color>
     <color name="medium_temperature">#FFB74D</color>
     <color name="high_temperature">#E57373</color>

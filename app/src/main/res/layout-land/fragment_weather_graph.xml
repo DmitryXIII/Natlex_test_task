@@ -31,6 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_4dp"
         android:gravity="center"
+        android:textColor="@color/white_90"
         android:textSize="@dimen/graph_filter_hint_text_size"
         app:layout_constraintBottom_toBottomOf="@id/weather_graph_chart_view"
         app:layout_constraintEnd_toEndOf="parent"
