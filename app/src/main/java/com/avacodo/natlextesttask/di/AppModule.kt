@@ -10,18 +10,19 @@ import com.avacodo.natlextesttask.data.remote.OpenWeatherMapApi
 import com.avacodo.natlextesttask.data.remote.RetrofitClient
 import com.avacodo.natlextesttask.data.remote.WeatherRepositoryImpl
 import com.avacodo.natlextesttask.data.remote.WeatherSearchRepository
-import com.avacodo.natlextesttask.domain.entity.WeatherGraphDataDomain
+import com.avacodo.natlextesttask.domain.entity.GraphDataDomain
+import com.avacodo.natlextesttask.domain.entity.SliderDataDomain
 import com.avacodo.natlextesttask.domain.usecase.GetWeatherUsecase
 import com.avacodo.natlextesttask.domain.usecase.WeatherGraphUsecase
+import com.avacodo.natlextesttask.presentation.network.ConnectionHandler
+import com.avacodo.natlextesttask.presentation.network.ConnectivityObserver
+import com.avacodo.natlextesttask.presentation.network.NetworkConnectionHandler
+import com.avacodo.natlextesttask.presentation.network.NetworkConnectivityObserver
 import com.avacodo.natlextesttask.presentation.screens.graph.WeatherGraphViewModel
 import com.avacodo.natlextesttask.presentation.screens.graph.chartbuilder.*
 import com.avacodo.natlextesttask.presentation.screens.graph.slider.SliderInitializer
 import com.avacodo.natlextesttask.presentation.screens.graph.slider.WeatherGraphSliderInitializer
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.WeatherSearchingViewModel
-import com.avacodo.natlextesttask.presentation.network.ConnectionHandler
-import com.avacodo.natlextesttask.presentation.network.ConnectivityObserver
-import com.avacodo.natlextesttask.presentation.network.NetworkConnectionHandler
-import com.avacodo.natlextesttask.presentation.network.NetworkConnectivityObserver
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.AppLocationGlobalManager
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.NatlexAppLocationGlobalManager
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.data.AppLocationData
@@ -44,7 +45,7 @@ private const val BASE_URL = "https://api.openweathermap.org/"
 
 val appModule = module {
     single<GetWeatherUsecase> { GetWeatherUsecaseImpl(repository = get()) }
-    single<WeatherGraphUsecase> { WeatherGraphUsecaseImpl(repository = get()) }
+    single<WeatherGraphUsecase> { WeatherGraphUsecaseImpl(repository = get(), mapper = get()) }
 
     single<WeatherSearchRepository> {
         WeatherRepositoryImpl(
@@ -53,11 +54,7 @@ val appModule = module {
             mapper = get())
     }
 
-    single<WeatherGraphRepository> {
-        WeatherGraphRepositoryImpl(
-            localDataSource = get(),
-            mapper = get())
-    }
+    single<WeatherGraphRepository> { WeatherGraphRepositoryImpl(localDataSource = get())}
 
     single { MapperToDomain() }
     single<SearchViewInitialise> { SearchViewInitializer() }
@@ -101,11 +98,11 @@ val locationModule = module {
 }
 
 val graphModule = module {
-    factory<ChartInitializer<WeatherGraphDataDomain>> {
+    factory<ChartInitializer> {
         WeatherChartInitializer(chartValueFormatter = get())
     }
 
     single<ChartValueFormatter> { WeatherChartValueFormatter() }
-    single<SliderInitializer<WeatherGraphDataDomain>> { WeatherGraphSliderInitializer() }
-    factory<ChartBuilder<WeatherGraphDataDomain>> { WeatherChartBuilder(chartInitializer = get()) }
+    single<SliderInitializer<SliderDataDomain>> { WeatherGraphSliderInitializer() }
+    factory<ChartBuilder<GraphDataDomain>> { WeatherChartBuilder(chartInitializer = get()) }
 }

@@ -10,10 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.presentation.extensions.showAlertDialogWithoutNegativeButton
-import com.avacodo.natlextesttask.presentation.screens.graph.WeatherGraphFragment
-import com.avacodo.natlextesttask.presentation.screens.weasersearching.WeatherSearchingFragment
 import com.avacodo.natlextesttask.presentation.network.ConnectionHandler
 import com.avacodo.natlextesttask.presentation.network.ConnectivityObserver
+import com.avacodo.natlextesttask.presentation.screens.graph.WeatherGraphFragment
+import com.avacodo.natlextesttask.presentation.screens.weasersearching.WeatherSearchingFragment
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.AppLocationGlobalManager
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.permission.OnLocationCoordsReceiver
 import kotlinx.coroutines.launch

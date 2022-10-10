@@ -5,6 +5,8 @@ import android.view.View
 import androidx.core.os.bundleOf
 import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.databinding.FragmentWeatherGraphBinding
+import com.avacodo.natlextesttask.domain.entity.GraphDataDomain
+import com.avacodo.natlextesttask.domain.entity.SliderDataDomain
 import com.avacodo.natlextesttask.domain.entity.WeatherGraphDataDomain
 import com.avacodo.natlextesttask.presentation.BaseFragment
 import com.avacodo.natlextesttask.presentation.screens.graph.chartbuilder.ChartBuilder
@@ -18,9 +20,9 @@ private const val IS_SWITCH_CHECKED_ARG_KEY = "IS_SWITCH_CHECKED"
 class WeatherGraphFragment : BaseFragment<FragmentWeatherGraphBinding, WeatherGraphDataDomain>(
     FragmentWeatherGraphBinding::inflate) {
 
-    private val chartBuilder by inject<ChartBuilder<WeatherGraphDataDomain>>()
+    private val chartBuilder by inject<ChartBuilder<GraphDataDomain>>()
 
-    private val sliderInitializer by inject<SliderInitializer<WeatherGraphDataDomain>>()
+    private val sliderInitializer by inject<SliderInitializer<SliderDataDomain>>()
 
     override val viewModel by stateViewModel<WeatherGraphViewModel>()
 
@@ -61,12 +63,13 @@ class WeatherGraphFragment : BaseFragment<FragmentWeatherGraphBinding, WeatherGr
         viewModel.getSliderIsInitializedState()
             .observe(viewLifecycleOwner) { sliderIsInitializedState ->
                 if (!sliderIsInitializedState) {
-                    sliderInitializer.setSliderData(binding.weatherGraphRangeSlider,
-                        weatherGraphData)
+                    sliderInitializer.setSliderData(
+                        binding.weatherGraphRangeSlider,
+                        weatherGraphData.sliderData)
                     viewModel.saveSliderIsInitializedState(true)
                 }
             }
-        chartBuilder.build(binding.weatherGraphChartView, isSwitchChecked, weatherGraphData)
+        chartBuilder.build(binding.weatherGraphChartView, isSwitchChecked, weatherGraphData.graphData)
     }
 
     companion object {

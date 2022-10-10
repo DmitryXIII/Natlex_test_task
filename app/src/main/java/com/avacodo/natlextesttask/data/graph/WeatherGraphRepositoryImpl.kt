@@ -1,27 +1,21 @@
 package com.avacodo.natlextesttask.data.graph
 
-import com.avacodo.natlextesttask.data.MapperToDomain
 import com.avacodo.natlextesttask.data.local.WeatherDao
-import com.avacodo.natlextesttask.domain.entity.GraphEntryDomain
+import com.avacodo.natlextesttask.data.local.entity.WeatherLocalEntity
 
 class WeatherGraphRepositoryImpl(
-    private val localDataSource: WeatherDao,
-    private val mapper: MapperToDomain,
+    private val localDataSource: WeatherDao
 ) : WeatherGraphRepository {
-    override suspend fun getLocalWeatherDataByID(locationID: String): List<GraphEntryDomain> {
-        return localDataSource.getLocalWeatherDataByID(locationID).map {
-            mapper.mapWeatherLocalToGraphEntry(it)
-        }
+    override suspend fun getLocalWeatherDataByID(locationID: String): List<WeatherLocalEntity> {
+        return localDataSource.getLocalWeatherDataByID(locationID)
     }
 
     override suspend fun getLocalWeatherDataByRange(
         locationID: String,
         timeFrom: Long,
         timeTo: Long,
-    ): List<GraphEntryDomain> {
-        return localDataSource.getLocalWeatherDataByTimeRange(locationID, timeFrom, timeTo).map {
-            mapper.mapWeatherLocalToGraphEntry(it)
-        }
+    ): List<WeatherLocalEntity> {
+        return localDataSource.getLocalWeatherDataByTimeRange(locationID, timeFrom, timeTo)
     }
 
     override suspend fun getMaxRequestTime(locationID: String): Long {

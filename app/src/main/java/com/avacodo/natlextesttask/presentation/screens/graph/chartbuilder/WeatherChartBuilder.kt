@@ -1,6 +1,6 @@
 package com.avacodo.natlextesttask.presentation.screens.graph.chartbuilder
 
-import com.avacodo.natlextesttask.domain.entity.WeatherGraphDataDomain
+import com.avacodo.natlextesttask.domain.entity.GraphDataDomain
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.data.LineData
@@ -10,13 +10,13 @@ private const val CHART_TEXT_SIZE = 12f
 private const val EXTRA_RIGHT_OFFSET = 20f
 
 class WeatherChartBuilder(
-    private val chartInitializer: ChartInitializer<WeatherGraphDataDomain>,
-) : ChartBuilder<WeatherGraphDataDomain> {
+    private val chartInitializer: ChartInitializer,
+) : ChartBuilder<GraphDataDomain> {
 
     override fun build(
         chartView: LineChart,
         isSwitchChecked: Boolean,
-        chartData: WeatherGraphDataDomain,
+        chartData: GraphDataDomain,
     ) {
         chartView.apply {
             setScaleEnabled(true)
@@ -28,11 +28,11 @@ class WeatherChartBuilder(
 
             chartInitializer.run {
                 setRequiredWeatherUnits(isSwitchChecked)
-                setChartData(chartData)
                 initAxisLeft(axisLeft)
                 initAxisRight(axisRight)
-                initXAxis(xAxis)
-                data = LineData(chartInitializer.initDataSet(chartView.context))
+                initXAxis(xAxis, chartData.xAxisValuesList)
+                data = LineData(chartInitializer.initDataSet(chartView.context,
+                    chartData.yAxisValuesList))
             }
 
             invalidate()
