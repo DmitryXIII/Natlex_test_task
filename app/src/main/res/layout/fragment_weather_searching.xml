@@ -58,11 +58,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_4dp"
-            android:thumb="@drawable/switch_thumb"
             app:layout_constraintBottom_toBottomOf="@id/fahrenheit_switch_label_text_view"
             app:layout_constraintEnd_toStartOf="@id/celsius_switch_label_text_view"
-            app:layout_constraintTop_toTopOf="@id/fahrenheit_switch_label_text_view"
-            app:track="@drawable/switch_track" />
+            app:layout_constraintTop_toTopOf="@id/fahrenheit_switch_label_text_view"/>
 
         <TextView
             android:id="@+id/fahrenheit_switch_label_text_view"

@@ -11,7 +11,8 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <item name="materialAlertDialogTheme">@style/appMaterialAlertDialog</item>
         <!-- Customize your theme here. -->
+        <item name="materialAlertDialogTheme">@style/appMaterialAlertDialog</item>
+        <item name="switchStyle">@style/appMaterialSwitch</item>
     </style>
 </resources>
