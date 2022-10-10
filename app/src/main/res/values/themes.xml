@@ -16,4 +16,10 @@
         <item name="switchStyle">@style/appMaterialSwitch</item>
         <item name="sliderStyle">@style/appMaterialSlider</item>
     </style>
+
+    <style name="Theme.AppSplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/bg_gradient_dark</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.NatlexTestTask</item>
+    </style>
 </resources>
