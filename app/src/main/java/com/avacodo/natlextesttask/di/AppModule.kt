@@ -18,6 +18,10 @@ import com.avacodo.natlextesttask.presentation.screens.graph.chartbuilder.*
 import com.avacodo.natlextesttask.presentation.screens.graph.slider.SliderInitializer
 import com.avacodo.natlextesttask.presentation.screens.graph.slider.WeatherGraphSliderInitializer
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.WeatherSearchingViewModel
+import com.avacodo.natlextesttask.presentation.network.ConnectionHandler
+import com.avacodo.natlextesttask.presentation.network.ConnectivityObserver
+import com.avacodo.natlextesttask.presentation.network.NetworkConnectionHandler
+import com.avacodo.natlextesttask.presentation.network.NetworkConnectivityObserver
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.AppLocationGlobalManager
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.NatlexAppLocationGlobalManager
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.data.AppLocationData
@@ -56,8 +60,9 @@ val appModule = module {
     }
 
     single { MapperToDomain() }
-
     single<SearchViewInitialise> { SearchViewInitializer() }
+    single<ConnectivityObserver> { NetworkConnectivityObserver(androidContext()) }
+    single<ConnectionHandler> { NetworkConnectionHandler() }
 }
 
 val viewModelModule = module {
@@ -96,13 +101,11 @@ val locationModule = module {
 }
 
 val graphModule = module {
-    single<ChartValueFormatter> { WeatherChartValueFormatter() }
-
     factory<ChartInitializer<WeatherGraphDataDomain>> {
         WeatherChartInitializer(chartValueFormatter = get())
     }
 
+    single<ChartValueFormatter> { WeatherChartValueFormatter() }
     single<SliderInitializer<WeatherGraphDataDomain>> { WeatherGraphSliderInitializer() }
-
     factory<ChartBuilder<WeatherGraphDataDomain>> { WeatherChartBuilder(chartInitializer = get()) }
 }

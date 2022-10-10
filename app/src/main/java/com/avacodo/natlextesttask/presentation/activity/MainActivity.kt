@@ -5,12 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.avacodo.natlextesttask.R
 import com.avacodo.natlextesttask.presentation.extensions.showAlertDialogWithoutNegativeButton
 import com.avacodo.natlextesttask.presentation.screens.graph.WeatherGraphFragment
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.WeatherSearchingFragment
+import com.avacodo.natlextesttask.presentation.network.ConnectionHandler
+import com.avacodo.natlextesttask.presentation.network.ConnectivityObserver
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.AppLocationGlobalManager
 import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.permission.OnLocationCoordsReceiver
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 private const val NAVIGATION_BACKSTACK = "NAVIGATION_BACKSTACK"
@@ -18,10 +22,23 @@ private const val NAVIGATION_BACKSTACK = "NAVIGATION_BACKSTACK"
 class MainActivity : AppCompatActivity(), NavigationRouter, WeatherLocationCoordsProvider {
 
     private val locationManager: AppLocationGlobalManager by inject()
+    private val networkStatusHandler: ConnectionHandler by inject()
+    private val connectivityManager: ConnectivityObserver by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+        if (!connectivityManager.checkIfNetworkAvailable()) {
+            networkStatusHandler.showNoConnectionAlert(this)
+        }
+
+        lifecycleScope.launch {
+            connectivityManager.observe().collect {
+                networkStatusHandler.handleInternetConnectionStatus(this@MainActivity, it)
+            }
+        }
 
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
