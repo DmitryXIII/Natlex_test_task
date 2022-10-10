@@ -4,7 +4,6 @@ import com.avacodo.natlextesttask.data.local.entity.WeatherLocalEntity
 import com.avacodo.natlextesttask.data.remote.dto.OpenWeatherMapDto
 import com.avacodo.natlextesttask.domain.entity.GraphDataDomain
 import com.avacodo.natlextesttask.domain.entity.SliderDataDomain
-import com.avacodo.natlextesttask.domain.entity.WeatherGraphDataDomain
 import com.avacodo.natlextesttask.domain.entity.WeatherModelDomain
 import com.github.mikephil.charting.data.Entry
 import java.text.SimpleDateFormat
@@ -57,39 +56,42 @@ class MapperToDomain {
         }
     }
 
-//    fun mapToGraphData(weatherLocalEntityList: List<WeatherLocalEntity>): GraphDataDomain {
-//
-//
-//        val xAxisValuesList = weatherLocalEntityList.map { weatherLocalEntity ->
-//            dateFormat.format(weatherLocalEntity.weatherMeasurementTime)
-//        }
-//
-//        val yAxisValuesList = weatherLocalEntityList.mapIndexed { index, weatherLocalEntity ->
-//            Entry(index.toFloat(), weatherLocalEntity.temperatureInCelsius.toFloat())
-//        }
-//
-//        return GraphDataDomain(
-//            xAxisValuesList = xAxisValuesList,
-//            yAxisValuesList = yAxisValuesList
-//        )
-//    }
-//
-//    fun mapToSliderData(
-//        startTime: Long,
-//        endTime: Long,
-//    ): SliderDataDomain {
-//        val requestTimesList = mutableListOf<Long>()
-//
-//        val minutesCount = ((endTime - startTime) / MILLISECONDS_IN_MINUTE).toInt() + 1
-//
-//        for (i in 0..minutesCount) {
-//            requestTimesList.add(startTime + i * MILLISECONDS_IN_MINUTE)
-//        }
-//        return SliderDataDomain(
-//            maxRequestTime = endTime,
-//            minRequestTime = startTime,
-//            minutesRange = minutesCount,
-//            requestTimeList = requestTimesList
-//        )
-//    }
+    fun mapToGraphData(weatherLocalEntityList: List<WeatherLocalEntity>): GraphDataDomain {
+        val dateFormat = SimpleDateFormat(DATE_FORMAT_PATTERN)
+
+        val xAxisValuesList = weatherLocalEntityList.map { weatherLocalEntity ->
+            dateFormat.format(weatherLocalEntity.weatherMeasurementTime)
+        }
+
+        val yAxisValuesList = weatherLocalEntityList.mapIndexed { index, weatherLocalEntity ->
+            Entry(index.toFloat(), weatherLocalEntity.temperatureInCelsius.toFloat())
+        }
+
+        return GraphDataDomain(
+            xAxisValuesList = xAxisValuesList,
+            yAxisValuesList = yAxisValuesList
+        )
+    }
+
+    fun mapToSliderData(
+        startTimeInMillis: Long,
+        endTimeInMillis: Long,
+    ): SliderDataDomain {
+        val requestTimesList = mutableListOf<Long>()
+        val startTimeInMinutes = startTimeInMillis / MILLISECONDS_IN_MINUTE * MILLISECONDS_IN_MINUTE
+        val endTimeInMinutes = endTimeInMillis / MILLISECONDS_IN_MINUTE * MILLISECONDS_IN_MINUTE
+
+        val minutesCount =
+            ((endTimeInMinutes - startTimeInMinutes) / MILLISECONDS_IN_MINUTE).toInt() + 1
+
+        for (i in 0..minutesCount) {
+            requestTimesList.add(startTimeInMinutes + i * MILLISECONDS_IN_MINUTE)
+        }
+        return SliderDataDomain(
+            maxRequestTime = endTimeInMinutes,
+            minRequestTime = startTimeInMinutes,
+            minutesRange = minutesCount,
+            requestTimeList = requestTimesList
+        )
+    }
 }
