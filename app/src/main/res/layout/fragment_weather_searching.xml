@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/app_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_weather_layout"
@@ -60,7 +61,7 @@
             android:layout_marginEnd="@dimen/margin_4dp"
             app:layout_constraintBottom_toBottomOf="@id/fahrenheit_switch_label_text_view"
             app:layout_constraintEnd_toStartOf="@id/celsius_switch_label_text_view"
-            app:layout_constraintTop_toTopOf="@id/fahrenheit_switch_label_text_view"/>
+            app:layout_constraintTop_toTopOf="@id/fahrenheit_switch_label_text_view" />
 
         <TextView
             android:id="@+id/fahrenheit_switch_label_text_view"

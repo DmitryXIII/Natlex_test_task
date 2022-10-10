@@ -13,4 +13,7 @@
     <color name="high_temperature">#E57373</color>
     <color name="positive_button">#43A047</color>
     <color name="negative_button">#E53935</color>
+    <color name="bg_gradient_light">#70C19C</color>
+    <color name="bg_gradient_dark">#4E9887</color>
+    <color name="bg_card">#AFEFE0</color>
 </resources>

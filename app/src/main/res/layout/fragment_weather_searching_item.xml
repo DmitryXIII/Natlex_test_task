@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="@dimen/zero">
+    android:layout_marginHorizontal="@dimen/default_layout_padding"
+    android:layout_marginVertical="@dimen/margin_4dp"
+    app:cardBackgroundColor="@color/bg_card"
+    app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -99,15 +102,6 @@
             app:layout_constraintStart_toStartOf="@id/searching_item_optional_guideline"
             app:layout_constraintTop_toBottomOf="@id/temp_graph_image_view"
             tools:text="@string/min_temp_example" />
-
-        <View
-            android:id="@+id/searching_item_divider_view"
-            android:layout_width="@dimen/zero"
-            android:layout_height="1dp"
-            android:background="@color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
