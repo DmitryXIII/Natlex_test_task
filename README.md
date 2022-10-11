@@ -9,8 +9,7 @@
 You need to create a simple weather monitoring app. It should be capable of requesting the
 current weather from the weather API ***(available at api.openweathermap.org)***.
 
-![Natlex_test_app_example](https://user-images.githubusercontent.com/91154478/192100821-3d3e80ba-2809-4f79-92a0-c3770d848f90.png)
-
+![Natlex_test_app_example](https://user-images.githubusercontent.com/91154478/195013321-67b4f43a-7de3-4b24-a44f-b29075a8b5c2.png)
 
 ## According to the sketch, the main activity should contain 3 blocks:
 1. Search View in the toolbar (could be an
