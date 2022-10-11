@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/app_background"
+    android:clickable="true"
+    android:padding="@dimen/default_layout_padding">
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/weather_graph_chart_view"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/zero"
+        app:layout_constraintEnd_toStartOf="@id/filter_data_text_view"
+        app:layout_constraintHeight_percent="0.85"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/weather_graph_range_slider"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/weather_graph_chart_view" />
+
+    <TextView
+        android:id="@+id/filter_data_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_4dp"
+        android:gravity="center"
+        android:textColor="@color/white_90"
+        android:textSize="@dimen/graph_filter_hint_text_size"
+        app:layout_constraintBottom_toBottomOf="@id/weather_graph_chart_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/weather_graph_chart_view"
+        app:layout_constraintTop_toTopOf="@id/weather_graph_chart_view" />
+</androidx.constraintlayout.widget.ConstraintLayout>
