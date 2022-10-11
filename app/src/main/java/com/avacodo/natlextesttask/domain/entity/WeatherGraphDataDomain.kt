@@ -4,5 +4,4 @@ data class WeatherGraphDataDomain(
     val locationID: String,
     val graphData: GraphDataDomain,
     val sliderData: SliderDataDomain,
-
-    )
+)

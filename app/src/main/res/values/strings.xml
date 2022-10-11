@@ -26,7 +26,7 @@
     <string name="alert_dialog_title_permission_rationale">Предупреждение</string>
     <string name="default_alert_title">Сообщение</string>
     <string name="default_alert_positive_button">OK</string>
-    <string name="unable_to_turn_location_on">На данном устройстве отсутствуют настройки определения местоположения</string>
+    <string name="unable_to_turn_location_on">Включен "Режим полета", либо на данном устройстве отсутствуют настройки определения местоположения</string>
     <string name="alert_message_if_location_is_off">При выключенном определении местоположения функция получения данных о погоде по местоположению работать не будет</string>
     <string name="alert_message_if_internet_is_off">Проверьте подключение к WI-FI или сотовой сети</string>
     <string name="alert_title_if_internet_is_off">Отсутствует интернет-соединение</string>

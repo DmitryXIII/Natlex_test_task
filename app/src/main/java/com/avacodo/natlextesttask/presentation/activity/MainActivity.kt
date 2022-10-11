@@ -19,6 +19,15 @@ import com.avacodo.natlextesttask.presentation.screens.weasersearching.location.
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
+/**
+ * Архитектура SingleActivity.
+ * MainActivity, как единственная активити, выполняет роль навигатора по экранам-фрагментам и
+ * организует связь с системными классами для получения координат, проверки необходимых настроек
+ * устройства и наличия соединения с интернетом.
+ * Openweathermap API KEY убран в BuildConfig через файл apiKey.properties (выложен в git
+ * для удобства проверки работоспособности проекта).
+ */
+
 private const val NAVIGATION_BACKSTACK = "NAVIGATION_BACKSTACK"
 
 class MainActivity : AppCompatActivity(), NavigationRouter, WeatherLocationCoordsProvider {
