@@ -1,15 +1,15 @@
 # Test Task for Android developer!
 
 <p align="center">
-    <a href="https://www.yiiframework.com/" target="_blank">
-        <img src="https://user-images.githubusercontent.com/91154478/195012762-f93072a1-b268-4083-8f2a-382bccc6a2d4.png" width="200" alt="200" />
-    </a>
+    <a><img src="https://user-images.githubusercontent.com/91154478/195012762-f93072a1-b268-4083-8f2a-382bccc6a2d4.png" width="200" alt="200" /></a>
 </p>
 
 You need to create a simple weather monitoring app. It should be capable of requesting the
 current weather from the weather API ***(available at api.openweathermap.org)***.
 
-![Natlex_test_app_example](https://user-images.githubusercontent.com/91154478/195013321-67b4f43a-7de3-4b24-a44f-b29075a8b5c2.png)
+<p align="center">
+    <a><img src="https://user-images.githubusercontent.com/91154478/195013321-67b4f43a-7de3-4b24-a44f-b29075a8b5c2.png" width="147" alt="288" /></a>
+</p>
 
 ## According to the sketch, the main activity should contain 3 blocks:
 1. Search View in the toolbar (could be an
