@@ -16,7 +16,6 @@ class NatlexAppLocationData: AppLocationData {
         val locationClient = LocationServices
             .getFusedLocationProviderClient(activity)
 
-        //todo: проверить, нужен ли отдельный реквест
         val locationRequest = LocationRequest
             .create()
             .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
