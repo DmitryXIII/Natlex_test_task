@@ -1,4 +1,10 @@
-# Test Task for Android developer
+# Test Task for Android developer!
+
+<p align="center">
+    <a href="https://www.yiiframework.com/" target="_blank">
+        <img src="https://user-images.githubusercontent.com/91154478/195012762-f93072a1-b268-4083-8f2a-382bccc6a2d4.png" />
+    </a>
+</p>
 
 You need to create a simple weather monitoring app. It should be capable of requesting the
 current weather from the weather API ***(available at api.openweathermap.org)***.
