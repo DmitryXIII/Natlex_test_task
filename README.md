@@ -2,7 +2,7 @@
 
 <p align="center">
     <a href="https://www.yiiframework.com/" target="_blank">
-        <img src="https://user-images.githubusercontent.com/91154478/195012762-f93072a1-b268-4083-8f2a-382bccc6a2d4.png" />
+        <img src="https://user-images.githubusercontent.com/91154478/195012762-f93072a1-b268-4083-8f2a-382bccc6a2d4.png" width="200" alt="200" />
     </a>
 </p>
 
